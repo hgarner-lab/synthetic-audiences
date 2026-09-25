@@ -16,6 +16,7 @@
 
 html {
   background: var(--paper);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -26,7 +27,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button, textarea {
+button,
+textarea {
   font: inherit;
 }
 
@@ -37,11 +39,12 @@ button {
 .challengePage {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 88% 20%, rgba(24,125,111,.10), transparent 24%),
+    radial-gradient(circle at 88% 20%, rgba(24, 125, 111, 0.1), transparent 24%),
     linear-gradient(180deg, #f7f4ed 0%, var(--paper) 100%);
 }
 
-.topBar, .roomHeader {
+.topBar,
+.roomHeader {
   height: 74px;
   display: flex;
   align-items: center;
@@ -50,9 +53,10 @@ button {
   border-bottom: 1px solid var(--line);
 }
 
-.brandMark, .brandButton {
+.brandMark,
+.brandButton {
   font-size: 11px;
-  letter-spacing: .19em;
+  letter-spacing: 0.19em;
   font-weight: 800;
 }
 
@@ -74,10 +78,11 @@ button {
   padding: clamp(70px, 10vh, 130px) 0 100px;
 }
 
-.sectionNumber, .eyebrow {
+.sectionNumber,
+.eyebrow {
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: .13em;
+  letter-spacing: 0.13em;
   font-size: 10px;
   font-weight: 800;
   color: var(--teal-dark);
@@ -89,8 +94,8 @@ button {
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
   font-size: clamp(54px, 7vw, 105px);
-  line-height: .91;
-  letter-spacing: -.055em;
+  line-height: 0.91;
+  letter-spacing: -0.055em;
 }
 
 .heroSub {
@@ -112,7 +117,8 @@ fieldset {
   border: 0;
 }
 
-legend, .propositionField > span {
+legend,
+.propositionField > span {
   display: block;
   margin-bottom: 16px;
   font-size: 13px;
@@ -130,18 +136,21 @@ legend, .propositionField > span {
   min-height: 106px;
   padding: 18px;
   border: 1px solid var(--line);
-  background: rgba(255,255,255,.38);
+  background: rgba(255, 255, 255, 0.38);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   text-align: left;
   cursor: pointer;
-  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .objectiveCard:hover {
   transform: translateY(-2px);
-  border-color: rgba(17,22,19,.35);
+  border-color: rgba(17, 22, 19, 0.35);
 }
 
 .objectiveCard.selected {
@@ -174,7 +183,7 @@ legend, .propositionField > span {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(22px, 2.5vw, 34px);
   line-height: 1.25;
-  transition: border-color .2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .propositionField textarea:focus {
@@ -191,7 +200,7 @@ legend, .propositionField > span {
 .contextRow > div {
   padding: 16px 18px;
   border: 1px solid var(--line);
-  background: rgba(255,255,255,.28);
+  background: rgba(255, 255, 255, 0.28);
 }
 
 .contextRow strong {
@@ -211,7 +220,9 @@ legend, .propositionField > span {
   display: inline-flex;
   gap: 28px;
   align-items: center;
-  transition: transform .2s ease, background .2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .primaryButton:hover {
@@ -221,7 +232,7 @@ legend, .propositionField > span {
 
 .primaryButton:disabled {
   cursor: default;
-  opacity: .4;
+  opacity: 0.4;
   transform: none;
 }
 
@@ -234,7 +245,7 @@ legend, .propositionField > span {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(241,238,230,.92);
+  background: rgba(241, 238, 230, 0.92);
   backdrop-filter: blur(14px);
 }
 
@@ -251,7 +262,8 @@ legend, .propositionField > span {
   margin-right: 22px;
 }
 
-.quietButton, .textButton {
+.quietButton,
+.textButton {
   border: 0;
   padding: 0;
   background: transparent;
@@ -263,9 +275,9 @@ legend, .propositionField > span {
 .roomIntro {
   width: min(1320px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 64px 0 48px;
+  padding: 64px 0 56px;
   display: grid;
-  grid-template-columns: 1.25fr .75fr;
+  grid-template-columns: 1.25fr 0.75fr;
   gap: 60px;
   align-items: end;
 }
@@ -275,109 +287,459 @@ legend, .propositionField > span {
   max-width: 850px;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(48px, 6.4vw, 92px);
-  line-height: .94;
-  letter-spacing: -.055em;
+  line-height: 0.94;
+  letter-spacing: -0.055em;
   font-weight: 400;
 }
 
-.roomProposition {
-  margin: 0;
+.roomPropositionWrap {
   padding-left: 26px;
   border-left: 1px solid var(--ink);
+}
+
+.roomPropositionWrap > span {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.roomProposition {
+  margin: 11px 0 0;
   color: #4c554f;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(18px, 2vw, 27px);
   line-height: 1.35;
 }
 
-.featuredStrip {
-  padding: 34px clamp(24px, calc((100vw - 1320px) / 2), 80px) 50px;
+.journeySection {
+  padding: 58px max(24px, calc((100vw - 1320px) / 2)) 70px;
   background: #141b17;
   color: #f7f2e8;
+}
+
+.journeyHeader {
   display: grid;
-  grid-template-columns: .8fr 2.2fr;
-  gap: 45px;
+  grid-template-columns: 1.35fr 0.65fr;
+  gap: 60px;
+  align-items: end;
+  margin-bottom: 40px;
 }
 
-.stripCopy {
-  padding-top: 14px;
+.lightSectionNumber {
+  color: #84bdb2;
 }
 
-.stripCopy .eyebrow {
-  color: #7eb9ae;
-}
-
-.stripCopy h2 {
-  max-width: 380px;
-  margin: 12px 0;
+.journeyHeader h2 {
+  max-width: 820px;
+  margin: 14px 0 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(30px, 3vw, 46px);
-  line-height: 1.02;
+  font-size: clamp(39px, 5vw, 68px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
   font-weight: 400;
 }
 
-.stripCopy > p:last-child {
-  max-width: 350px;
+.journeyMethod {
+  max-width: 450px;
+  margin: 0;
+  padding-left: 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
   color: #aab4ae;
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 11px;
+  line-height: 1.55;
 }
 
-.featuredPeople {
+.journeyProgress {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.featuredPerson {
+.journeyProgressStep {
   min-width: 0;
-  padding: 0 0 16px;
+  min-height: 96px;
+  padding: 16px 18px 15px;
   border: 0;
-  border-bottom: 1px solid rgba(255,255,255,.2);
-  color: inherit;
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
   background: transparent;
+  color: #7f8983;
   text-align: left;
   cursor: pointer;
-  opacity: 0;
-  animation: rise .55s ease forwards;
-  transition: transform .2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-.featuredPerson:hover {
-  transform: translateY(-4px);
+.journeyProgressStep:last-child {
+  border-right: 0;
 }
 
-.featuredPerson strong, .featuredPerson > span, .featuredPerson em {
+.journeyProgressStep.available {
+  color: #bec6c1;
+}
+
+.journeyProgressStep.current {
+  background: #24312b;
+  color: #fff9ef;
+}
+
+.journeyProgressStep.locked {
+  cursor: default;
+  opacity: 0.38;
+}
+
+.progressNumber,
+.progressPerson,
+.progressStage {
   display: block;
 }
 
-.featuredIndex {
-  margin-top: 12px;
-  color: #7eb9ae;
-  font-size: 10px;
-  letter-spacing: .14em;
+.progressNumber {
+  color: #78b1a6;
+  font-size: 9px;
+  letter-spacing: 0.13em;
 }
 
-.featuredPerson strong {
-  margin-top: 7px;
-  font-size: 17px;
-}
-
-.featuredPerson > span:not(.featuredIndex) {
-  min-height: 34px;
-  margin-top: 4px;
-  color: #adb6b0;
-  font-size: 11px;
-  line-height: 1.35;
-}
-
-.featuredPerson em {
+.progressPerson {
   margin-top: 10px;
-  color: #f7f2e8;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.progressStage {
+  margin-top: 4px;
   font-size: 10px;
-  letter-spacing: .12em;
+}
+
+.journeyWorkspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.65fr);
+  gap: 24px;
+  padding-top: 26px;
+  align-items: start;
+}
+
+.journeyEncounter {
+  min-height: 710px;
+  display: grid;
+  grid-template-columns: minmax(190px, 0.56fr) minmax(0, 1.44fr);
+  gap: 34px;
+  padding: 30px;
+  background:
+    radial-gradient(circle at 10% 12%, rgba(126, 185, 174, 0.13), transparent 26%),
+    #1b241f;
+  animation: encounterIn 0.45s ease;
+}
+
+.journeyPortraitColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.journeyPortraitColumn .portraitLarge {
+  width: 100%;
+  max-width: none;
+}
+
+.profileLink {
+  margin-top: 12px;
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: #c3ccc7;
+  text-align: left;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.profileLink:hover {
+  color: #ffffff;
+}
+
+.journeyEncounterCopy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.arrivalLine {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.arrivalLine > span,
+.journeyInterpretation > span,
+.journeyEvidence > span {
+  color: #7eb9ae;
   text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.arrivalLine p {
+  margin: 0;
+  color: #c8d0cb;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.personaIdentity {
+  margin-top: 25px;
+}
+
+.syntheticBadge {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #dfece8;
+  color: var(--teal-dark);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.darkBadge {
+  margin: 0 8px 0 0;
+  background: rgba(126, 185, 174, 0.13);
+  color: #a9d4cb;
+  border: 1px solid rgba(126, 185, 174, 0.22);
+}
+
+.personaIdentity h3 {
+  margin: 20px 0 5px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(39px, 4.3vw, 62px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-weight: 400;
+}
+
+.personaIdentity > p {
+  margin: 0;
+  color: #abb4ae;
+  font-size: 12px;
+}
+
+.journeyEncounter blockquote {
+  margin: 34px 0 26px;
+  padding: 0;
+  color: #fffaf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3.6vw, 49px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.journeyInterpretation {
+  max-width: 680px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.journeyInterpretation p {
+  margin: 9px 0 0;
+  color: #bac3bd;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.journeyEvidence {
+  margin-top: 24px;
+}
+
+.journeyEvidenceChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.journeyEvidenceChips > span {
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  color: #c7cfca;
+  font-size: 9px;
+}
+
+.journeyControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 34px;
+}
+
+.secondaryJourneyButton,
+.journeyNextButton {
+  border: 0;
+  cursor: pointer;
+}
+
+.secondaryJourneyButton {
+  padding: 12px 0;
+  background: transparent;
+  color: #9ca7a0;
+  font-size: 10px;
+}
+
+.secondaryJourneyButton:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.journeyNextButton {
+  padding: 14px 17px 14px 19px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 34px;
+  background: #dcebe6;
+  color: #123c35;
+  font-size: 11px;
+  font-weight: 800;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.journeyNextButton:hover {
+  transform: translateY(-2px);
+  background: #f2f8f5;
+}
+
+.blueprintRail {
+  position: sticky;
+  top: 100px;
+  background: #f2eee4;
+  color: var(--ink);
+}
+
+.blueprintRailHeader {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.blueprintRailHeader > span {
+  color: var(--teal-dark);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+}
+
+.blueprintRailHeader > strong {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.blueprintItems {
+  padding: 0 20px;
+}
+
+.blueprintItem {
+  padding: 18px 0 20px;
+  border-bottom: 1px solid var(--line);
+  transition: opacity 0.25s ease;
+}
+
+.blueprintItem.activeBlueprint {
+  position: relative;
+}
+
+.blueprintItem.activeBlueprint::before {
+  content: "";
+  position: absolute;
+  width: 3px;
+  left: -20px;
+  top: 16px;
+  bottom: 16px;
+  background: var(--teal);
+}
+
+.blueprintItem.unrevealed {
+  opacity: 0.34;
+}
+
+.blueprintItemTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blueprintItemTop em {
   font-style: normal;
+}
+
+.blueprintItem h4 {
+  margin: 9px 0 7px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+  line-height: 1.08;
+  font-weight: 400;
+}
+
+.blueprintItem p {
+  margin: 0;
+  color: #59615c;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.blueprintEvidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 12px;
+}
+
+.blueprintEvidence span {
+  padding: 5px 7px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: #59625c;
+  font-size: 8px;
+}
+
+.blueprintComplete {
+  padding: 20px;
+  background: #dfeae5;
+}
+
+.blueprintComplete span {
+  display: block;
+  color: var(--teal-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.blueprintComplete p {
+  margin: 8px 0 0;
+  color: #34524b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 16px;
+  line-height: 1.35;
 }
 
 .portrait {
@@ -392,14 +754,25 @@ legend, .propositionField > span {
   position: absolute;
   inset: -10%;
   background:
-    radial-gradient(circle at 50% 36%, rgba(255,255,255,.23), transparent 22%),
-    radial-gradient(circle at 50% 75%, rgba(134,195,181,.25), transparent 45%);
+    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, 0.23), transparent 22%),
+    radial-gradient(circle at 50% 75%, rgba(134, 195, 181, 0.25), transparent 45%);
 }
 
-.role-validate { background: #34423c; }
-.role-block { background: #483d36; }
-.role-amplify { background: #354347; }
-.role-reframe { background: #3f3b4a; }
+.role-validate {
+  background: #34423c;
+}
+
+.role-block {
+  background: #483d36;
+}
+
+.role-amplify {
+  background: #354347;
+}
+
+.role-reframe {
+  background: #3f3b4a;
+}
 
 .portraitFigure {
   position: absolute;
@@ -409,12 +782,12 @@ legend, .propositionField > span {
 .portraitHead {
   position: absolute;
   width: 39%;
-  aspect-ratio: .78 / 1;
+  aspect-ratio: 0.78 / 1;
   left: 30.5%;
   top: 13%;
   border-radius: 48% 48% 44% 44%;
   background: linear-gradient(135deg, #d9c6b2, #aa8b78);
-  box-shadow: inset 9px 0 18px rgba(35,24,18,.12);
+  box-shadow: inset 9px 0 18px rgba(35, 24, 18, 0.12);
 }
 
 .portraitHead::before {
@@ -432,16 +805,16 @@ legend, .propositionField > span {
   left: 9%;
   bottom: -5%;
   border-radius: 48% 48% 8% 8%;
-  background: linear-gradient(150deg, rgba(24,31,27,.95), rgba(71,84,76,.92));
+  background: linear-gradient(150deg, rgba(24, 31, 27, 0.95), rgba(71, 84, 76, 0.92));
 }
 
 .portraitInitials {
   position: absolute;
   right: 10px;
   bottom: 8px;
-  color: rgba(255,255,255,.65);
+  color: rgba(255, 255, 255, 0.65);
   font-size: 9px;
-  letter-spacing: .12em;
+  letter-spacing: 0.12em;
 }
 
 .portraitLarge {
@@ -452,7 +825,7 @@ legend, .propositionField > span {
 .communitySection {
   width: min(1320px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 72px 0 70px;
+  padding: 84px 0 70px;
 }
 
 .communityHeader {
@@ -463,12 +836,24 @@ legend, .propositionField > span {
   margin-bottom: 30px;
 }
 
+.communityHeader > div:first-child {
+  max-width: 650px;
+}
+
 .communityHeader h2 {
   margin: 8px 0 0;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(34px, 4vw, 54px);
   font-weight: 400;
-  letter-spacing: -.035em;
+  letter-spacing: -0.035em;
+}
+
+.communityIntroCopy {
+  max-width: 570px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .segmentFilters {
@@ -483,7 +868,7 @@ legend, .propositionField > span {
   padding: 8px 11px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255,255,255,.4);
+  background: rgba(255, 255, 255, 0.4);
   color: var(--muted);
   font-size: 10px;
   cursor: pointer;
@@ -508,8 +893,8 @@ legend, .propositionField > span {
   text-align: left;
   cursor: pointer;
   opacity: 0;
-  animation: rise .45s ease forwards;
-  transition: transform .2s ease;
+  animation: rise 0.45s ease forwards;
+  transition: transform 0.2s ease;
 }
 
 .personTile:hover {
@@ -517,11 +902,12 @@ legend, .propositionField > span {
 }
 
 .personTile .portrait {
-  filter: saturate(.72);
-  transition: filter .2s ease;
+  filter: saturate(0.72);
+  transition: filter 0.2s ease;
 }
 
-.personTile:hover .portrait, .featuredTile .portrait {
+.personTile:hover .portrait,
+.featuredTile .portrait {
   filter: saturate(1);
 }
 
@@ -529,7 +915,8 @@ legend, .propositionField > span {
   padding: 10px 2px 17px;
 }
 
-.personCopy > span, .personCopy > small {
+.personCopy > span,
+.personCopy > small {
   display: block;
 }
 
@@ -552,10 +939,21 @@ legend, .propositionField > span {
   background: #6c7770;
 }
 
-.miniRole-validate { background: #36776d; }
-.miniRole-block { background: #9a5e48; }
-.miniRole-amplify { background: #4e7a95; }
-.miniRole-reframe { background: #775f92; }
+.miniRole-validate {
+  background: #36776d;
+}
+
+.miniRole-block {
+  background: #9a5e48;
+}
+
+.miniRole-amplify {
+  background: #4e7a95;
+}
+
+.miniRole-reframe {
+  background: #775f92;
+}
 
 .personCopy > span {
   min-height: 31px;
@@ -595,9 +993,9 @@ legend, .propositionField > span {
   z-index: 50;
   display: flex;
   justify-content: flex-end;
-  background: rgba(8,11,9,.46);
+  background: rgba(8, 11, 9, 0.46);
   backdrop-filter: blur(4px);
-  animation: fadeIn .2s ease;
+  animation: fadeIn 0.2s ease;
 }
 
 .personaPanel {
@@ -607,7 +1005,7 @@ legend, .propositionField > span {
   padding: clamp(24px, 4vw, 48px);
   background: #f8f5ee;
   box-shadow: var(--shadow);
-  animation: slideIn .38s cubic-bezier(.2,.78,.22,1);
+  animation: slideIn 0.38s cubic-bezier(0.2, 0.78, 0.22, 1);
 }
 
 .closeButton {
@@ -619,7 +1017,7 @@ legend, .propositionField > span {
   height: 36px;
   border: 1px solid var(--line);
   border-radius: 50%;
-  background: rgba(248,245,238,.9);
+  background: rgba(248, 245, 238, 0.9);
   cursor: pointer;
   font-size: 22px;
   line-height: 1;
@@ -633,25 +1031,12 @@ legend, .propositionField > span {
   align-items: flex-end;
 }
 
-.syntheticBadge {
-  display: inline-block;
-  margin-bottom: 12px;
-  padding: 6px 9px;
-  border-radius: 999px;
-  background: #dfece8;
-  color: var(--teal-dark);
-  font-size: 9px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  font-weight: 800;
-}
-
 .panelTop h2 {
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(44px, 6vw, 72px);
-  line-height: .92;
-  letter-spacing: -.05em;
+  line-height: 0.92;
+  letter-spacing: -0.05em;
   font-weight: 400;
 }
 
@@ -680,7 +1065,7 @@ legend, .propositionField > span {
   display: block;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: .12em;
+  letter-spacing: 0.12em;
   font-size: 9px;
   font-weight: 800;
 }
@@ -769,14 +1154,25 @@ legend, .propositionField > span {
   border-radius: 999px;
   font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: .09em;
+  letter-spacing: 0.09em;
   background: #33413b;
 }
 
-.rolePill-validate { background: #2f6c62; }
-.rolePill-block { background: #80503e; }
-.rolePill-amplify { background: #456a82; }
-.rolePill-reframe { background: #68527c; }
+.rolePill-validate {
+  background: #2f6c62;
+}
+
+.rolePill-block {
+  background: #80503e;
+}
+
+.rolePill-amplify {
+  background: #456a82;
+}
+
+.rolePill-reframe {
+  background: #68527c;
+}
 
 .evidenceDetails {
   margin-top: 18px;
@@ -809,50 +1205,225 @@ legend, .propositionField > span {
 }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideIn {
-  from { transform: translateX(32px); opacity: .7; }
-  to { transform: translateX(0); opacity: 1; }
+  from {
+    transform: translateX(32px);
+    opacity: 0.7;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes encounterIn {
+  from {
+    opacity: 0.45;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1120px) {
+  .journeyWorkspace {
+    grid-template-columns: 1fr;
+  }
+
+  .blueprintRail {
+    position: static;
+  }
+
+  .blueprintItems {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 22px;
+  }
+
+  .journeyEncounter {
+    min-height: 650px;
+  }
 }
 
 @media (max-width: 1050px) {
-  .objectiveGrid { grid-template-columns: repeat(3, 1fr); }
-  .featuredStrip { grid-template-columns: 1fr; }
-  .peopleGrid { grid-template-columns: repeat(4, 1fr); }
-  .communityHeader { align-items: flex-start; flex-direction: column; }
-  .segmentFilters { justify-content: flex-start; }
+  .objectiveGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .peopleGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .communityHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .segmentFilters {
+    justify-content: flex-start;
+  }
+
+  .journeyHeader {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .journeyMethod {
+    max-width: 620px;
+  }
 }
 
 @media (max-width: 760px) {
-  .topBar, .roomHeader { padding: 0 20px; }
-  .headerContext > span { display: none; }
-  .challengeHero { width: calc(100% - 40px); padding-top: 55px; }
-  .challengeHero > h1 { font-size: 55px; }
-  .objectiveGrid { grid-template-columns: 1fr 1fr; }
-  .objectiveCard { min-height: 88px; }
-  .contextRow { grid-template-columns: 1fr; }
-  .roomIntro { width: calc(100% - 40px); grid-template-columns: 1fr; gap: 28px; }
-  .roomProposition { max-width: 620px; }
-  .featuredStrip { padding-left: 20px; padding-right: 20px; }
-  .featuredPeople { grid-template-columns: 1fr 1fr; }
-  .communitySection, .roomFooter { width: calc(100% - 40px); }
-  .peopleGrid { grid-template-columns: repeat(2, 1fr); }
-  .panelTop { align-items: flex-start; flex-direction: column; }
-  .portraitLarge { width: 180px; }
-  .panelGrid { grid-template-columns: 1fr; }
-  .roomFooter { flex-direction: column; }
+  .topBar,
+  .roomHeader {
+    padding: 0 20px;
+  }
+
+  .headerContext > span {
+    display: none;
+  }
+
+  .challengeHero {
+    width: calc(100% - 40px);
+    padding-top: 55px;
+  }
+
+  .challengeHero > h1 {
+    font-size: 55px;
+  }
+
+  .objectiveGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .objectiveCard {
+    min-height: 88px;
+  }
+
+  .contextRow {
+    grid-template-columns: 1fr;
+  }
+
+  .roomIntro {
+    width: calc(100% - 40px);
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .roomPropositionWrap {
+    max-width: 620px;
+  }
+
+  .journeySection {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .journeyProgress {
+    overflow-x: auto;
+    grid-template-columns: repeat(4, minmax(170px, 1fr));
+  }
+
+  .journeyEncounter {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .journeyPortraitColumn {
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 16px;
+    align-items: end;
+  }
+
+  .profileLink {
+    margin-top: 0;
+  }
+
+  .journeyPortraitColumn .portraitLarge {
+    width: 145px;
+  }
+
+  .arrivalLine {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .blueprintItems {
+    grid-template-columns: 1fr;
+  }
+
+  .communitySection,
+  .roomFooter {
+    width: calc(100% - 40px);
+  }
+
+  .peopleGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .panelTop {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .portraitLarge {
+    width: 180px;
+  }
+
+  .panelGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .roomFooter {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 460px) {
-  .objectiveGrid { grid-template-columns: 1fr; }
-  .featuredPeople { grid-template-columns: 1fr 1fr; }
-  .challengeHero > h1 { font-size: 46px; }
+  .objectiveGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .challengeHero > h1 {
+    font-size: 46px;
+  }
+
+  .journeyEncounter blockquote {
+    font-size: 32px;
+  }
+
+  .journeyControls {
+    align-items: stretch;
+    flex-direction: column-reverse;
+  }
+
+  .journeyNextButton {
+    justify-content: space-between;
+  }
 }

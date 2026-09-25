@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { featuredPersonas, personas, Persona, segments } from "@/data/personas";
+import { personas, Persona, segments } from "@/data/personas";
+import { journeySteps } from "@/data/journey";
 
 const objectives = [
   "Build awareness",
@@ -25,7 +26,10 @@ function Portrait({ persona, large = false }: { persona: Persona; large?: boolea
     .join("");
 
   return (
-    <div className={`portrait ${large ? "portraitLarge" : ""} role-${persona.influenceRole}`} aria-hidden="true">
+    <div
+      className={`portrait ${large ? "portraitLarge" : ""} role-${persona.influenceRole}`}
+      aria-hidden="true"
+    >
       <div className="portraitGlow" />
       <div className="portraitFigure">
         <div className="portraitHead" />
@@ -70,7 +74,9 @@ function PersonaPanel({
             <p className="eyebrow">What shapes their view</p>
             <div className="chipRow">
               {persona.lens.map((item) => (
-                <span className="softChip" key={item}>{item}</span>
+                <span className="softChip" key={item}>
+                  {item}
+                </span>
               ))}
             </div>
           </section>
@@ -92,10 +98,14 @@ function PersonaPanel({
             <strong>How {persona.name.split(" ")[0]} affects the room</strong>
           </div>
           <p>
-            {persona.influenceRole === "validate" && "Can confer credibility when the evidence meets their threshold."}
-            {persona.influenceRole === "block" && "Can increase scrutiny and raise the proof threshold for others."}
-            {persona.influenceRole === "amplify" && "Can carry a credible idea into wider professional networks."}
-            {persona.influenceRole === "reframe" && "Can change what the proposition means once it enters the decision system."}
+            {persona.influenceRole === "validate" &&
+              "Can confer credibility when the evidence meets their threshold."}
+            {persona.influenceRole === "block" &&
+              "Can increase scrutiny and raise the proof threshold for others."}
+            {persona.influenceRole === "amplify" &&
+              "Can carry a credible idea into wider professional networks."}
+            {persona.influenceRole === "reframe" &&
+              "Can change what the proposition means once it enters the decision system."}
           </p>
         </div>
 
@@ -105,7 +115,8 @@ function PersonaPanel({
             <p className="eyebrow">Underlying persona signal</p>
             <p>{persona.internalThought}</p>
             <p className="methodNote">
-              This is a synthetic, directional representation derived from the loaded persona data. It is not a quote or observed behaviour from a real individual.
+              This is a synthetic, directional representation derived from the loaded persona
+              data. It is not a quote or observed behaviour from a real individual.
             </p>
           </div>
         </details>
@@ -135,7 +146,8 @@ function Challenge({
         <p className="sectionNumber">01 — SET THE CHALLENGE</p>
         <h1>Meet the people your campaign needs to convince.</h1>
         <p className="heroSub">
-          Start with the job the campaign has to do. We’ll show you the people who shape the decision, what they need from you, and what that means for the work.
+          Start with the job the campaign has to do. We’ll show you the people who shape the
+          decision, what they need from you, and what that means for the work.
         </p>
 
         <div className="challengeForm">
@@ -193,6 +205,184 @@ function Challenge({
   );
 }
 
+function GuidedJourney({
+  onOpenPersona,
+}: {
+  onOpenPersona: (persona: Persona) => void;
+}) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [maxRevealed, setMaxRevealed] = useState(0);
+
+  const activeStep = journeySteps[currentStep];
+  const activePersona = personas.find((persona) => persona.id === activeStep.personaId);
+  const isLastStep = currentStep === journeySteps.length - 1;
+
+  if (!activePersona) {
+    return null;
+  }
+
+  const goNext = () => {
+    if (isLastStep) {
+      document.getElementById("community")?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    const nextStep = currentStep + 1;
+    setCurrentStep(nextStep);
+    setMaxRevealed((value) => Math.max(value, nextStep));
+  };
+
+  return (
+    <section className="journeySection">
+      <div className="journeyHeader">
+        <div>
+          <p className="sectionNumber lightSectionNumber">03 — FOLLOW THE DECISION</p>
+          <h2>See who enters the conversation — and why.</h2>
+        </div>
+        <p className="journeyMethod">
+          A plausible decision path assembled from the current persona model. It is a strategic
+          scenario, not an observed buying sequence.
+        </p>
+      </div>
+
+      <div className="journeyProgress" aria-label="Decision journey progress">
+        {journeySteps.map((step, index) => {
+          const persona = personas.find((person) => person.id === step.personaId);
+          const isAvailable = index <= maxRevealed;
+          const isCurrent = index === currentStep;
+
+          return (
+            <button
+              key={step.personaId}
+              className={`journeyProgressStep ${isCurrent ? "current" : ""} ${
+                isAvailable ? "available" : "locked"
+              }`}
+              onClick={() => isAvailable && setCurrentStep(index)}
+              disabled={!isAvailable}
+            >
+              <span className="progressNumber">0{index + 1}</span>
+              <span className="progressPerson">{persona?.name ?? "Audience member"}</span>
+              <span className="progressStage">{step.stage}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="journeyWorkspace">
+        <article className="journeyEncounter" key={activeStep.personaId}>
+          <div className="journeyPortraitColumn">
+            <Portrait persona={activePersona} large />
+            <button className="profileLink" onClick={() => onOpenPersona(activePersona)}>
+              Explore full persona →
+            </button>
+          </div>
+
+          <div className="journeyEncounterCopy">
+            <div className="arrivalLine">
+              <span>Why they enter now</span>
+              <p>{activeStep.arrival}</p>
+            </div>
+
+            <div className="personaIdentity">
+              <span className="syntheticBadge darkBadge">Synthetic persona</span>
+              <span className={`rolePill rolePill-${activePersona.influenceRole}`}>
+                {roleLabels[activePersona.influenceRole]}
+              </span>
+              <h3>{activePersona.name}</h3>
+              <p>{activePersona.role}</p>
+            </div>
+
+            <blockquote>“{activeStep.question}”</blockquote>
+
+            <div className="journeyInterpretation">
+              <span>What this means for the campaign</span>
+              <p>{activeStep.interpretation}</p>
+            </div>
+
+            <div className="journeyEvidence">
+              <span>Grounded in persona needs</span>
+              <div className="journeyEvidenceChips">
+                {activePersona.needs.map((need) => (
+                  <span key={need}>{need}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="journeyControls">
+              <button
+                className="secondaryJourneyButton"
+                onClick={() => setCurrentStep((value) => Math.max(0, value - 1))}
+                disabled={currentStep === 0}
+              >
+                ← Previous
+              </button>
+              <button className="journeyNextButton" onClick={goNext}>
+                {isLastStep ? "Explore the wider room" : "Bring in the next voice"}
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <aside className="blueprintRail">
+          <div className="blueprintRailHeader">
+            <span>LIVE CAMPAIGN BLUEPRINT</span>
+            <strong>{maxRevealed + 1}/4 requirements surfaced</strong>
+          </div>
+
+          <div className="blueprintItems">
+            {journeySteps.map((step, index) => {
+              const revealed = index <= maxRevealed;
+              const active = index === currentStep;
+              const persona = personas.find((person) => person.id === step.personaId);
+
+              return (
+                <div
+                  key={step.requirement.title}
+                  className={`blueprintItem ${revealed ? "revealed" : "unrevealed"} ${
+                    active ? "activeBlueprint" : ""
+                  }`}
+                >
+                  <div className="blueprintItemTop">
+                    <span>0{index + 1}</span>
+                    {revealed && <em>From {persona?.name}</em>}
+                  </div>
+                  {revealed ? (
+                    <>
+                      <h4>{step.requirement.title}</h4>
+                      <p>{step.requirement.description}</p>
+                      <div className="blueprintEvidence">
+                        {step.requirement.evidence.map((item) => (
+                          <span key={item}>{item}</span>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h4>Requirement not yet surfaced</h4>
+                      <p>Continue through the decision system to reveal the next pressure on the campaign.</p>
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {maxRevealed === journeySteps.length - 1 && (
+            <div className="blueprintComplete">
+              <span>Blueprint taking shape</span>
+              <p>
+                Four distinct audience needs now define what the campaign has to solve before
+                execution begins.
+              </p>
+            </div>
+          )}
+        </aside>
+      </div>
+    </section>
+  );
+}
+
 function DecisionRoom({
   objective,
   proposition,
@@ -206,18 +396,22 @@ function DecisionRoom({
   const [activeSegment, setActiveSegment] = useState<string>("All");
 
   const visiblePeople = useMemo(
-    () => activeSegment === "All" ? personas : personas.filter((p) => p.segment === activeSegment),
+    () => (activeSegment === "All" ? personas : personas.filter((p) => p.segment === activeSegment)),
     [activeSegment]
   );
 
   return (
     <main className="roomPage">
       <header className="roomHeader">
-        <button className="brandButton" onClick={onReset}>SYNTHETIC AUDIENCES</button>
+        <button className="brandButton" onClick={onReset}>
+          SYNTHETIC AUDIENCES
+        </button>
         <div className="headerContext">
           <span>{objective}</span>
           <span>China</span>
-          <button className="quietButton" onClick={onReset}>Change challenge</button>
+          <button className="quietButton" onClick={onReset}>
+            Change challenge
+          </button>
         </div>
       </header>
 
@@ -226,40 +420,23 @@ function DecisionRoom({
           <p className="sectionNumber">02 — THE DECISION ROOM</p>
           <h1>24 people. Six communities. One decision.</h1>
         </div>
-        <p className="roomProposition">{proposition}</p>
-      </section>
-
-      <section className="featuredStrip">
-        <div className="stripCopy">
-          <p className="eyebrow">Start here</p>
-          <h2>Four people are especially important to this objective.</h2>
-          <p>
-            They represent different pressures on whether the idea is understood, believed and carried forward.
-          </p>
-        </div>
-        <div className="featuredPeople">
-          {featuredPersonas.map((persona, index) => (
-            <button
-              key={persona.id}
-              className="featuredPerson"
-              onClick={() => setSelected(persona)}
-              style={{ animationDelay: `${index * 90}ms` }}
-            >
-              <Portrait persona={persona} />
-              <span className="featuredIndex">0{index + 1}</span>
-              <strong>{persona.name}</strong>
-              <span>{persona.role}</span>
-              <em>{roleLabels[persona.influenceRole]}</em>
-            </button>
-          ))}
+        <div className="roomPropositionWrap">
+          <span>Your proposition</span>
+          <p className="roomProposition">{proposition}</p>
         </div>
       </section>
 
-      <section className="communitySection">
+      <GuidedJourney onOpenPersona={setSelected} />
+
+      <section className="communitySection" id="community">
         <div className="communityHeader">
           <div>
-            <p className="eyebrow">Explore the room</p>
+            <p className="eyebrow">Free explore</p>
             <h2>The wider decision system</h2>
+            <p className="communityIntroCopy">
+              The guided path is only one way through the audience. Explore any persona to see the
+              other pressures, proof needs and influence roles around the decision.
+            </p>
           </div>
           <div className="segmentFilters">
             <button
@@ -304,7 +481,9 @@ function DecisionRoom({
 
       <footer className="roomFooter">
         <p>
-          Synthetic personas are directional representations built from the loaded audience dataset. They are designed to make structured audience evidence easier to explore, not to impersonate real people.
+          Synthetic personas are directional representations built from the loaded audience
+          dataset. They are designed to make structured audience evidence easier to explore, not
+          to impersonate real people.
         </p>
         <button className="textButton">How this audience is built →</button>
       </footer>
@@ -315,10 +494,17 @@ function DecisionRoom({
 }
 
 export default function Home() {
-  const [challenge, setChallenge] = useState<{ objective: string; proposition: string } | null>(null);
+  const [challenge, setChallenge] = useState<{
+    objective: string;
+    proposition: string;
+  } | null>(null);
 
   if (!challenge) {
-    return <Challenge onEnter={(objective, proposition) => setChallenge({ objective, proposition })} />;
+    return (
+      <Challenge
+        onEnter={(objective, proposition) => setChallenge({ objective, proposition })}
+      />
+    );
   }
 
   return (
