@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { personas, Persona, segments } from "@/data/personas";
 import { journeySteps } from "@/data/journey";
+import { audienceQuestions, defaultResponderIds, AudienceResponseFixture } from "@/data/questions";
 
 const objectives = [
   "Build awareness",
@@ -383,6 +384,257 @@ function GuidedJourney({
   );
 }
 
+function AskTheRoom({
+  onOpenPersona,
+}: {
+  onOpenPersona: (persona: Persona) => void;
+}) {
+  const [input, setInput] = useState("");
+  const [askedPrompt, setAskedPrompt] = useState("");
+  const [activeSuggestion, setActiveSuggestion] = useState<string | null>(null);
+  const [responses, setResponses] = useState<AudienceResponseFixture[]>([]);
+  const [takeaway, setTakeaway] = useState("");
+
+  const synthesizeCustomResponses = (): AudienceResponseFixture[] =>
+    defaultResponderIds.flatMap((personaId) => {
+      const persona = personas.find((person) => person.id === personaId);
+
+      if (!persona) {
+        return [];
+      }
+
+      let response = "";
+      if (persona.influenceRole === "validate") {
+        response =
+          `Before I could answer that confidently, I would need ${persona.needs
+            .slice(0, 2)
+            .join(" and ")
+            .toLowerCase()}. That is the threshold for me to treat the proposition as credible.`;
+      } else if (persona.influenceRole === "block") {
+        response =
+          `I would test that first against ${persona.lens[0].toLowerCase()}. Show me ${persona.needs[0].toLowerCase()} before asking me to support the claim.`;
+      } else if (persona.influenceRole === "amplify") {
+        response =
+          `I would need a reason to carry that idea forward — especially ${persona.needs
+            .slice(0, 2)
+            .join(" and ")
+            .toLowerCase()}.`;
+      } else {
+        response =
+          `I would translate that question into ${persona.lens
+            .slice(0, 2)
+            .join(" and ")
+            .toLowerCase()}. Give me ${persona.needs[0].toLowerCase()} and I can make it strategically useful.`;
+      }
+
+      return [
+        {
+          personaId,
+          response,
+          theme: roleLabels[persona.influenceRole],
+          evidence: persona.needs,
+        },
+      ];
+    });
+
+  const findClosestQuestion = (prompt: string) => {
+    const lower = prompt.toLowerCase();
+
+    if (/believ|credib|trust|proof/.test(lower)) {
+      return audienceQuestions.find((question) => question.id === "believe");
+    }
+
+    if (/worr|risk|concern|problem|danger/.test(lower)) {
+      return audienceQuestions.find((question) => question.id === "worry");
+    }
+
+    if (/lead|start|first|headline|message/.test(lower)) {
+      return audienceQuestions.find((question) => question.id === "lead");
+    }
+
+    if (/missing|lack|need|gap/.test(lower)) {
+      return audienceQuestions.find((question) => question.id === "missing");
+    }
+
+    return undefined;
+  };
+
+  const askQuestion = (prompt: string, suggestionId?: string) => {
+    const cleanPrompt = prompt.trim();
+
+    if (!cleanPrompt) {
+      return;
+    }
+
+    const matched = suggestionId
+      ? audienceQuestions.find((question) => question.id === suggestionId)
+      : findClosestQuestion(cleanPrompt);
+
+    setAskedPrompt(cleanPrompt);
+    setActiveSuggestion(suggestionId ?? matched?.id ?? null);
+
+    if (matched) {
+      setResponses(matched.responses);
+      setTakeaway(matched.takeaway);
+    } else {
+      setResponses(synthesizeCustomResponses());
+      setTakeaway(
+        "Different parts of the audience pull this question toward proof, risk, strategic value and local relevance. The disagreement is useful: it shows which tensions the campaign needs to resolve."
+      );
+    }
+  };
+
+  return (
+    <section className="askRoomSection">
+      <div className="askRoomHeader">
+        <div>
+          <p className="sectionNumber">04 — ASK THE ROOM</p>
+          <h2>Don’t read a persona. Ask your audience.</h2>
+        </div>
+        <p>
+          Put one question to the decision system and see how different people interpret it.
+          Responses stay separate so disagreement remains visible.
+        </p>
+      </div>
+
+      <div className="suggestedQuestions">
+        {audienceQuestions.map((question) => (
+          <button
+            key={question.id}
+            className={activeSuggestion === question.id ? "questionChip active" : "questionChip"}
+            onClick={() => {
+              setInput(question.prompt);
+              askQuestion(question.prompt, question.id);
+            }}
+          >
+            {question.prompt}
+          </button>
+        ))}
+      </div>
+
+      <div className="askComposer">
+        <div className="composerLabel">
+          <span>Ask the room</span>
+          <small>Prototype synthesis from the loaded persona model</small>
+        </div>
+        <div className="composerInputRow">
+          <input
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                askQuestion(input);
+              }
+            }}
+            placeholder="What would make this proposition more relevant?"
+            aria-label="Ask the synthetic audience a question"
+          />
+          <button onClick={() => askQuestion(input)} disabled={!input.trim()}>
+            Ask <span>→</span>
+          </button>
+        </div>
+      </div>
+
+      {responses.length === 0 ? (
+        <div className="roomWaiting">
+          <div className="waitingFaces" aria-hidden="true">
+            {personas.slice(0, 12).map((persona) => (
+              <span key={persona.id} className={`waitingFace role-${persona.influenceRole}`}>
+                {persona.name
+                  .split(" ")
+                  .map((part) => part[0])
+                  .join("")}
+              </span>
+            ))}
+          </div>
+          <div>
+            <span>The room is listening</span>
+            <p>
+              Choose a question above or ask your own. The product will surface distinct
+              perspectives rather than collapse the audience into one answer.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <div className="roomResponseStage">
+          <div className="responseStageTop">
+            <div>
+              <span className="responseKicker">You asked</span>
+              <h3>“{askedPrompt}”</h3>
+            </div>
+            <div className="responseCount">
+              <strong>{responses.length}</strong>
+              <span>perspectives surfaced</span>
+            </div>
+          </div>
+
+          <div className="roomTakeaway">
+            <span>What the room is telling you</span>
+            <p>{takeaway}</p>
+            <small>No average score. The disagreement is part of the signal.</small>
+          </div>
+
+          <div className="responseGrid">
+            {responses.map((answer, index) => {
+              const persona = personas.find((person) => person.id === answer.personaId);
+
+              if (!persona) {
+                return null;
+              }
+
+              return (
+                <article
+                  className="responseCard"
+                  key={answer.personaId}
+                  style={{ animationDelay: `${index * 70}ms` }}
+                >
+                  <div className="responsePerson">
+                    <button
+                      className="miniPortraitButton"
+                      onClick={() => onOpenPersona(persona)}
+                      aria-label={`Open ${persona.name} persona`}
+                    >
+                      <Portrait persona={persona} />
+                    </button>
+                    <div>
+                      <button className="responseName" onClick={() => onOpenPersona(persona)}>
+                        {persona.name}
+                      </button>
+                      <span>{persona.role}</span>
+                      <em>{answer.theme}</em>
+                    </div>
+                  </div>
+
+                  <blockquote>“{answer.response}”</blockquote>
+
+                  <details className="responseEvidence">
+                    <summary>Why this answer?</summary>
+                    <div>
+                      <span>Grounded in persona needs</span>
+                      <div className="responseEvidenceChips">
+                        {answer.evidence.map((item) => (
+                          <span key={item}>{item}</span>
+                        ))}
+                      </div>
+                      <p>{persona.internalThought}</p>
+                    </div>
+                  </details>
+                </article>
+              );
+            })}
+          </div>
+
+          <p className="responseMethodNote">
+            These are synthetic, directional responses generated from the loaded persona fields
+            and scenario logic. They are not quotations, survey responses or observed behaviour
+            from real individuals.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function DecisionRoom({
   objective,
   proposition,
@@ -426,9 +678,7 @@ function DecisionRoom({
         </div>
       </section>
 
-      <GuidedJourney onOpenPersona={setSelected} />
-
-      <section className="communitySection" id="community">
+      <GuidedJourney onOpenPersona={setSelected} />\n\n      <AskTheRoom onOpenPersona={setSelected} />\n\n      <section className="communitySection" id="community">
         <div className="communityHeader">
           <div>
             <p className="eyebrow">Free explore</p>
