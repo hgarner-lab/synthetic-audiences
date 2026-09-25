@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { personas, Persona, segments } from "@/data/personas";
 import { journeySteps } from "@/data/journey";
 import { audienceQuestions, defaultResponderIds, AudienceResponseFixture } from "@/data/questions";
+import { ideaOptions, IdeaOption, IdeaShiftDirection } from "@/data/ideas";
 
 const objectives = [
   "Build awareness",
@@ -635,6 +636,265 @@ function AskTheRoom({
   );
 }
 
+function TryAnIdea({
+  currentProposition,
+  onOpenPersona,
+}: {
+  currentProposition: string;
+  onOpenPersona: (persona: Persona) => void;
+}) {
+  const [draft, setDraft] = useState("");
+  const [selectedIdea, setSelectedIdea] = useState<IdeaOption | null>(null);
+  const [testedIdea, setTestedIdea] = useState<IdeaOption | null>(null);
+  const [appliedIdea, setAppliedIdea] = useState<IdeaOption | null>(null);
+  const [customNotice, setCustomNotice] = useState("");
+
+  const shiftLabels: Record<IdeaShiftDirection, string> = {
+    "more-resolved": "Moves forward",
+    "still-unresolved": "Still unresolved",
+    "new-tension": "New tension",
+  };
+
+  const chooseIdea = (idea: IdeaOption) => {
+    setSelectedIdea(idea);
+    setDraft(idea.proposition);
+    setTestedIdea(null);
+    setAppliedIdea(null);
+    setCustomNotice("");
+  };
+
+  const matchCustomIdea = (text: string) => {
+    const lower = text.toLowerCase();
+
+    if (/resilien|security|supply/.test(lower)) {
+      return ideaOptions.find((idea) => idea.id === "resilience");
+    }
+
+    if (/proof|assur|verify|method|credib|evidence/.test(lower)) {
+      return ideaOptions.find((idea) => idea.id === "proof");
+    }
+
+    if (/econom|commercial|value|return|capital|finance/.test(lower)) {
+      return ideaOptions.find((idea) => idea.id === "economics");
+    }
+
+    if (/china|partner|customer|local|refinery case/.test(lower)) {
+      return ideaOptions.find((idea) => idea.id === "local-proof");
+    }
+
+    return undefined;
+  };
+
+  const runTest = () => {
+    const clean = draft.trim();
+
+    if (!clean) {
+      return;
+    }
+
+    const matched =
+      selectedIdea && clean === selectedIdea.proposition
+        ? selectedIdea
+        : matchCustomIdea(clean);
+
+    if (!matched) {
+      setTestedIdea(null);
+      setAppliedIdea(null);
+      setCustomNotice(
+        "This prototype has no grounded response fixture for that route yet. Try one of the four prepared hypotheses so we can show directional audience movement without inventing precision."
+      );
+      return;
+    }
+
+    setSelectedIdea(matched);
+    setTestedIdea(matched);
+    setAppliedIdea(null);
+    setCustomNotice("");
+  };
+
+  return (
+    <section className="tryIdeaSection">
+      <div className="tryIdeaHeader">
+        <div>
+          <p className="sectionNumber lightSectionNumber">05 — TRY AN IDEA</p>
+          <h2>Change the story. Put it back into the room.</h2>
+        </div>
+        <p>
+          This is the optimisation loop: form a route hypothesis, test it against the same
+          audience, and see which tensions move — and which ones do not.
+        </p>
+      </div>
+
+      <div className="ideaHypotheses">
+        {ideaOptions.map((idea) => (
+          <button
+            key={idea.id}
+            className={selectedIdea?.id === idea.id ? "ideaHypothesis active" : "ideaHypothesis"}
+            onClick={() => chooseIdea(idea)}
+          >
+            <span>{idea.label}</span>
+            <p>{idea.description}</p>
+          </button>
+        ))}
+      </div>
+
+      <div className="ideaCompare">
+        <div className="compareColumn currentRoute">
+          <span>Current proposition</span>
+          <p>{currentProposition}</p>
+        </div>
+        <div className="compareArrow" aria-hidden="true">→</div>
+        <div className="compareColumn testRoute">
+          <div className="compareColumnTop">
+            <span>Route hypothesis</span>
+            {selectedIdea && <em>{selectedIdea.label}</em>}
+          </div>
+          <textarea
+            value={draft}
+            onChange={(event) => {
+              setDraft(event.target.value);
+              setSelectedIdea(null);
+              setTestedIdea(null);
+              setAppliedIdea(null);
+              setCustomNotice("");
+            }}
+            rows={5}
+            placeholder="Choose a route above or write a new strategic framing…"
+          />
+          <button className="testIdeaButton" onClick={runTest} disabled={!draft.trim()}>
+            Test with the room <span>→</span>
+          </button>
+        </div>
+      </div>
+
+      {customNotice && (
+        <div className="ideaPrototypeNotice">
+          <span>Prototype boundary</span>
+          <p>{customNotice}</p>
+        </div>
+      )}
+
+      {testedIdea && (
+        <div className="ideaResults" key={testedIdea.id}>
+          <div className="ideaResultsTop">
+            <div>
+              <span className="resultKicker">Directional test</span>
+              <h3>What changes when we lead this way?</h3>
+            </div>
+            <p>{testedIdea.takeaway}</p>
+          </div>
+
+          <div className="movementLegend">
+            <span className="legendMove">Moves forward</span>
+            <span className="legendUnresolved">Still unresolved</span>
+            <span className="legendTension">New tension</span>
+          </div>
+
+          <div className="movementGrid">
+            {testedIdea.shifts.map((shift, index) => {
+              const persona = personas.find((person) => person.id === shift.personaId);
+
+              if (!persona) {
+                return null;
+              }
+
+              return (
+                <article
+                  key={shift.personaId}
+                  className={`movementCard movement-${shift.direction}`}
+                  style={{ animationDelay: `${index * 65}ms` }}
+                >
+                  <div className="movementPerson">
+                    <button
+                      className="movementPortraitButton"
+                      onClick={() => onOpenPersona(persona)}
+                      aria-label={`Open ${persona.name} persona`}
+                    >
+                      <Portrait persona={persona} />
+                    </button>
+                    <div>
+                      <button className="movementName" onClick={() => onOpenPersona(persona)}>
+                        {persona.name}
+                      </button>
+                      <span>{persona.role}</span>
+                    </div>
+                  </div>
+
+                  <div className="movementStatus">
+                    <span>{shiftLabels[shift.direction]}</span>
+                    <strong>{shift.label}</strong>
+                  </div>
+
+                  <p>{shift.reason}</p>
+
+                  <details>
+                    <summary>What is this based on?</summary>
+                    <div className="movementEvidence">
+                      {shift.evidence.map((item) => (
+                        <span key={item}>{item}</span>
+                      ))}
+                    </div>
+                  </details>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="routeImpactPanel">
+            <div className="routeImpactHeader">
+              <div>
+                <span>Route impact</span>
+                <h3>The path to a stronger campaign</h3>
+              </div>
+              <button
+                className={appliedIdea?.id === testedIdea.id ? "applyRouteButton applied" : "applyRouteButton"}
+                onClick={() => setAppliedIdea(testedIdea)}
+              >
+                {appliedIdea?.id === testedIdea.id ? "Added to working route ✓" : "Use this direction"}
+              </button>
+            </div>
+
+            <div className="routeImpactGrid">
+              <div>
+                <span>What gets stronger</span>
+                <p>{testedIdea.routeImpact.strengthens}</p>
+              </div>
+              <div>
+                <span>What still needs solving</span>
+                <p>{testedIdea.routeImpact.stillNeeds}</p>
+              </div>
+              <div>
+                <span>Next creative move</span>
+                <p>{testedIdea.routeImpact.nextMove}</p>
+              </div>
+            </div>
+          </div>
+
+          {appliedIdea?.id === testedIdea.id && (
+            <div className="workingRoute">
+              <div>
+                <span>Working route updated</span>
+                <strong>{testedIdea.label}</strong>
+              </div>
+              <p>{testedIdea.proposition}</p>
+              <small>
+                This remains a strategic route hypothesis. Any claim, customer example or assurance
+                must be supported by real evidence before use.
+              </small>
+            </div>
+          )}
+
+          <p className="ideaMethodNote">
+            Movement is qualitative and scenario-based. It shows how the prepared route hypothesis
+            interacts with the loaded persona needs; it is not a probability, prediction or
+            measured change in real-world behaviour.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
 function DecisionRoom({
   objective,
   proposition,
@@ -678,7 +938,13 @@ function DecisionRoom({
         </div>
       </section>
 
-      <GuidedJourney onOpenPersona={setSelected} />\n\n      <AskTheRoom onOpenPersona={setSelected} />\n\n      <section className="communitySection" id="community">
+      <GuidedJourney onOpenPersona={setSelected} />
+
+      <AskTheRoom onOpenPersona={setSelected} />
+
+      <TryAnIdea currentProposition={proposition} onOpenPersona={setSelected} />
+
+      <section className="communitySection" id="community">
         <div className="communityHeader">
           <div>
             <p className="eyebrow">Free explore</p>
