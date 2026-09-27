@@ -1,0 +1,637 @@
+.fr {
+  --in: #187d6f;
+  --in-soft: #cfe6df;
+  --unsure: #b27a1e;
+  --unsure-soft: #f2e2c2;
+  --pushback: #c0463a;
+  --pushback-soft: #f3d2cb;
+  --out: #8e938f;
+  --out-soft: #e2dfd8;
+  --waiting-soft: #e8e3d8;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(24, 125, 111, 0.08), transparent 30%),
+    linear-gradient(180deg, #f7f4ed 0%, var(--paper) 100%);
+  padding-bottom: 48px;
+}
+
+.frTop {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 clamp(16px, 5vw, 64px);
+  border-bottom: 1px solid var(--line);
+}
+
+.frBrand {
+  font-size: 11px;
+  letter-spacing: 0.19em;
+  font-weight: 800;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.frTag {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.frEyebrow {
+  margin: 0 0 10px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* The message */
+
+.frMessage {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: clamp(32px, 6vh, 64px) 0 20px;
+}
+
+.frProposition {
+  margin: 0;
+  max-width: 900px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 3.2vw, 38px);
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  animation: frFadeUp 500ms ease both;
+}
+
+.frGo {
+  margin-top: 28px;
+  border: 0;
+  border-radius: 999px;
+  padding: 16px 28px;
+  background: var(--ink);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(17, 22, 19, 0.2);
+  transition: transform 160ms ease;
+}
+
+.frGo:hover {
+  transform: translateY(-2px);
+}
+
+.frSwitch {
+  margin-top: 24px;
+  animation: frFadeUp 500ms ease both;
+}
+
+.frSwitchLabel {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.frChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.frChip {
+  border: 1px solid var(--line);
+  background: var(--white);
+  border-radius: 999px;
+  padding: 9px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.frChip:hover {
+  border-color: var(--ink);
+}
+
+.frChip.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+/* Summary */
+
+.frSummary {
+  width: min(1180px, calc(100% - 32px));
+  margin: 8px auto 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 500ms ease 900ms, transform 500ms ease 900ms;
+}
+
+.frSummary.shown {
+  opacity: 1;
+  transform: none;
+}
+
+.frBar {
+  display: flex;
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  gap: 2px;
+  background: var(--paper-2);
+}
+
+.frBarSeg {
+  flex-basis: 0;
+  transition: flex-grow 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.frBarSeg.st-in { background: var(--in); }
+.frBarSeg.st-unsure { background: var(--unsure); }
+.frBarSeg.st-pushback { background: var(--pushback); }
+.frBarSeg.st-out { background: var(--out); }
+
+.frLegend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.frLegend strong {
+  color: var(--ink);
+}
+
+.frDot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.frDot.st-in { background: var(--in); }
+.frDot.st-unsure { background: var(--unsure); }
+.frDot.st-pushback { background: var(--pushback); }
+.frDot.st-out { background: var(--out); }
+
+.frDelta {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.frDelta strong {
+  color: var(--in);
+}
+
+.frDelta strong.warn {
+  color: var(--pushback);
+}
+
+.frSurprise {
+  margin: 16px 0 0;
+  padding: 14px 18px;
+  border-left: 3px solid var(--ink);
+  background: var(--white);
+  font-size: 16px;
+  line-height: 1.45;
+  max-width: 820px;
+}
+
+.frSurprise span {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+/* Stage: grid + spotlight */
+
+.frStage {
+  width: min(1180px, calc(100% - 32px));
+  margin: 28px auto 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 28px;
+  align-items: start;
+}
+
+.frGrid {
+  display: grid;
+  grid-template-columns: 104px repeat(6, minmax(0, 1fr));
+  gap: 10px 6px;
+  align-items: center;
+}
+
+.frColHead {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  align-self: end;
+}
+
+.frRowHead {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.frRowHead small {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.frTile {
+  --ring: transparent;
+  --bg: var(--waiting-soft);
+  border: 0;
+  background: transparent;
+  padding: 6px 2px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  min-width: 0;
+  transition: background 200ms ease;
+}
+
+.frTile:hover,
+.frTile:focus-visible {
+  background: rgba(17, 22, 19, 0.05);
+  outline: none;
+}
+
+.frTile.st-waiting { cursor: default; }
+.frTile.st-in { --ring: var(--in); --bg: var(--in-soft); }
+.frTile.st-unsure { --ring: var(--unsure); --bg: var(--unsure-soft); }
+.frTile.st-pushback { --ring: var(--pushback); --bg: var(--pushback-soft); }
+.frTile.st-out { --ring: var(--out); --bg: var(--out-soft); }
+
+.frFaceWrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 76px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2.5px var(--ring);
+  transition: box-shadow 400ms ease var(--delay), transform 500ms cubic-bezier(0.3, 1.5, 0.5, 1) var(--delay),
+    opacity 500ms ease var(--delay), filter 500ms ease var(--delay);
+}
+
+.frFaceWrap .face {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.frTile.st-in .frFaceWrap { transform: scale(1.06); }
+.frTile.st-out .frFaceWrap { transform: scale(0.9); opacity: 0.6; filter: grayscale(0.7); }
+.frTile.st-pushback .frFaceWrap { transform: scale(0.98); }
+
+.frTile.speaking .frFaceWrap {
+  box-shadow: 0 0 0 2.5px var(--ring), 0 0 0 7px rgba(17, 22, 19, 0.12);
+}
+
+.frTile.flagged .frFaceWrap::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--ink);
+  opacity: 0.45;
+  animation: frSpin 14s linear infinite;
+}
+
+.frBadge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--in);
+  box-shadow: 0 0 0 2px var(--paper);
+  animation: frPop 500ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--delay) + 250ms);
+}
+
+.frBadge.warn {
+  background: var(--pushback);
+}
+
+.frName {
+  font-size: 12px;
+  font-weight: 700;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.frState {
+  font-size: 10.5px;
+  color: var(--ring);
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 400ms ease var(--delay);
+}
+
+.frHint {
+  margin: 14px 0 0 110px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Face expressions */
+
+.face .faceBg {
+  fill: var(--bg);
+  transition: fill 400ms ease var(--delay);
+}
+
+.face .faceHead {
+  transform-box: view-box;
+  transform-origin: 50px 64px;
+  transition: transform 600ms cubic-bezier(0.3, 1.4, 0.5, 1) var(--delay);
+}
+
+.face .faceEyes {
+  transition: transform 500ms ease var(--delay);
+}
+
+.face .faceMouth,
+.face .faceBrows {
+  transition: d 450ms ease var(--delay);
+}
+
+.face.mood-in .faceHead { transform: translateY(-2px) rotate(2deg); }
+.face.mood-unsure .faceHead { transform: rotate(-4deg); }
+.face.mood-pushback .faceHead { transform: translateY(2px) rotate(-1deg); }
+.face.mood-out .faceHead { transform: translateX(3px) rotate(9deg); }
+.face.mood-out .faceEyes { transform: translate(3px, 1px); }
+.face.mood-unsure .faceEyes { transform: translate(-1px, -1px); }
+
+/* Spotlight */
+
+.frSpot {
+  position: sticky;
+  top: 20px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+  min-height: 420px;
+  box-shadow: 0 20px 50px rgba(23, 31, 27, 0.08);
+}
+
+.frSpotInner {
+  animation: frFadeUp 420ms ease both;
+}
+
+.frSpotEmpty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.frSpotHead {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.frSpotFace {
+  --delay: 0ms;
+  flex: none;
+  border-radius: 50%;
+}
+
+.frSpotFace.st-in { --bg: var(--in-soft); box-shadow: 0 0 0 3px var(--in); }
+.frSpotFace.st-unsure { --bg: var(--unsure-soft); box-shadow: 0 0 0 3px var(--unsure); }
+.frSpotFace.st-pushback { --bg: var(--pushback-soft); box-shadow: 0 0 0 3px var(--pushback); }
+.frSpotFace.st-out { --bg: var(--out-soft); box-shadow: 0 0 0 3px var(--out); }
+.frSpotFace .face { display: block; }
+
+.frSpotHead h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.frSpotRole {
+  margin: 4px 0 8px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.frSpotStance {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.frStance {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: #fff;
+}
+
+.frStance.st-in { background: var(--in); }
+.frStance.st-unsure { background: var(--unsure); }
+.frStance.st-pushback { background: var(--pushback); }
+.frStance.st-out { background: var(--out); }
+
+.frArrow {
+  color: var(--muted);
+}
+
+.frQuote {
+  margin: 22px 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+.frWhy p:last-child {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #3b423e;
+}
+
+.frNeeds {
+  margin-top: 18px;
+}
+
+.frNeeds div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.frNeeds span {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.frSpotFoot {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.frPips {
+  display: flex;
+  gap: 5px;
+}
+
+.frPips span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background 200ms ease, width 200ms ease;
+}
+
+.frPips span.on {
+  width: 18px;
+  border-radius: 999px;
+  background: var(--ink);
+}
+
+.frPlay {
+  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.frPlay:hover {
+  border-color: var(--ink);
+}
+
+.frFoot {
+  width: min(1180px, calc(100% - 32px));
+  margin: 40px auto 0;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+@keyframes frFadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes frPop {
+  from { opacity: 0; transform: scale(0.2); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes frSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 999px) {
+  .frStage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .frSpot {
+    position: static;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .frGrid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px 2px;
+  }
+
+  .frCorner,
+  .frColHead,
+  .frRowHead {
+    display: none;
+  }
+
+  .frState {
+    display: none;
+  }
+
+  .frName {
+    font-size: 10.5px;
+  }
+
+  .frHint {
+    margin-left: 0;
+  }
+
+  .frBadge {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+  }
+
+  .frTag {
+    display: none;
+  }
+
+  .frSpot {
+    padding: 18px;
+  }
+
+  .frQuote {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fr *,
+  .fr *::before,
+  .fr *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+}
