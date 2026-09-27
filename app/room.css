@@ -33,6 +33,23 @@
   text-decoration: none;
 }
 
+.frNav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+}
+
+.frNav a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.frNav a:hover {
+  text-decoration: underline;
+}
+
 .frTag {
   font-size: 12px;
   color: var(--muted);
@@ -368,35 +385,6 @@
   color: var(--muted);
 }
 
-/* Face expressions */
-
-.face .faceBg {
-  fill: var(--bg);
-  transition: fill 400ms ease var(--delay);
-}
-
-.face .faceHead {
-  transform-box: view-box;
-  transform-origin: 50px 64px;
-  transition: transform 600ms cubic-bezier(0.3, 1.4, 0.5, 1) var(--delay);
-}
-
-.face .faceEyes {
-  transition: transform 500ms ease var(--delay);
-}
-
-.face .faceMouth,
-.face .faceBrows {
-  transition: d 450ms ease var(--delay);
-}
-
-.face.mood-in .faceHead { transform: translateY(-2px) rotate(2deg); }
-.face.mood-unsure .faceHead { transform: rotate(-4deg); }
-.face.mood-pushback .faceHead { transform: translateY(2px) rotate(-1deg); }
-.face.mood-out .faceHead { transform: translateX(3px) rotate(9deg); }
-.face.mood-out .faceEyes { transform: translate(3px, 1px); }
-.face.mood-unsure .faceEyes { transform: translate(-1px, -1px); }
-
 /* Spotlight */
 
 .frSpot {
@@ -537,6 +525,13 @@
   background: var(--ink);
 }
 
+.frProfile {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
 .frPlay {
   border: 1px solid var(--line);
   background: transparent;
@@ -548,6 +543,65 @@
 
 .frPlay:hover {
   border-color: var(--ink);
+}
+
+.frDeeper {
+  width: min(1180px, calc(100% - 32px));
+  margin: 48px auto 0;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  animation: frFadeUp 500ms ease 1200ms both;
+}
+
+.frDeeper h2 {
+  margin: 0 0 16px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.frDeeperCards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.frDeeperCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.frDeeperCard:hover {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.frDeeperCard strong {
+  font-size: 18px;
+}
+
+.frDeeperCard span {
+  font-size: 14px;
+  line-height: 1.45;
+  color: #3b423e;
+}
+
+.frDeeperCard em {
+  margin-top: auto;
+  padding-top: 6px;
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--in);
 }
 
 .frFoot {
@@ -613,7 +667,24 @@
     font-size: 10px;
   }
 
-  .frTag {
+  .frNav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+}
+
+.frNav a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.frNav a:hover {
+  text-decoration: underline;
+}
+
+.frTag {
     display: none;
   }
 
