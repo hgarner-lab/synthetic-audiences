@@ -25,274 +25,274 @@ export type IdeaOption = {
 export const ideaOptions: IdeaOption[] = [
   {
     id: "resilience",
-    label: "Lead with supply resilience",
+    label: "Lead with secure supply",
     description:
-      "Broaden the story from carbon performance into a more strategic decision about resilience and long-term competitiveness.",
+      "Widen the story from lower carbon to a bigger business decision: secure supply and staying competitive.",
     proposition:
-      "Aramco Advantage Crude can help Chinese refiners make a more resilient long-term supply decision, combining reliable supply with lower upstream carbon intensity and the potential for durable commercial value.",
+      "Aramco Advantage Crude helps Chinese refiners lock in reliable supply for the long term, with lower carbon and lasting commercial value.",
     takeaway:
-      "This framing creates more strategic relevance for energy and geopolitical audiences, but it does not remove the need to substantiate the carbon and commercial claims.",
+      "This makes the message matter more to energy and strategy people. But the carbon and money claims still need the same proof.",
     shifts: [
       {
         personaId: "CN_EN_R",
         direction: "more-resolved",
-        label: "More strategically relevant",
+        label: "Now feels like a strategy question",
         reason:
-          "The story now speaks directly to competitiveness, energy security and the long-term consequences of the supply decision.",
-        evidence: ["Industrial competitiveness", "Energy security", "Long-term value"],
+          "The message now talks directly about competitiveness, energy security and the long-term effect of the choice.",
+        evidence: ["Costs and returns worked out", "A plan for rolling it out"],
       },
       {
         personaId: "CN_EN_B",
         direction: "more-resolved",
-        label: "Closer to an existing priority",
+        label: "Now connects to a priority",
         reason:
-          "Supply resilience and energy security are now explicit rather than left outside the proposition.",
-        evidence: ["Energy security", "Policy alignment", "Risk"],
+          "Secure supply and energy security are now part of the message instead of missing from it.",
+        evidence: ["Fit with national policy", "What-if scenarios"],
       },
       {
         personaId: "CN_IC_R",
         direction: "more-resolved",
-        label: "Strategically more complete",
+        label: "Now feels complete",
         reason:
-          "The proposition now acknowledges the wider supply and geopolitical context that shapes interpretation.",
-        evidence: ["Energy security", "Geopolitical context"],
+          "The message now recognises the wider supply and political picture that shapes how people read it.",
+        evidence: ["What-if scenarios", "An open, clear method"],
       },
       {
         personaId: "CN_EN_V",
         direction: "still-unresolved",
-        label: "Proof threshold unchanged",
+        label: "Still needs the same proof",
         reason:
-          "The framing is broader, but the carbon-intensity claim still needs audited operating evidence and a comparable methodology.",
-        evidence: ["Audited operating data", "Pilot results", "Comparable methodology"],
+          "The story is broader, but the carbon figure still needs checked operating data and a fair comparison.",
+        evidence: ["Checked data from real operations", "A like-for-like comparison"],
       },
       {
         personaId: "CN_CH_B",
         direction: "still-unresolved",
-        label: "Assurance gap remains",
+        label: "Still needs an independent check",
         reason:
-          "A more strategic story does not make the environmental claim safer without independent assurance and local compliance evidence.",
-        evidence: ["Third-party certification", "Local compliance evidence", "Transparent disclosure"],
+          "A bigger story doesn't make the environmental claim any safer without an independent check and proof it meets Chinese rules.",
+        evidence: ["Checked by an independent body", "Proof it meets Chinese rules"],
       },
       {
         personaId: "CN_FL_V",
         direction: "new-tension",
-        label: "Commercial promise is now more visible",
+        label: "Now expects the numbers",
         reason:
-          "Long-term commercial value is more prominent, which increases the need for a worked investment case and scenario analysis.",
-        evidence: ["Investment case", "Scenario analysis", "Economic consequence"],
+          "The message now puts more weight on long-term value, so finance wants a business case and what-if scenarios to back it.",
+        evidence: ["A business case", "What-if scenarios"],
       },
     ],
     routeImpact: {
       strengthens:
-        "Strategic relevance: resilience gives the proposition a broader reason to matter beyond sustainability.",
+        "Why it matters: secure supply gives people a reason to care beyond sustainability.",
       stillNeeds:
-        "Technical and commercial substantiation: the carbon figure and value claim still carry the same evidence burden.",
+        "Proof: the carbon figure and the value claim still need the same evidence as before.",
       nextMove:
-        "Use resilience as the lead frame, then place independently assured carbon evidence and a worked commercial case underneath it.",
+        "Open with secure supply, then back it up with independently checked carbon data and a business case.",
     },
   },
   {
     id: "proof",
-    label: "Lead with independently assured proof",
+    label: "Lead with independent proof",
     description:
-      "Move the proposition closer to what technical, compliance and expert audiences need before they will validate it.",
+      "Put the evidence up front, because that's what technical, safety and expert people need before they'll back it.",
     proposition:
-      "Aramco Advantage Crude combines reliable supply with independently assured upstream carbon-intensity data, giving refiners a clearer evidence base for assessing potential carbon and commercial value.",
+      "Aramco Advantage Crude comes with independently checked carbon data, so refiners can judge the carbon and commercial benefits for themselves.",
     takeaway:
-      "This reduces the largest credibility barrier. The remaining weakness is not whether the claim can be trusted, but whether the advantage is commercially material and locally relevant.",
+      "This removes the biggest reason people doubt the claim. What's left is showing it's worth real money and relevant to China.",
     shifts: [
       {
         personaId: "CN_EN_V",
         direction: "more-resolved",
-        label: "Closer to validation",
+        label: "Can now check the claim",
         reason:
-          "The proposition now foregrounds assurance and an evidence base rather than asking the numerical claim to stand alone.",
-        evidence: ["Audited operating data", "Pilot results", "Comparable methodology"],
+          "The message now leads with the independent check and the evidence, instead of asking a number to stand on its own.",
+        evidence: ["Checked data from real operations", "A like-for-like comparison"],
       },
       {
         personaId: "CN_CH_B",
         direction: "more-resolved",
-        label: "Lower claims risk",
+        label: "Now safer to say",
         reason:
-          "Independent assurance directly addresses the requirement for defensible environmental claims.",
-        evidence: ["Third-party certification", "Local compliance evidence", "Transparent disclosure"],
+          "An independent check is exactly what's needed to stand behind an environmental claim.",
+        evidence: ["Checked by an independent body", "Clear, open reporting"],
       },
       {
         personaId: "CN_IC_V",
         direction: "more-resolved",
-        label: "More research-grade",
+        label: "Now open to review",
         reason:
-          "The route now makes methodology and independent review central to the story rather than peripheral.",
-        evidence: ["Technical peer review", "Transparent methodology"],
+          "The method and the independent review are now at the centre of the story, not tucked away.",
+        evidence: ["Review by other experts", "An open, clear method"],
       },
       {
         personaId: "CN_FL_B",
         direction: "more-resolved",
-        label: "Governance improves",
+        label: "Lower risk to sign off",
         reason:
-          "Assurance reduces the governance risk around comparative and downstream claims, provided the scope is explicit.",
-        evidence: ["Legal opinion", "Governance assurance"],
+          "An independent check lowers the risk around comparisons and wider claims, as long as it's clear what the check covers.",
+        evidence: ["Legal advice", "Proper internal sign-off"],
       },
       {
         personaId: "CN_FL_V",
         direction: "still-unresolved",
-        label: "Commercial case still missing",
+        label: "Still no business case",
         reason:
-          "Evidence can make the carbon claim credible without proving that the financial consequence is material.",
-        evidence: ["Investment case", "Scenario analysis", "Economic consequence"],
+          "Evidence can make the carbon claim believable without showing it's worth real money.",
+        evidence: ["A business case", "What it means in money terms"],
       },
       {
         personaId: "CN_EN_A",
         direction: "still-unresolved",
-        label: "Still lacks social proof",
+        label: "Still nothing to share",
         reason:
-          "The proposition remains difficult to carry through trusted networks without a visible partner, customer or use case.",
-        evidence: ["Credible partner", "Visible use case", "Measured outcome"],
+          "Without a partner, customer or real example, there's still nothing people would want to pass on.",
+        evidence: ["A partner people trust", "A real example in use"],
       },
     ],
     routeImpact: {
       strengthens:
-        "Credibility: the route now starts to answer the most common technical, compliance and expert objection.",
+        "Trust: the message now answers the most common objection from technical, safety and expert people.",
       stillNeeds:
-        "Commercial consequence and social proof: trusted evidence is necessary but not sufficient to create consideration.",
+        "Value and a real example: proof people trust isn't enough on its own to make them consider it.",
       nextMove:
-        "Keep assurance close to the core claim, then add a worked customer-value pathway and visible local proof.",
+        "Keep the independent check close to the main claim. Then add how it creates value for customers, and a local example.",
     },
   },
   {
     id: "economics",
-    label: "Lead with refinery economics",
+    label: "Lead with refinery profits",
     description:
-      "Make the proposition more obviously commercial by connecting the feedstock decision to capital, risk and long-term value.",
+      "Make the message about money: how the choice of crude affects costs, risk and long-term value.",
     proposition:
-      "A better-informed feedstock decision can strengthen refinery economics over time when lower upstream carbon intensity is converted into verifiable operational, customer and risk-adjusted value.",
+      "Choosing Aramco Advantage Crude can improve refinery profits over time, when its lower carbon is turned into proven savings, customer value and lower risk.",
     takeaway:
-      "This makes the proposition more useful to strategy and finance audiences, but it raises the burden of proving the path from upstream carbon intensity to downstream economic outcomes.",
+      "This makes the message more useful to strategy and finance people. But it means proving, step by step, how lower carbon turns into money.",
     shifts: [
       {
         personaId: "CN_FL_V",
         direction: "more-resolved",
-        label: "Commercial relevance improves",
+        label: "Now talks about money",
         reason:
-          "The proposition now answers the question finance naturally asks: what economic consequence follows from the decision?",
-        evidence: ["Investment case", "Scenario analysis", "Economic consequence"],
+          "The message now answers the question finance always asks: what is this worth to us?",
+        evidence: ["A business case", "What it means in money terms"],
       },
       {
         personaId: "CN_FL_R",
         direction: "more-resolved",
-        label: "Closer to an investment narrative",
+        label: "Now sounds like an investment",
         reason:
-          "Capital efficiency and risk-adjusted return are now closer to the centre of the story.",
-        evidence: ["Economic model", "Peer benchmarking"],
+          "Getting more from each dollar, and the return for the risk, are now closer to the centre of the story.",
+        evidence: ["Costs and returns worked out", "Comparison with competitors"],
       },
       {
         personaId: "CN_CH_R",
         direction: "more-resolved",
-        label: "Industrial value is clearer",
+        label: "Value to industry is clearer",
         reason:
-          "The proposition shifts toward return on capital and industrial upgrading rather than treating sustainability as a standalone benefit.",
-        evidence: ["Investment case", "Economic model"],
+          "The message now talks about return on investment and modernising industry, not sustainability on its own.",
+        evidence: ["A business case", "Costs and returns worked out"],
       },
       {
         personaId: "CN_EN_R",
         direction: "more-resolved",
         label: "Long-term value is clearer",
         reason:
-          "The strategic decision is now connected to a concrete commercial outcome rather than only a carbon advantage.",
-        evidence: ["Economic model", "Deployment roadmap"],
+          "The decision is now linked to a real business result, not only a carbon advantage.",
+        evidence: ["Costs and returns worked out", "A plan for rolling it out"],
       },
       {
         personaId: "CN_EN_V",
         direction: "new-tension",
-        label: "Causal proof becomes more important",
+        label: "Now wants proof of cause and effect",
         reason:
-          "The stronger the downstream economic claim becomes, the more technical evidence is needed to show how the upstream metric creates that outcome.",
-        evidence: ["Audited operating data", "Pilot results", "Comparable methodology"],
+          "The bigger the promise about profits, the more evidence is needed that lower carbon actually causes it.",
+        evidence: ["Checked data from real operations", "Results from trials"],
       },
       {
         personaId: "CN_CH_B",
         direction: "new-tension",
-        label: "Claims scrutiny increases",
+        label: "More to check",
         reason:
-          "A wider statement about operational and customer value expands the surface area that must be substantiated and disclosed carefully.",
-        evidence: ["Third-party certification", "Local compliance evidence", "Transparent disclosure"],
+          "Claiming savings and customer value means more claims to prove and report carefully.",
+        evidence: ["Checked by an independent body", "Clear, open reporting"],
       },
     ],
     routeImpact: {
       strengthens:
-        "Commercial relevance: the audience can see what the campaign is trying to change in business terms.",
+        "Business relevance: people can see what the campaign wants to change, in money terms.",
       stillNeeds:
-        "A defensible causal chain: the route must prove how upstream carbon intensity reaches refinery economics and customer value.",
+        "Proof of cause and effect: how lower carbon turns into better refinery profits and value for customers.",
       nextMove:
-        "Build a worked value pathway with scenarios, operating evidence and a precise statement of where the benefit does — and does not — apply.",
+        "Show the value step by step, with scenarios, operating data and a clear line on where the benefit does and doesn't apply.",
     },
   },
   {
     id: "local-proof",
-    label: "Build around a China partner case",
+    label: "Build around a Chinese partner",
     description:
-      "Make the proposition tangible through a real local partner, customer or refinery example — if that evidence exists.",
+      "Make the message real with a local partner, customer or refinery example, if a real one exists.",
     proposition:
-      "A China-specific Aramco Advantage Crude story built around a real refinery or industrial partner, showing how reliable supply, verified carbon data and customer value work together in practice.",
+      "A story built around a real Chinese refinery partner, showing reliable supply, checked carbon data and customer value working together.",
     takeaway:
-      "This could improve relevance and amplification substantially, but it is a route requirement rather than a claim ready to use. The prototype does not contain a verified partner case.",
+      "This could make the message much more relevant and worth sharing. But it only works with a real, checked example, and we don't have one yet.",
     shifts: [
       {
         personaId: "CN_EN_A",
         direction: "more-resolved",
-        label: "Much easier to carry",
+        label: "Now worth passing on",
         reason:
-          "A visible partner or customer example directly addresses the current lack of social proof and market relevance.",
-        evidence: ["Credible partner", "Visible use case", "Measured outcome"],
+          "A visible partner or customer is exactly what was missing to make the message feel real and relevant.",
+        evidence: ["A partner people trust", "A real example in use"],
       },
       {
         personaId: "CN_PG_A",
         direction: "more-resolved",
-        label: "More locally relevant",
+        label: "Now relevant locally",
         reason:
-          "A China-specific case creates a clearer connection to industry coordination and economic development.",
-        evidence: ["Partner case", "Sector outcome"],
+          "A Chinese example connects the message to coordinating the industry and to economic growth.",
+        evidence: ["A partner's story", "A measured result"],
       },
       {
         personaId: "CN_PG_R",
         direction: "more-resolved",
-        label: "Local value becomes visible",
+        label: "Local value is visible",
         reason:
-          "The story can now connect more naturally to local capability, industrial development and partnership.",
-        evidence: ["Economic model", "Local partnership"],
+          "The story now connects to local skills, industry growth and partnership.",
+        evidence: ["Costs and returns worked out", "A local partner"],
       },
       {
         personaId: "CN_IC_A",
         direction: "more-resolved",
-        label: "Creates a reason to amplify",
+        label: "Now a story worth telling",
         reason:
-          "A partner, event or visible outcome gives the proposition a stronger editorial and professional hook.",
-        evidence: ["Timely event", "Independent evidence", "Partner story"],
+          "A partner, event or visible result gives journalists and professionals something to write about.",
+        evidence: ["A news moment", "A partner's story"],
       },
       {
         personaId: "CN_EN_V",
         direction: "still-unresolved",
-        label: "Case quality matters",
+        label: "Depends on the example",
         reason:
-          "A local case only helps technical validation if it contains comparable operating evidence and a transparent method.",
-        evidence: ["Audited operating data", "Pilot results", "Comparable methodology"],
+          "A local example only helps if it comes with comparable operating data and a clear method.",
+        evidence: ["Checked data from real operations", "An open, clear method"],
       },
       {
         personaId: "CN_FL_B",
         direction: "new-tension",
-        label: "Claims governance expands",
+        label: "New questions to answer",
         reason:
-          "Customer and partner proof creates new governance requirements around permissions, substantiation and how outcomes are represented.",
-        evidence: ["Legal opinion", "Governance assurance"],
+          "Using a partner or customer raises new questions: permission to use their name, proof of their results, and how those results are described.",
+        evidence: ["Legal advice", "Proper internal sign-off"],
       },
     ],
     routeImpact: {
       strengthens:
-        "Local relevance and amplification: a real example gives the story something people can point to and carry.",
+        "Relevance and sharing: a real example gives people something to point to and pass on.",
       stillNeeds:
-        "Verified evidence: no customer, partner or refinery case should be implied until a real substantiation pack exists.",
+        "A checked example: don't hint at any customer, partner or refinery until there's real proof behind it.",
       nextMove:
-        "Treat the local case as a creative brief requirement. Source a verified example, then build the route around the specific evidence it can support.",
+        "Make finding a real local example part of the creative brief. Then build the story around what that example can prove.",
     },
   },
 ];

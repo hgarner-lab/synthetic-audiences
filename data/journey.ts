@@ -14,58 +14,58 @@ export type JourneyStep = {
 export const journeySteps: JourneyStep[] = [
   {
     personaId: "CN_EN_R",
-    stage: "Strategic relevance",
-    arrival: "The strategic owner encounters the proposition first.",
-    question: "Why is this a strategically better decision for us?",
+    stage: "Is it worth it?",
+    arrival: "The head of strategy usually sees the message first.",
+    question: "Why is this a better long-term decision for us?",
     interpretation:
-      "The proposition asks the audience to treat a feedstock choice as a long-term growth decision. That makes competitiveness, energy security and future value the first questions to resolve.",
+      "The message asks them to treat a choice of crude oil as a long-term business decision. So the first thing to answer is how it helps them compete, keeps supply secure and adds value over time.",
     requirement: {
-      title: "Establish strategic value",
+      title: "Show why it matters to the business",
       description:
-        "Connect the feedstock decision to competitiveness, resilience and long-term value — not carbon performance alone.",
-      evidence: ["Economic model", "Deployment roadmap"],
+        "Link the choice to competitiveness, secure supply and long-term value, not only to lower carbon.",
+      evidence: ["Costs and returns worked out", "A plan for rolling it out"],
     },
   },
   {
     personaId: "CN_EN_V",
-    stage: "Technical credibility",
-    arrival: "The strategic promise now needs technical validation.",
-    question: "Can we actually substantiate the carbon advantage?",
+    stage: "Is it true?",
+    arrival: "Once strategy is interested, the technical team checks the claim.",
+    question: "Can we actually prove the carbon advantage?",
     interpretation:
-      "A quantified carbon claim can create attention, but the idea cannot travel far unless the number is credible, comparable and supported by operating evidence.",
+      "A carbon figure gets attention, but it won't go far unless people can trust it, compare it and see real operating data behind it.",
     requirement: {
-      title: "Make the carbon advantage defensible",
+      title: "Back up the carbon claim",
       description:
-        "Put the methodology, boundaries and supporting technical evidence close to the core claim.",
-      evidence: ["Audited operating data", "Pilot results", "Comparable methodology"],
+        "Put the method, what the figure covers and the supporting data right next to the claim.",
+      evidence: ["Checked data from real operations", "Results from trials", "A like-for-like comparison"],
     },
   },
   {
     personaId: "CN_CH_B",
-    stage: "Claims scrutiny",
-    arrival: "A stronger environmental claim attracts a higher proof threshold.",
-    question: "What independent assurance sits behind this claim?",
+    stage: "Is it safe to say?",
+    arrival: "The stronger the environmental claim, the harder it gets checked.",
+    question: "Who has independently checked this claim?",
     interpretation:
-      "Once the campaign moves from a technical figure to environmental or downstream benefit, compliance and EHS scrutiny become central to whether the claim can be carried safely.",
+      "Once the message talks about environmental benefits, safety and compliance teams decide whether it can be said safely.",
     requirement: {
-      title: "Make the claim safe to carry",
+      title: "Make the claim safe to say",
       description:
-        "Support environmental benefit language with independent assurance, local compliance evidence and transparent disclosure.",
-      evidence: ["Third-party certification", "Local compliance evidence", "Transparent disclosure"],
+        "Support any environmental benefit with an independent check, proof it meets Chinese rules and open reporting.",
+      evidence: ["Checked by an independent body", "Proof it meets Chinese rules", "Clear, open reporting"],
     },
   },
   {
     personaId: "CN_FL_V",
-    stage: "Commercial materiality",
-    arrival: "Once the claim is credible enough to progress, finance asks whether it matters.",
-    question: "Even if it is true, is the financial consequence material?",
+    stage: "Is it worth the money?",
+    arrival: "Once the claim holds up, finance asks whether it makes a real difference.",
+    question: "Even if it's true, is it worth real money?",
     interpretation:
-      "The campaign is promising commercial advantage. That claim needs a worked bridge from feedstock choice to economic consequence before it can influence consideration.",
+      "The message promises a business advantage. It needs to show, step by step, how the choice of crude turns into money before finance will take it seriously.",
     requirement: {
-      title: "Demonstrate commercial consequence",
+      title: "Show what it's worth",
       description:
-        "Show how the proposition can affect economics, risk or customer value under realistic scenarios.",
-      evidence: ["Investment case", "Scenario analysis", "Economic consequence"],
+        "Show how the choice affects costs, risk or value to customers, using realistic scenarios.",
+      evidence: ["A business case", "What-if scenarios", "What it means in money terms"],
     },
   },
 ];

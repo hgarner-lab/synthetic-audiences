@@ -7,15 +7,6 @@ import { roomMessages, stanceLabels, stanceOrder, Reaction } from "@/data/reacti
 import { Face } from "@/components/Face";
 import "./room.css";
 
-const segmentLabels: Record<(typeof segments)[number], string> = {
-  Energy: "Energy",
-  Chemicals: "Chemicals",
-  "Finance, Banking & Legal": "Finance & legal",
-  "Public Administration & Government": "Government",
-  Technology: "Technology",
-  "Influence & Commentary": "Media & commentary",
-};
-
 const roleRows: { role: InfluenceRole; label: string; hint: string }[] = [
   { role: "validate", label: "Checkers", hint: "Test whether it's true" },
   { role: "block", label: "Gatekeepers", hint: "Can say no" },
@@ -197,7 +188,7 @@ export default function Room() {
             <span className="frCorner" />
             {segments.map((segment) => (
               <span key={segment} className="frColHead">
-                {segmentLabels[segment]}
+                {segment}
               </span>
             ))}
             {roleRows.map((row, rowIndex) => (
@@ -301,8 +292,8 @@ export default function Room() {
       )}
 
       <footer className="frFoot">
-        Synthetic, directional reactions built from the loaded persona data. They are not quotes from real people,
-        and not a forecast of behaviour.
+        These are synthetic people: made up, but built from our audience data. Their reactions show the likely
+        direction of opinion. They are not quotes from real people, and not a forecast.
       </footer>
     </main>
   );
