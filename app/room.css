@@ -749,3 +749,23 @@
     transition-delay: 0ms !important;
   }
 }
+
+.frNameShort {
+  display: none;
+}
+
+.frSpotZh {
+  margin: 2px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .frNameFull {
+    display: none;
+  }
+
+  .frNameShort {
+    display: inline;
+  }
+}

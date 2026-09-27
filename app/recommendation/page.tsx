@@ -18,8 +18,8 @@ const roomOrder = roleOrder.flatMap((role) =>
   segments.map((segment) => personas.find((p) => p.segment === segment && p.influenceRole === role)!.id)
 );
 
-function firstName(personaId: string) {
-  return personById[personaId].name.split(" ")[0];
+function nameOf(personaId: string) {
+  return personById[personaId].name;
 }
 
 function MiniRoom({ stances, focus }: { stances: Record<string, Stance>; focus: string[] }) {
@@ -273,7 +273,7 @@ export default function Recommendation() {
               <span className="rcPlanFunnel">{stage.funnel}</span>
               <h3>{stage.name}</h3>
               <p className="rcLabel">Who</p>
-              <p>{stage.people.map((p) => firstName(p.personaId)).join(", ")}</p>
+              <p>{stage.people.map((p) => nameOf(p.personaId)).join(", ")}</p>
               <p className="rcLabel">Message</p>
               <p className="rcPlanMessage">“{stage.message}”</p>
               <p className="rcLabel">Proof</p>
@@ -308,7 +308,7 @@ export default function Recommendation() {
                 {need.askedBy.map((id) => (
                   <span key={id} className="rcAskedPerson">
                     <Face id={id} mood="waiting" size={24} />
-                    {firstName(id)}
+                    {nameOf(id)}
                   </span>
                 ))}
               </div>
@@ -328,7 +328,7 @@ export default function Recommendation() {
                 {item.personaIds.map((id) => (
                   <span key={id} className="rcAskedPerson">
                     <Face id={id} mood="pushback" size={24} />
-                    {firstName(id)}
+                    {nameOf(id)}
                   </span>
                 ))}
               </div>

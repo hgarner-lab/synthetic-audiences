@@ -73,6 +73,7 @@ function PersonaPanel({
           <div>
             <span className="syntheticBadge">Synthetic person</span>
             <h2>{persona.name}</h2>
+            <p className="panelNameZh" lang="zh-Hans">{persona.nameZh}</p>
             <p className="panelRole">{persona.role}</p>
             <p className="panelMeta">{persona.segment} · China</p>
           </div>
@@ -110,7 +111,7 @@ function PersonaPanel({
             <span className={`rolePill rolePill-${persona.influenceRole}`}>
               {roleLabels[persona.influenceRole]}
             </span>
-            <strong>How {persona.name.split(" ")[0]} affects the room</strong>
+            <strong>How {persona.name} affects the room</strong>
           </div>
           <p>
             {persona.influenceRole === "validate" &&
@@ -138,7 +139,7 @@ function PersonaPanel({
 
         <div className="nextSteps">
           <a className="nextLink primary" href={`/?person=${persona.id}`}>
-            Hear {persona.name.split(" ")[0]}&rsquo;s reaction in the room
+            Hear {persona.name}&rsquo;s reaction in the room
           </a>
           <button className="nextLink" onClick={onAsk}>
             Ask the room a question

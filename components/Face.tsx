@@ -8,16 +8,25 @@ import type { Stance } from "@/data/reactions";
 export type FaceMood = Stance | "waiting";
 
 // Faces use the Lorelei style by Lisa Wischofsky (CC0 1.0), rendered with DiceBear.
-// Each person keeps a fixed look; only the mouth and brows change with their stance.
-// Looks are spread across people so the room reads as individuals, not a type.
+// Each person keeps a fixed look that matches their gender and age; only the mouth
+// and brows change with their stance. Other traits are spread across people so the
+// room reads as individuals, not a type.
 
-const hairStyles: LoreleiOptions["hair"] = [
-  "variant01", "variant02", "variant03", "variant07", "variant08", "variant09", "variant12",
-  "variant13", "variant15", "variant16", "variant19", "variant21", "variant23", "variant25",
-  "variant28", "variant33", "variant38", "variant40", "variant43", "variant47",
-];
+// Hairstyles that read clearly for each gender at small sizes.
+const hairStyles: Record<"woman" | "man", LoreleiOptions["hair"]> = {
+  woman: [
+    "variant13", "variant15", "variant16", "variant19", "variant21", "variant23", "variant29",
+    "variant31", "variant33", "variant38", "variant40", "variant42", "variant48",
+  ],
+  man: [
+    "variant01", "variant02", "variant03", "variant06", "variant07", "variant08",
+    "variant11", "variant12", "variant25", "variant28", "variant39", "variant47",
+  ],
+};
 const skinTones = ["f1c9a5", "e5b48c", "d9a47a", "c98f66", "edc29c", "dcae86"];
-const hairColours = ["1d1a18", "2b2420", "3a2e27", "151515", "4a4440", "8a8580"];
+const darkHair = ["1d1a18", "2b2420", "3a2e27", "151515", "4a4440"];
+// People whose age range starts at 50 or above get grey or greying hair.
+const greyHair = ["6f6a66", "8a8580"];
 // Open, natural eye shapes only: no narrowed, half-closed or winking eyes, which
 // read as caricature on East Asian faces. Expressions never change eye shape.
 const eyeShapes: LoreleiOptions["eyes"] = [
@@ -47,9 +56,10 @@ function pick<T>(list: readonly T[] | undefined, index: number): T[] {
 }
 
 // Each trait is dealt out in its own shuffled order, so looks never line up with
-// role or group (the persona list is ordered by both).
-function rank(id: string, trait: string) {
-  const order = personas
+// role or group (the persona list is ordered by both). Pass a smaller group to
+// deal only among those people, e.g. hairstyles among the women.
+function rank(id: string, trait: string, among = personas) {
+  const order = among
     .map((persona) => persona.id)
     .sort((a, b) => hash(`${a}:${trait}`) - hash(`${b}:${trait}`));
   const index = order.indexOf(id);
@@ -57,14 +67,18 @@ function rank(id: string, trait: string) {
 }
 
 function looksFor(id: string): Partial<LoreleiOptions> {
+  const persona = personas.find((item) => item.id === id);
+  const gender = persona?.gender ?? (hash(id) % 2 ? "woman" : "man");
+  const sameGender = personas.filter((item) => item.gender === gender);
+  const older = (persona?.ageRange[0] ?? 0) >= 50;
   return {
-    hair: pick(hairStyles, rank(id, "hair")),
+    hair: pick(hairStyles[gender], rank(id, "hair", sameGender)),
     skinColor: pick(skinTones, rank(id, "skin")),
-    hairColor: pick(hairColours, rank(id, "hairColour")),
+    hairColor: older ? pick(greyHair, rank(id, "hairColour")) : pick(darkHair, rank(id, "hairColour")),
     eyes: pick(eyeShapes, rank(id, "eyes")),
     glasses: pick(glassStyles, rank(id, "glassStyle")),
     glassesProbability: rank(id, "glasses") < 6 ? 100 : 0,
-    earringsProbability: rank(id, "earrings") < 4 ? 100 : 0,
+    earringsProbability: gender === "woman" && rank(id, "earrings", sameGender) < 4 ? 100 : 0,
     beardProbability: 0,
     frecklesProbability: 0,
     hairAccessoriesProbability: 0,
