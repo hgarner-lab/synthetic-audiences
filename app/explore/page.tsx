@@ -9,21 +9,27 @@ import { originalMessage } from "@/data/reactions";
 import { Face } from "@/components/Face";
 
 const objectives = [
-  "Build awareness",
-  "Change perception",
-  "Create consideration",
-  "Support a buying decision",
-  "Build advocacy",
+  "Get noticed",
+  "Change what people think",
+  "Get people considering us",
+  "Help people decide to buy",
+  "Get people recommending us",
 ];
 
-const defaultObjective = "Create consideration";
+const defaultObjective = "Get people considering us";
 const defaultProposition = originalMessage.proposition;
 
+const actionLabels: Record<Persona["action"], string> = {
+  Agree: "Leaning in",
+  Skeptical: "Not convinced",
+  Ignore: "Tuning out",
+};
+
 const roleLabels = {
-  validate: "Validator",
-  block: "Blocker",
-  amplify: "Amplifier",
-  reframe: "Reframer",
+  validate: "Checker",
+  block: "Gatekeeper",
+  amplify: "Spreader",
+  reframe: "Reshaper",
 };
 
 function Portrait({ persona, large = false }: { persona: Persona; large?: boolean }) {
@@ -56,13 +62,13 @@ function PersonaPanel({
   return (
     <div className="panelBackdrop" onClick={onClose}>
       <aside className="personaPanel" onClick={(event) => event.stopPropagation()}>
-        <button className="closeButton" onClick={onClose} aria-label="Close persona">
+        <button className="closeButton" onClick={onClose} aria-label="Close profile">
           ×
         </button>
         <div className="panelTop">
           <Portrait persona={persona} large />
           <div>
-            <span className="syntheticBadge">Synthetic persona</span>
+            <span className="syntheticBadge">Synthetic person</span>
             <h2>{persona.name}</h2>
             <p className="panelRole">{persona.role}</p>
             <p className="panelMeta">{persona.segment} · China</p>
@@ -70,8 +76,8 @@ function PersonaPanel({
         </div>
 
         <div className="likelyQuestion">
-          <span>Likely response</span>
-          <strong>{persona.action}</strong>
+          <span>First reaction</span>
+          <strong>{actionLabels[persona.action]}</strong>
           <p>{persona.actionDetail}</p>
         </div>
 
@@ -105,24 +111,24 @@ function PersonaPanel({
           </div>
           <p>
             {persona.influenceRole === "validate" &&
-              "Can confer credibility when the evidence meets their threshold."}
+              "Once the proof is good enough for them, others will trust it too."}
             {persona.influenceRole === "block" &&
-              "Can increase scrutiny and raise the proof threshold for others."}
+              "Can slow things down, and makes others ask for more proof."}
             {persona.influenceRole === "amplify" &&
-              "Can carry a credible idea into wider professional networks."}
+              "Can pass a good idea on to a wide network of people."}
             {persona.influenceRole === "reframe" &&
-              "Can change what the proposition means once it enters the decision system."}
+              "Can change what the message means as it gets passed around."}
           </p>
         </div>
 
         <details className="evidenceDetails">
           <summary>Why we think this</summary>
           <div>
-            <p className="eyebrow">Underlying persona signal</p>
+            <p className="eyebrow">What's behind their view</p>
             <p>{persona.internalThought}</p>
             <p className="methodNote">
-              This is a synthetic, directional representation derived from the loaded persona
-              data. It is not a quote or observed behaviour from a real individual.
+              This person is synthetic: made up, but built from our audience data. This isn't a
+              quote from a real person, or a record of what someone actually did.
             </p>
           </div>
         </details>
@@ -147,7 +153,7 @@ function Challenge({
       </div>
 
       <section className="challengeHero">
-        <p className="sectionNumber">01 — SET THE CHALLENGE</p>
+        <p className="sectionNumber">01 — YOUR CHALLENGE</p>
         <h1>Meet the people your campaign needs to convince.</h1>
         <p className="heroSub">
           Start with the job the campaign has to do. We’ll show you the people who shape the
@@ -187,12 +193,12 @@ function Challenge({
               <strong>China</strong>
             </div>
             <div>
-              <span className="eyebrow">Loaded community</span>
-              <strong>Energy & industrial decision system</strong>
+              <span className="eyebrow">Audience</span>
+              <strong>Energy and industry decision-makers</strong>
             </div>
             <div>
-              <span className="eyebrow">Audience model</span>
-              <strong>24 synthetic personas</strong>
+              <span className="eyebrow">People</span>
+              <strong>24 synthetic people</strong>
             </div>
           </div>
 
@@ -201,7 +207,7 @@ function Challenge({
             onClick={() => onEnter(objective, proposition)}
             disabled={!proposition.trim()}
           >
-            Enter the audience <span>↗</span>
+            Meet the audience <span>↗</span>
           </button>
         </div>
       </section>
@@ -241,15 +247,15 @@ function GuidedJourney({
       <div className="journeyHeader">
         <div>
           <p className="sectionNumber lightSectionNumber">03 — FOLLOW THE DECISION</p>
-          <h2>See who enters the conversation — and why.</h2>
+          <h2>See who gets involved, and why.</h2>
         </div>
         <p className="journeyMethod">
-          A plausible decision path assembled from the current persona model. It is a strategic
-          scenario, not an observed buying sequence.
+          A likely path this decision could take, based on our audience data. It&rsquo;s an informed
+          example, not a record of real buying decisions.
         </p>
       </div>
 
-      <div className="journeyProgress" aria-label="Decision journey progress">
+      <div className="journeyProgress" aria-label="Walkthrough progress">
         {journeySteps.map((step, index) => {
           const persona = personas.find((person) => person.id === step.personaId);
           const isAvailable = index <= maxRevealed;
@@ -277,18 +283,18 @@ function GuidedJourney({
           <div className="journeyPortraitColumn">
             <Portrait persona={activePersona} large />
             <button className="profileLink" onClick={() => onOpenPersona(activePersona)}>
-              Explore full persona →
+              See full profile →
             </button>
           </div>
 
           <div className="journeyEncounterCopy">
             <div className="arrivalLine">
-              <span>Why they enter now</span>
+              <span>Why they get involved now</span>
               <p>{activeStep.arrival}</p>
             </div>
 
             <div className="personaIdentity">
-              <span className="syntheticBadge darkBadge">Synthetic persona</span>
+              <span className="syntheticBadge darkBadge">Synthetic person</span>
               <span className={`rolePill rolePill-${activePersona.influenceRole}`}>
                 {roleLabels[activePersona.influenceRole]}
               </span>
@@ -304,7 +310,7 @@ function GuidedJourney({
             </div>
 
             <div className="journeyEvidence">
-              <span>Grounded in persona needs</span>
+              <span>What they need</span>
               <div className="journeyEvidenceChips">
                 {activePersona.needs.map((need) => (
                   <span key={need}>{need}</span>
@@ -321,7 +327,7 @@ function GuidedJourney({
                 ← Previous
               </button>
               <button className="journeyNextButton" onClick={goNext}>
-                {isLastStep ? "Explore the wider room" : "Bring in the next voice"}
+                {isLastStep ? "Meet everyone else" : "Next person"}
                 <span>→</span>
               </button>
             </div>
@@ -330,8 +336,8 @@ function GuidedJourney({
 
         <aside className="blueprintRail">
           <div className="blueprintRailHeader">
-            <span>LIVE CAMPAIGN BLUEPRINT</span>
-            <strong>{maxRevealed + 1}/4 requirements surfaced</strong>
+            <span>WHAT YOUR CAMPAIGN NEEDS</span>
+            <strong>{maxRevealed + 1} of 4 found</strong>
           </div>
 
           <div className="blueprintItems">
@@ -363,8 +369,8 @@ function GuidedJourney({
                     </>
                   ) : (
                     <>
-                      <h4>Requirement not yet surfaced</h4>
-                      <p>Continue through the decision system to reveal the next pressure on the campaign.</p>
+                      <h4>Not found yet</h4>
+                      <p>Meet the next person to find out what else the campaign needs.</p>
                     </>
                   )}
                 </div>
@@ -374,10 +380,10 @@ function GuidedJourney({
 
           {maxRevealed === journeySteps.length - 1 && (
             <div className="blueprintComplete">
-              <span>Blueprint taking shape</span>
+              <span>Your list is complete</span>
               <p>
-                Four distinct audience needs now define what the campaign has to solve before
-                execution begins.
+                These are the four things the campaign needs to get right before any creative work
+                starts.
               </p>
             </div>
           )}
@@ -409,25 +415,25 @@ function AskTheRoom({
       let response = "";
       if (persona.influenceRole === "validate") {
         response =
-          `Before I could answer that confidently, I would need ${persona.needs
+          `Before I could answer that, I'd need ${persona.needs
             .slice(0, 2)
             .join(" and ")
-            .toLowerCase()}. That is the threshold for me to treat the proposition as credible.`;
+            .toLowerCase()}. Without those, I can't believe the message.`;
       } else if (persona.influenceRole === "block") {
         response =
-          `I would test that first against ${persona.lens[0].toLowerCase()}. Show me ${persona.needs[0].toLowerCase()} before asking me to support the claim.`;
+          `I'd check that against ${persona.lens[0].toLowerCase()} first. Show me ${persona.needs[0].toLowerCase()} before asking me to support it.`;
       } else if (persona.influenceRole === "amplify") {
         response =
-          `I would need a reason to carry that idea forward — especially ${persona.needs
+          `I'd need a reason to pass that on, like ${persona.needs
             .slice(0, 2)
-            .join(" and ")
+            .join(" or ")
             .toLowerCase()}.`;
       } else {
         response =
-          `I would translate that question into ${persona.lens
+          `For me, that's really a question about ${persona.lens
             .slice(0, 2)
             .join(" and ")
-            .toLowerCase()}. Give me ${persona.needs[0].toLowerCase()} and I can make it strategically useful.`;
+            .toLowerCase()}. Give me ${persona.needs[0].toLowerCase()} and I can make it useful.`;
       }
 
       return [
@@ -482,7 +488,7 @@ function AskTheRoom({
     } else {
       setResponses(synthesizeCustomResponses());
       setTakeaway(
-        "Different parts of the audience pull this question toward proof, risk, strategic value and local relevance. The disagreement is useful: it shows which tensions the campaign needs to resolve."
+        "People hear this question differently. Some think about proof, some about risk, some about business value or local relevance. Where they disagree shows you what the campaign still has to solve."
       );
     }
   };
@@ -492,11 +498,11 @@ function AskTheRoom({
       <div className="askRoomHeader">
         <div>
           <p className="sectionNumber">04 — ASK THE ROOM</p>
-          <h2>Don’t read a persona. Ask your audience.</h2>
+          <h2>Don’t just read about your audience. Ask them.</h2>
         </div>
         <p>
-          Put one question to the decision system and see how different people interpret it.
-          Responses stay separate so disagreement remains visible.
+          Ask one question and hear how different people answer it. Answers stay separate, so you
+          can see where they disagree.
         </p>
       </div>
 
@@ -518,7 +524,7 @@ function AskTheRoom({
       <div className="askComposer">
         <div className="composerLabel">
           <span>Ask the room</span>
-          <small>Prototype synthesis from the loaded persona model</small>
+          <small>Answers are built from our audience data</small>
         </div>
         <div className="composerInputRow">
           <input
@@ -529,8 +535,8 @@ function AskTheRoom({
                 askQuestion(input);
               }
             }}
-            placeholder="What would make this proposition more relevant?"
-            aria-label="Ask the synthetic audience a question"
+            placeholder="What would make this message more relevant to you?"
+            aria-label="Ask the audience a question"
           />
           <button onClick={() => askQuestion(input)} disabled={!input.trim()}>
             Ask <span>→</span>
@@ -550,8 +556,8 @@ function AskTheRoom({
           <div>
             <span>The room is listening</span>
             <p>
-              Choose a question above or ask your own. The product will surface distinct
-              perspectives rather than collapse the audience into one answer.
+              Pick a question above or ask your own. You&rsquo;ll hear from several people, each in
+              their own words, instead of one blended answer.
             </p>
           </div>
         </div>
@@ -564,14 +570,14 @@ function AskTheRoom({
             </div>
             <div className="responseCount">
               <strong>{responses.length}</strong>
-              <span>perspectives surfaced</span>
+              <span>people answered</span>
             </div>
           </div>
 
           <div className="roomTakeaway">
             <span>What the room is telling you</span>
             <p>{takeaway}</p>
-            <small>No average score. The disagreement is part of the signal.</small>
+            <small>There&rsquo;s no average score. Where people disagree is useful to know.</small>
           </div>
 
           <div className="responseGrid">
@@ -592,7 +598,7 @@ function AskTheRoom({
                     <button
                       className="miniPortraitButton"
                       onClick={() => onOpenPersona(persona)}
-                      aria-label={`Open ${persona.name} persona`}
+                      aria-label={`Open ${persona.name}'s profile`}
                     >
                       <Portrait persona={persona} />
                     </button>
@@ -610,7 +616,7 @@ function AskTheRoom({
                   <details className="responseEvidence">
                     <summary>Why this answer?</summary>
                     <div>
-                      <span>Grounded in persona needs</span>
+                      <span>What they need</span>
                       <div className="responseEvidenceChips">
                         {answer.evidence.map((item) => (
                           <span key={item}>{item}</span>
@@ -625,9 +631,8 @@ function AskTheRoom({
           </div>
 
           <p className="responseMethodNote">
-            These are synthetic, directional responses generated from the loaded persona fields
-            and scenario logic. They are not quotations, survey responses or observed behaviour
-            from real individuals.
+            These answers come from synthetic people built from our audience data. They are not
+            quotes, survey answers or the behaviour of real people.
           </p>
         </div>
       )}
@@ -649,9 +654,9 @@ function TryAnIdea({
   const [customNotice, setCustomNotice] = useState("");
 
   const shiftLabels: Record<IdeaShiftDirection, string> = {
-    "more-resolved": "Moves forward",
-    "still-unresolved": "Still unresolved",
-    "new-tension": "New tension",
+    "more-resolved": "Won over",
+    "still-unresolved": "Still not convinced",
+    "new-tension": "New concern",
   };
 
   const chooseIdea = (idea: IdeaOption) => {
@@ -700,7 +705,7 @@ function TryAnIdea({
       setTestedIdea(null);
       setAppliedIdea(null);
       setCustomNotice(
-        "This prototype has no grounded response fixture for that route yet. Try one of the four prepared hypotheses so we can show directional audience movement without inventing precision."
+        "We can't test your own wording yet. This early version only has reactions for the four versions above, and we'd rather show nothing than make something up."
       );
       return;
     }
@@ -719,8 +724,8 @@ function TryAnIdea({
           <h2>Change the story. Put it back into the room.</h2>
         </div>
         <p>
-          This is the optimisation loop: form a route hypothesis, test it against the same
-          audience, and see which tensions move — and which ones do not.
+          Rewrite the message, try it on the same people, and see who changes their mind and who
+          doesn&rsquo;t.
         </p>
       </div>
 
@@ -739,13 +744,13 @@ function TryAnIdea({
 
       <div className="ideaCompare">
         <div className="compareColumn currentRoute">
-          <span>Current proposition</span>
+          <span>Current message</span>
           <p>{currentProposition}</p>
         </div>
         <div className="compareArrow" aria-hidden="true">→</div>
         <div className="compareColumn testRoute">
           <div className="compareColumnTop">
-            <span>Route hypothesis</span>
+            <span>New version</span>
             {selectedIdea && <em>{selectedIdea.label}</em>}
           </div>
           <textarea
@@ -758,17 +763,17 @@ function TryAnIdea({
               setCustomNotice("");
             }}
             rows={5}
-            placeholder="Choose a route above or write a new strategic framing…"
+            placeholder="Pick a version above, or write your own…"
           />
           <button className="testIdeaButton" onClick={runTest} disabled={!draft.trim()}>
-            Test with the room <span>→</span>
+            Try it on the room <span>→</span>
           </button>
         </div>
       </div>
 
       {customNotice && (
         <div className="ideaPrototypeNotice">
-          <span>Prototype boundary</span>
+          <span>Not available yet</span>
           <p>{customNotice}</p>
         </div>
       )}
@@ -777,16 +782,16 @@ function TryAnIdea({
         <div className="ideaResults" key={testedIdea.id}>
           <div className="ideaResultsTop">
             <div>
-              <span className="resultKicker">Directional test</span>
+              <span className="resultKicker">What happens</span>
               <h3>What changes when we lead this way?</h3>
             </div>
             <p>{testedIdea.takeaway}</p>
           </div>
 
           <div className="movementLegend">
-            <span className="legendMove">Moves forward</span>
-            <span className="legendUnresolved">Still unresolved</span>
-            <span className="legendTension">New tension</span>
+            <span className="legendMove">Won over</span>
+            <span className="legendUnresolved">Still not convinced</span>
+            <span className="legendTension">New concern</span>
           </div>
 
           <div className="movementGrid">
@@ -807,7 +812,7 @@ function TryAnIdea({
                     <button
                       className="movementPortraitButton"
                       onClick={() => onOpenPersona(persona)}
-                      aria-label={`Open ${persona.name} persona`}
+                      aria-label={`Open ${persona.name}'s profile`}
                     >
                       <Portrait persona={persona} />
                     </button>
@@ -842,14 +847,14 @@ function TryAnIdea({
           <div className="routeImpactPanel">
             <div className="routeImpactHeader">
               <div>
-                <span>Route impact</span>
+                <span>What this means</span>
                 <h3>The path to a stronger campaign</h3>
               </div>
               <button
                 className={appliedIdea?.id === testedIdea.id ? "applyRouteButton applied" : "applyRouteButton"}
                 onClick={() => setAppliedIdea(testedIdea)}
               >
-                {appliedIdea?.id === testedIdea.id ? "Added to working route ✓" : "Use this direction"}
+                {appliedIdea?.id === testedIdea.id ? "Now your working message ✓" : "Use this version"}
               </button>
             </div>
 
@@ -863,7 +868,7 @@ function TryAnIdea({
                 <p>{testedIdea.routeImpact.stillNeeds}</p>
               </div>
               <div>
-                <span>Next creative move</span>
+                <span>What to do next</span>
                 <p>{testedIdea.routeImpact.nextMove}</p>
               </div>
             </div>
@@ -872,21 +877,20 @@ function TryAnIdea({
           {appliedIdea?.id === testedIdea.id && (
             <div className="workingRoute">
               <div>
-                <span>Working route updated</span>
+                <span>Working message updated</span>
                 <strong>{testedIdea.label}</strong>
               </div>
               <p>{testedIdea.proposition}</p>
               <small>
-                This remains a strategic route hypothesis. Any claim, customer example or assurance
-                must be supported by real evidence before use.
+                This is still an idea to test. Any claim, customer example or independent check must
+                be backed by real evidence before you use it.
               </small>
             </div>
           )}
 
           <p className="ideaMethodNote">
-            Movement is qualitative and scenario-based. It shows how the prepared route hypothesis
-            interacts with the loaded persona needs; it is not a probability, prediction or
-            measured change in real-world behaviour.
+            These changes are informed judgements, based on what each person needs. They are not
+            probabilities, predictions or measured changes in real behaviour.
           </p>
         </div>
       )}
@@ -932,11 +936,11 @@ function DecisionRoom({
 
       <section className="roomIntro">
         <div>
-          <p className="sectionNumber">02 — THE DECISION ROOM</p>
-          <h1>24 people. Six communities. One decision.</h1>
+          <p className="sectionNumber">02 — THE PEOPLE</p>
+          <h1>24 people. Six groups. One decision.</h1>
         </div>
         <div className="roomPropositionWrap">
-          <span>Your proposition</span>
+          <span>Your message</span>
           <p className="roomProposition">{proposition}</p>
         </div>
       </section>
@@ -950,11 +954,11 @@ function DecisionRoom({
       <section className="communitySection" id="community">
         <div className="communityHeader">
           <div>
-            <p className="eyebrow">Free explore</p>
-            <h2>The wider decision system</h2>
+            <p className="eyebrow">Explore</p>
+            <h2>Everyone involved in the decision</h2>
             <p className="communityIntroCopy">
-              The guided path is only one way through the audience. Explore any persona to see the
-              other pressures, proof needs and influence roles around the decision.
+              The walkthrough above follows four people. Here you can meet all 24 and see what each
+              one cares about, what they need, and how they affect everyone else.
             </p>
           </div>
           <div className="segmentFilters">
@@ -1000,9 +1004,8 @@ function DecisionRoom({
 
       <footer className="roomFooter">
         <p>
-          Synthetic personas are directional representations built from the loaded audience
-          dataset. They are designed to make structured audience evidence easier to explore, not
-          to impersonate real people.
+          These are synthetic people: made up, but built from our audience data. They make the data
+          easier to explore, and don&rsquo;t represent any real individual.
         </p>
         <button className="textButton">How this audience is built →</button>
       </footer>

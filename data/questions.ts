@@ -17,49 +17,49 @@ export const audienceQuestions: AudienceQuestion[] = [
     id: "believe",
     prompt: "What would make you believe this?",
     takeaway:
-      "The audience does not mainly need a stronger claim. It needs a stronger evidence architecture around the claim.",
+      "A stronger claim won't help. What people need is more proof around the claim you already have.",
     responses: [
       {
         personaId: "CN_EN_V",
         theme: "Technical proof",
         response:
-          "Show me the methodology, the operating evidence and a like-for-like comparison behind the carbon-intensity number.",
-        evidence: ["Audited operating data", "Pilot results", "Comparable methodology"],
+          "Show me how the carbon figure was worked out, the real operating data behind it, and a fair comparison with other crude.",
+        evidence: ["Checked data from real operations", "Results from trials", "A like-for-like comparison"],
       },
       {
         personaId: "CN_CH_B",
-        theme: "Independent assurance",
+        theme: "An independent check",
         response:
-          "Independent assurance and local compliance evidence. I need to know the claim can withstand scrutiny.",
-        evidence: ["Third-party certification", "Local compliance evidence", "Transparent disclosure"],
+          "An independent check, and proof it meets Chinese rules. I need to know the claim will hold up if someone questions it.",
+        evidence: ["Checked by an independent body", "Proof it meets Chinese rules", "Clear, open reporting"],
       },
       {
         personaId: "CN_FL_V",
-        theme: "Commercial proof",
+        theme: "Proof it pays",
         response:
-          "Connect the claim to a worked commercial case. Show me when the advantage becomes financially material.",
-        evidence: ["Investment case", "Scenario analysis", "Economic consequence"],
+          "Show me a business case. When does the advantage start to be worth real money?",
+        evidence: ["A business case", "What-if scenarios", "What it means in money terms"],
       },
       {
         personaId: "CN_EN_A",
-        theme: "Visible proof",
+        theme: "A real example",
         response:
-          "Give me a credible Chinese partner, customer or use case that makes the benefit concrete enough to carry forward.",
-        evidence: ["Credible partner", "Visible use case", "Measured outcome"],
+          "Give me a Chinese partner, customer or example people trust, so the benefit feels real enough to pass on.",
+        evidence: ["A partner people trust", "A real example in use", "A measured result"],
       },
       {
         personaId: "CN_IC_V",
-        theme: "Method transparency",
+        theme: "An open method",
         response:
-          "Let me inspect the methodology and the technical review behind it. Precision without transparency will not be enough.",
-        evidence: ["Technical peer review", "Transparent methodology"],
+          "Let me see the method and who reviewed it. A precise number isn't enough if I can't see how you got it.",
+        evidence: ["Review by other experts", "An open, clear method"],
       },
       {
         personaId: "CN_FL_B",
-        theme: "Governance",
+        theme: "Proper sign-off",
         response:
-          "I need governance assurance around the comparative and downstream claims before I would support using them externally.",
-        evidence: ["Legal opinion", "Governance assurance"],
+          "Before this is used publicly, I need to know the comparisons and wider claims have been properly checked and signed off.",
+        evidence: ["Legal advice", "Proper internal sign-off"],
       },
     ],
   },
@@ -67,49 +67,49 @@ export const audienceQuestions: AudienceQuestion[] = [
     id: "worry",
     prompt: "What worries you most?",
     takeaway:
-      "The main risk is the jump from one upstream carbon metric to broad commercial, environmental and downstream benefit claims.",
+      "The biggest risk is going from one carbon figure to big claims about business, environmental and customer benefits.",
     responses: [
       {
         personaId: "CN_CH_B",
-        theme: "Overclaiming",
+        theme: "Claiming too much",
         response:
-          "That an environmental advantage is being stated more strongly than the available assurance can support.",
-        evidence: ["Third-party certification", "Transparent disclosure"],
+          "That the environmental benefit is being claimed more strongly than the checks can support.",
+        evidence: ["Checked by an independent body", "Clear, open reporting"],
       },
       {
         personaId: "CN_FL_B",
-        theme: "Claims governance",
+        theme: "Getting ahead of the proof",
         response:
-          "That comparative, tax or marketing language creates a governance problem before the substantiation is ready.",
-        evidence: ["Legal opinion", "Governance assurance"],
+          "That comparisons or marketing language get used before the proof is ready. That creates problems for us.",
+        evidence: ["Legal advice", "Proper internal sign-off"],
       },
       {
         personaId: "CN_EN_B",
-        theme: "Strategic fit",
+        theme: "Missing the bigger picture",
         response:
-          "That the story is disconnected from Chinese energy security, policy alignment and the scenarios decision-makers actually plan against.",
-        evidence: ["Policy alignment", "Scenario analysis"],
+          "That the story ignores China's energy security, national policy and the futures decision-makers actually plan for.",
+        evidence: ["Fit with national policy", "What-if scenarios"],
       },
       {
         personaId: "CN_IC_R",
-        theme: "Strategic incompleteness",
+        theme: "Missing the context",
         response:
-          "That the proposition ignores the geopolitical and supply-resilience context that will shape how the message is interpreted.",
-        evidence: ["Scenario analysis", "Transparent methodology"],
+          "That the message ignores the global politics and supply worries that will shape how people read it.",
+        evidence: ["What-if scenarios", "An open, clear method"],
       },
       {
         personaId: "CN_IC_B",
-        theme: "Public scrutiny",
+        theme: "The number becomes the story",
         response:
-          "That a precise headline number becomes the story before the campaign can answer basic questions about how it was calculated.",
-        evidence: ["Transparent disclosures", "Senior spokesperson access"],
+          "That a precise headline number becomes the story before anyone can explain how it was worked out.",
+        evidence: ["Clear, open reporting", "Access to a senior spokesperson"],
       },
       {
         personaId: "CN_EN_V",
-        theme: "Technical overreach",
+        theme: "Stretching the evidence",
         response:
-          "That a credible upstream measurement is being asked to prove downstream outcomes that have not been demonstrated yet.",
-        evidence: ["Audited operating data", "Comparable methodology"],
+          "That one solid measurement is being used to promise benefits further down the line that nobody has shown yet.",
+        evidence: ["Checked data from real operations", "A like-for-like comparison"],
       },
     ],
   },
@@ -117,49 +117,49 @@ export const audienceQuestions: AudienceQuestion[] = [
     id: "lead",
     prompt: "What should we lead with?",
     takeaway:
-      "Lead with the quality of the business decision and long-term advantage. Use the carbon-intensity figure as evidence, not the entire story.",
+      "Lead with why it's a better business decision over the long term. Use the carbon figure as proof, not as the whole story.",
     responses: [
       {
         personaId: "CN_EN_R",
-        theme: "Strategic value",
+        theme: "Why it matters",
         response:
-          "Lead with why this is a better long-term decision for competitiveness and resilience, then prove the carbon advantage underneath it.",
-        evidence: ["Economic model", "Deployment roadmap"],
+          "Lead with why this is a better long-term decision for staying competitive and keeping supply secure. Then prove the carbon advantage.",
+        evidence: ["Costs and returns worked out", "A plan for rolling it out"],
       },
       {
         personaId: "CN_EN_B",
-        theme: "Resilience",
+        theme: "Secure supply",
         response:
-          "Frame the choice through supply resilience and energy security so the proposition connects to an existing strategic priority.",
-        evidence: ["Policy alignment", "Scenario analysis"],
+          "Talk about secure supply and energy security, so the message connects to something we already care about.",
+        evidence: ["Fit with national policy", "What-if scenarios"],
       },
       {
         personaId: "CN_FL_V",
-        theme: "Material value",
+        theme: "The money",
         response:
-          "Give me the economic consequence early. A carbon number becomes more useful when I can see what it changes commercially.",
-        evidence: ["Investment case", "Scenario analysis", "Economic consequence"],
+          "Tell me early what it's worth. A carbon number means more when I can see what it changes for the business.",
+        evidence: ["A business case", "What-if scenarios", "What it means in money terms"],
       },
       {
         personaId: "CN_CH_R",
-        theme: "Investment case",
+        theme: "Return on investment",
         response:
-          "Make the story about return on capital and industrial upgrading rather than treating sustainability as an isolated benefit.",
-        evidence: ["Investment case", "Economic model"],
+          "Make it about return on investment and modernising industry, not about sustainability on its own.",
+        evidence: ["A business case", "Costs and returns worked out"],
       },
       {
         personaId: "CN_IC_R",
-        theme: "Strategic context",
+        theme: "The bigger picture",
         response:
-          "Acknowledge the wider energy and geopolitical context. That makes the proposition feel strategically complete rather than promotional.",
-        evidence: ["Scenario analysis", "Transparent methodology"],
+          "Acknowledge the wider energy and political picture. Then it feels complete, rather than like an advert.",
+        evidence: ["What-if scenarios", "An open, clear method"],
       },
       {
         personaId: "CN_EN_A",
-        theme: "Concrete example",
+        theme: "A real example",
         response:
-          "Lead with an outcome people can point to — a partner, customer or use case — so the strategic story has something visible behind it.",
-        evidence: ["Credible partner", "Visible use case", "Measured outcome"],
+          "Lead with a result people can point to: a partner, a customer or a real example. Then the bigger story has something behind it.",
+        evidence: ["A partner people trust", "A real example in use", "A measured result"],
       },
     ],
   },
@@ -167,49 +167,49 @@ export const audienceQuestions: AudienceQuestion[] = [
     id: "missing",
     prompt: "What's missing?",
     takeaway:
-      "The proposition has an organising idea, but the proof package, local relevance and worked path to customer value are incomplete.",
+      "The message has a clear idea behind it. What's missing is the proof, a local example and a clear link to value for customers.",
     responses: [
       {
         personaId: "CN_EN_A",
-        theme: "Partner proof",
+        theme: "A partner example",
         response:
-          "A credible local partner or customer example. Right now there is nothing visible that shows the idea working in-market.",
-        evidence: ["Credible partner", "Visible use case", "Measured outcome"],
+          "A local partner or customer people trust. Right now nothing shows the idea working in China.",
+        evidence: ["A partner people trust", "A real example in use", "A measured result"],
       },
       {
         personaId: "CN_FL_V",
-        theme: "Economic model",
+        theme: "The numbers",
         response:
-          "A worked financial pathway from feedstock choice to commercial advantage under realistic scenarios.",
-        evidence: ["Investment case", "Scenario analysis", "Economic consequence"],
+          "The numbers, step by step, from choosing this crude to making more money, under realistic scenarios.",
+        evidence: ["A business case", "What-if scenarios", "What it means in money terms"],
       },
       {
         personaId: "CN_EN_V",
-        theme: "Methodology",
+        theme: "The method",
         response:
-          "The source, boundaries and operating evidence behind the carbon-intensity comparison.",
-        evidence: ["Audited operating data", "Pilot results", "Comparable methodology"],
+          "Where the carbon figure comes from, what it covers, and the operating data behind the comparison.",
+        evidence: ["Checked data from real operations", "Results from trials", "A like-for-like comparison"],
       },
       {
         personaId: "CN_CH_B",
-        theme: "Assurance",
+        theme: "An independent check",
         response:
-          "Independent certification, local compliance evidence and a disclosure standard that makes the claim defensible.",
-        evidence: ["Third-party certification", "Local compliance evidence", "Transparent disclosure"],
+          "An independent check, proof it meets Chinese rules, and open reporting, so the claim can stand up to questions.",
+        evidence: ["Checked by an independent body", "Proof it meets Chinese rules", "Clear, open reporting"],
       },
       {
         personaId: "CN_PG_R",
         theme: "Local value",
         response:
-          "A clearer connection to Chinese industrial development, local capability and partnership.",
-        evidence: ["Economic model", "Local partnership"],
+          "A clearer link to Chinese industry, local skills and local partners.",
+        evidence: ["Costs and returns worked out", "A local partner"],
       },
       {
         personaId: "CN_IC_A",
-        theme: "Reason to carry it",
+        theme: "A reason to share it",
         response:
-          "A timely event, independent evidence or partner story that gives the message a reason to travel beyond paid media.",
-        evidence: ["Timely event", "Independent evidence", "Partner story"],
+          "A news moment, independent evidence or a partner story that gives people a reason to talk about it.",
+        evidence: ["A news moment", "Independent evidence", "A partner's story"],
       },
     ],
   },
