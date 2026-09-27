@@ -2,7 +2,7 @@
 .abText li {
   font-size: 16px;
   line-height: 1.6;
-  color: #2c332f;
+  color: rgba(255, 255, 255, 0.86);
   max-width: 720px;
 }
 

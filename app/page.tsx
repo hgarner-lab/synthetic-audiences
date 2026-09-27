@@ -7,6 +7,7 @@ import { roomMessages, stanceLabels, stanceOrder, Reaction } from "@/data/reacti
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import "./room.css";
+import "./room-brand.css";
 
 const roleRows: { role: InfluenceRole; label: string; hint: string }[] = [
   { role: "validate", label: "Checkers", hint: "Test whether it's true" },
@@ -19,6 +20,28 @@ const roleRows: { role: InfluenceRole; label: string; hint: string }[] = [
 const originalSpeakers = ["CN_EN_A", "CN_IC_A", "CN_CH_B", "CN_FL_V", "CN_EN_R", "CN_IC_B"];
 
 const SPEAK_MS = 4200;
+
+// Each person sits on their own colour until the room reacts.
+// Colours are dealt out in a shuffled order so they never line up with role or group.
+const restColours = ["--rest-1", "--rest-2", "--rest-3", "--rest-4", "--rest-5", "--rest-6"];
+const restOrder = personas
+  .map((persona) => persona.id)
+  .sort((a, b) => hashText(`${a}:rest`) - hashText(`${b}:rest`));
+
+function hashText(text: string) {
+  let value = 0;
+  for (let i = 0; i < text.length; i += 1) value = (value * 31 + text.charCodeAt(i)) >>> 0;
+  return value;
+}
+
+function restColour(id: string) {
+  return `var(${restColours[restOrder.indexOf(id) % restColours.length]})`;
+}
+
+// A different direction for each person's offset print layer.
+function tilt(id: string) {
+  return `${((restOrder.indexOf(id) * 47) % 50) - 25}deg`;
+}
 
 const deeperLinks = [
   {
@@ -136,6 +159,15 @@ export default function Room() {
           <a href="/recommendation">See the recommendation</a>
         </nav>
       </header>
+
+      {!reacted && (
+        <section className="frDisplay">
+          <h1 className="heavy">
+            24 people. <span className="thin">One</span> decision.
+          </h1>
+          <p className="thin">What will the room say?</p>
+        </section>
+      )}
 
       <section className="frMessage">
         <p className="frEyebrow">{reacted ? message.label : "The message"}</p>
@@ -378,7 +410,13 @@ function RoleRow({
           <button
             key={person.id}
             className={classes}
-            style={{ "--delay": `${Math.round(distance * 70)}ms` } as CSSProperties}
+            style={
+              {
+                "--delay": `${Math.round(distance * 70)}ms`,
+                "--rest": restColour(person.id),
+                "--tilt": tilt(person.id),
+              } as CSSProperties
+            }
             onClick={() => onPick(person.id)}
             aria-label={`${person.name}, ${person.role}${reacted ? `: ${stanceLabels[reaction.stance]}` : ""}`}
           >
