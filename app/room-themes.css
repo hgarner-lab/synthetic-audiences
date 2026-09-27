@@ -1,0 +1,335 @@
+/* Colour directions for the room, being trialled with ?theme=stage and ?theme=bright.
+   The palette is set here in one place so it can be matched to McCann's visual direction. */
+
+.fr.theme-stage,
+.fr.theme-bright {
+  /* Each person's own colour before the room reacts. */
+  --rest-1: #ff9a7f; /* coral */
+  --rest-2: #ffcf5c; /* saffron */
+  --rest-3: #8fcbff; /* sky */
+  --rest-4: #8fe0c0; /* mint */
+  --rest-5: #c3b1ff; /* lilac */
+  --rest-6: #ffa8cf; /* pink */
+  --accent: #ffcf5c;
+}
+
+/* Before the reaction: a room of individuals, each on their own colour. */
+.fr.theme-stage .frTile.st-waiting,
+.fr.theme-bright .frTile.st-waiting,
+.fr.theme-collage .frTile.st-waiting {
+  --bg: var(--rest);
+}
+
+/* Reaction chips carry dark text so amber and teal stay readable. */
+.fr.theme-stage .frStance,
+.fr.theme-bright .frStance {
+  color: #111613;
+}
+
+/* ---------- Direction A: the stage (dark) ---------- */
+
+.fr.theme-stage {
+  --ink: #f5f1e8;
+  --muted: rgba(245, 241, 232, 0.64);
+  --line: rgba(245, 241, 232, 0.14);
+  --white: #18211d;
+  --paper: #0f1512;
+  --paper-2: #26322c;
+  --in: #2cc4a8;
+  --in-soft: #bff0e5;
+  --unsure: #f2b13a;
+  --unsure-soft: #fde4b0;
+  --pushback: #ff6b55;
+  --pushback-soft: #ffd2c9;
+  --out: #858d88;
+  --out-soft: #69716c;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 82% 0%, rgba(44, 196, 168, 0.2), transparent 42%),
+    radial-gradient(circle at 0% 35%, rgba(255, 107, 85, 0.12), transparent 38%),
+    #0f1512;
+}
+
+.fr.theme-stage .frGo {
+  background: var(--accent);
+  color: #111613;
+  box-shadow: 0 14px 40px rgba(255, 207, 92, 0.25);
+}
+
+.fr.theme-stage .frProposition {
+  color: #fffaf0;
+}
+
+.fr.theme-stage .frWhy p:last-child,
+.fr.theme-stage .frDeeperCard span {
+  color: var(--muted);
+}
+
+.fr.theme-stage .frRecommend {
+  background: linear-gradient(135deg, #2cc4a8 0%, #1d9c85 100%);
+  color: #0f1512;
+}
+
+.fr.theme-stage .frRecommend p {
+  color: rgba(15, 21, 18, 0.8);
+}
+
+.fr.theme-stage .frRecommend .nextLink.primary {
+  background: #0f1512;
+  color: #fffaf0;
+  border-color: #0f1512;
+}
+
+.fr.theme-stage .frTile:hover,
+.fr.theme-stage .frTile:focus-visible {
+  background: rgba(245, 241, 232, 0.06);
+}
+
+/* ---------- Direction B: bright (light and colourful) ---------- */
+
+.fr.theme-bright {
+  --paper: #fffdf8;
+  --in: #0fa58a;
+  --in-soft: #c6f1e6;
+  --unsure: #e89a12;
+  --unsure-soft: #ffe6b0;
+  --pushback: #ec4d37;
+  --pushback-soft: #ffd3cb;
+  --out: #9aa19d;
+  --out-soft: #e6e7e4;
+  background: #fffdf8;
+}
+
+/* A bold colour band across the top: header and message together. */
+.fr.theme-bright .frTop {
+  background: var(--accent);
+  border-bottom-color: transparent;
+}
+
+.fr.theme-bright .frMessage {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 44px;
+}
+
+.fr.theme-bright .frMessage::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  right: calc(50% - 50vw);
+  background: var(--accent);
+}
+
+.fr.theme-bright .frSummary {
+  margin-top: 28px;
+}
+
+.fr.theme-bright .frRecommend {
+  background: #ec4d37;
+}
+
+/* The full-width band must never cause sideways scrolling. */
+.fr.theme-bright {
+  overflow-x: clip;
+}
+
+/* ---------- Direction C: collage (McCann's black, gradient and offset-print look) ---------- */
+
+.fr.theme-collage {
+  --ink: #ffffff;
+  --muted: rgba(255, 255, 255, 0.62);
+  --line: rgba(255, 255, 255, 0.16);
+  --white: #141414;
+  --paper: #000000;
+  --paper-2: #2a2a2a;
+  --grad: linear-gradient(100deg, #6f8fe8 0%, #f3d2a6 26%, #f2a3d6 52%, #d68be8 70%, #e2533a 100%);
+  --rest-1: #9fb4f3;
+  --rest-2: #f6dab5;
+  --rest-3: #f5b6de;
+  --rest-4: #dcaaf0;
+  --rest-5: #f39a80;
+  --rest-6: #c9d4f7;
+  --in: #4fd6b8;
+  --in-soft: #c9f5ea;
+  --unsure: #f5b83d;
+  --unsure-soft: #fde6b3;
+  --pushback: #ff5a3c;
+  --pushback-soft: #ffd0c5;
+  --out: #8a8a8a;
+  --out-soft: #5c5c5c;
+  position: relative;
+  color: var(--ink);
+  background: #000;
+}
+
+/* A printed-grain texture over everything, as in McCann's posters. */
+.fr.theme-collage::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.fr.theme-collage .frDisplay {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: clamp(40px, 7vh, 72px) 0 0;
+}
+
+.fr.theme-collage .frDisplay h1 {
+  margin: 0;
+  font-family: var(--font-display), Impact, "Arial Narrow", sans-serif;
+  font-weight: 400;
+  font-size: clamp(54px, 9vw, 128px);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fr.theme-collage .frDisplay p {
+  margin: 10px 0 0;
+  font-family: var(--font-thin), Arial, sans-serif;
+  font-weight: 200;
+  font-size: clamp(26px, 3.6vw, 48px);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.fr.theme-collage .frDisplay + .frMessage {
+  padding-top: 28px;
+}
+
+.fr.theme-collage .frProposition {
+  font-family: var(--font-thin), Arial, sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+}
+
+.fr.theme-collage .frEyebrow,
+.fr.theme-collage .frColHead {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.fr.theme-collage .frGo {
+  background: var(--grad);
+  color: #000;
+  font-weight: 800;
+  box-shadow: 0 16px 44px rgba(242, 163, 214, 0.28);
+}
+
+/* Faces as offset prints: a gradient disc sits slightly off-centre behind each face,
+   like a colour layer printed out of register. The direction differs for each person. */
+.fr.theme-collage .frFaceWrap {
+  isolation: isolate;
+}
+
+.fr.theme-collage .frFaceWrap::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--grad);
+  transform: rotate(var(--tilt, 0deg)) translate(9%, 0);
+}
+
+.fr.theme-collage .frTile.st-waiting .frFaceWrap {
+  box-shadow: 0 0 0 3px #fff;
+}
+
+.fr.theme-collage .frTile.st-out .frFaceWrap::before {
+  background: #3a3a3a;
+}
+
+/* The spotlight portrait gets two offset layers, white and gradient, like a poster. */
+.fr.theme-collage .frSpotFace {
+  position: relative;
+  isolation: isolate;
+  margin: 10px 18px 14px 6px;
+}
+
+.fr.theme-collage .frSpotFace::before,
+.fr.theme-collage .frSpotFace::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.fr.theme-collage .frSpotFace::before {
+  background: var(--grad);
+  transform: translate(14%, 10%);
+}
+
+.fr.theme-collage .frSpotFace::after {
+  border: 3px solid #fff;
+  transform: translate(-7%, -5%);
+}
+
+.fr.theme-collage .frQuote {
+  font-family: var(--font-thin), Arial, sans-serif;
+  font-weight: 300;
+}
+
+.fr.theme-collage .frStance {
+  color: #000;
+}
+
+.fr.theme-collage .frWhy p:last-child,
+.fr.theme-collage .frDeeperCard span {
+  color: var(--muted);
+}
+
+.fr.theme-collage .frRecommend {
+  background: var(--grad);
+  color: #000;
+}
+
+.fr.theme-collage .frRecommend h2 {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-weight: 400;
+  font-size: 34px;
+  text-transform: uppercase;
+}
+
+.fr.theme-collage .frRecommend p {
+  color: rgba(0, 0, 0, 0.78);
+}
+
+.fr.theme-collage .frRecommend .nextLink.primary {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.fr.theme-collage .frTile:hover,
+.fr.theme-collage .frTile:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.fr.theme-collage .frBar {
+  background: #1c1c1c;
+}
+
+/* Names sit above the offset layers. */
+.fr.theme-collage .frName,
+.fr.theme-collage .frState {
+  position: relative;
+  z-index: 1;
+}
+
+.fr.theme-collage .frTile {
+  gap: 8px;
+}

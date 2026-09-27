@@ -134,17 +134,16 @@
 
 /* Summary */
 
+/* Hidden until the room reacts, so it doesn't leave a gap under the message. */
 .frSummary {
   width: min(1180px, calc(100% - 32px));
   margin: 8px auto 0;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 500ms ease 900ms, transform 500ms ease 900ms;
+  display: none;
 }
 
 .frSummary.shown {
-  opacity: 1;
-  transform: none;
+  display: block;
+  animation: frFadeUp 500ms ease 900ms both;
 }
 
 .frBar {
