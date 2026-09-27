@@ -7,6 +7,7 @@ import { audienceQuestions, defaultResponderIds, AudienceResponseFixture } from 
 import { ideaOptions, IdeaOption, IdeaShiftDirection } from "@/data/ideas";
 import { originalMessage } from "@/data/reactions";
 import { Face } from "@/components/Face";
+import { BrandLockup, McCannCredit } from "@/components/Brand";
 
 const objectives = [
   "Get noticed",
@@ -55,9 +56,11 @@ function Portrait({ persona, large = false }: { persona: Persona; large?: boolea
 function PersonaPanel({
   persona,
   onClose,
+  onAsk,
 }: {
   persona: Persona;
   onClose: () => void;
+  onAsk: () => void;
 }) {
   return (
     <div className="panelBackdrop" onClick={onClose}>
@@ -132,6 +135,15 @@ function PersonaPanel({
             </p>
           </div>
         </details>
+
+        <div className="nextSteps">
+          <a className="nextLink primary" href={`/?person=${persona.id}`}>
+            Hear {persona.name.split(" ")[0]}&rsquo;s reaction in the room
+          </a>
+          <button className="nextLink" onClick={onAsk}>
+            Ask the room a question
+          </button>
+        </div>
       </aside>
     </div>
   );
@@ -143,13 +155,15 @@ function Challenge({
   onEnter: (objective: string, proposition: string) => void;
 }) {
   const [objective, setObjective] = useState(defaultObjective);
-  const [proposition, setProposition] = useState(defaultProposition);
+  const proposition = defaultProposition;
 
   return (
     <main className="challengePage">
       <div className="topBar">
-        <span className="brandMark">SYNTHETIC AUDIENCES</span>
-        <span className="prototypeTag">Prototype · China</span>
+        <BrandLockup />
+        <a className="prototypeTag" href="/">
+          ← Back to the room
+        </a>
       </div>
 
       <section className="challengeHero">
@@ -178,14 +192,14 @@ function Challenge({
             </div>
           </fieldset>
 
-          <label className="propositionField">
+          <div className="propositionField">
             <span>What do you want the audience to believe or do differently?</span>
-            <textarea
-              value={proposition}
-              onChange={(event) => setProposition(event.target.value)}
-              rows={3}
-            />
-          </label>
+            <p className="lockedMessage">{proposition}</p>
+            <small className="lockedNote">
+              This demo is set up for one campaign message, so you can&rsquo;t change it here. You can
+              try four other versions of it later on.
+            </small>
+          </div>
 
           <div className="contextRow">
             <div>
@@ -233,7 +247,7 @@ function GuidedJourney({
 
   const goNext = () => {
     if (isLastStep) {
-      document.getElementById("community")?.scrollIntoView({ behavior: "smooth" });
+      document.getElementById("ask")?.scrollIntoView({ behavior: "smooth" });
       return;
     }
 
@@ -327,7 +341,7 @@ function GuidedJourney({
                 ← Previous
               </button>
               <button className="journeyNextButton" onClick={goNext}>
-                {isLastStep ? "Meet everyone else" : "Next person"}
+                {isLastStep ? "Next: ask the room a question" : "Next person"}
                 <span>→</span>
               </button>
             </div>
@@ -385,6 +399,9 @@ function GuidedJourney({
                 These are the four things the campaign needs to get right before any creative work
                 starts.
               </p>
+              <a className="blueprintLink" href="/recommendation">
+                See the full recommendation →
+              </a>
             </div>
           )}
         </aside>
@@ -634,6 +651,19 @@ function AskTheRoom({
             These answers come from synthetic people built from our audience data. They are not
             quotes, survey answers or the behaviour of real people.
           </p>
+
+          <div className="nextSteps">
+            <span>Next</span>
+            <button
+              className="nextLink primary"
+              onClick={() => document.getElementById("try")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              Try a different version of the message →
+            </button>
+            <a className="nextLink" href="/recommendation">
+              See the recommendation
+            </a>
+          </div>
         </div>
       )}
     </section>
@@ -643,9 +673,11 @@ function AskTheRoom({
 function TryAnIdea({
   currentProposition,
   onOpenPersona,
+  onApply,
 }: {
   currentProposition: string;
   onOpenPersona: (persona: Persona) => void;
+  onApply: (idea: IdeaOption) => void;
 }) {
   const [draft, setDraft] = useState("");
   const [selectedIdea, setSelectedIdea] = useState<IdeaOption | null>(null);
@@ -852,7 +884,10 @@ function TryAnIdea({
               </div>
               <button
                 className={appliedIdea?.id === testedIdea.id ? "applyRouteButton applied" : "applyRouteButton"}
-                onClick={() => setAppliedIdea(testedIdea)}
+                onClick={() => {
+                  setAppliedIdea(testedIdea);
+                  onApply(testedIdea);
+                }}
               >
                 {appliedIdea?.id === testedIdea.id ? "Now your working message ✓" : "Use this version"}
               </button>
@@ -885,6 +920,15 @@ function TryAnIdea({
                 This is still an idea to test. Any claim, customer example or independent check must
                 be backed by real evidence before you use it.
               </small>
+              <div className="nextSteps onDark">
+                <span>Next</span>
+                <a className="nextLink primary" href={`/recommendation?version=${testedIdea.id}`}>
+                  See how it compares in the recommendation →
+                </a>
+                <a className="nextLink" href={`/?version=${testedIdea.id}`}>
+                  Watch the whole room react to it
+                </a>
+              </div>
             </div>
           )}
 
@@ -902,17 +946,16 @@ function DecisionRoom({
   objective,
   proposition,
   initialPersonaId,
-  onReset,
 }: {
   objective: string;
   proposition: string;
   initialPersonaId?: string;
-  onReset: () => void;
 }) {
   const [selected, setSelected] = useState<Persona | null>(
     () => personas.find((persona) => persona.id === initialPersonaId) ?? null
   );
   const [activeSegment, setActiveSegment] = useState<string>("All");
+  const [workingMessage, setWorkingMessage] = useState<string | null>(null);
 
   const visiblePeople = useMemo(
     () => (activeSegment === "All" ? personas : personas.filter((p) => p.segment === activeSegment)),
@@ -922,15 +965,15 @@ function DecisionRoom({
   return (
     <main className="roomPage">
       <header className="roomHeader">
-        <a className="brandButton" href="/">
-          SYNTHETIC AUDIENCES
-        </a>
+        <BrandLockup />
         <div className="headerContext">
           <span>{objective}</span>
-          <span>China</span>
-          <button className="quietButton" onClick={onReset}>
-            Change challenge
-          </button>
+          <a className="quietButton" href="/">
+            Back to the room
+          </a>
+          <a className="quietButton" href="/recommendation">
+            See the recommendation
+          </a>
         </div>
       </header>
 
@@ -940,8 +983,8 @@ function DecisionRoom({
           <h1>24 people. Six groups. One decision.</h1>
         </div>
         <div className="roomPropositionWrap">
-          <span>Your message</span>
-          <p className="roomProposition">{proposition}</p>
+          <span>{workingMessage ? "Your working message" : "Your message"}</span>
+          <p className="roomProposition">{workingMessage ?? proposition}</p>
         </div>
       </section>
 
@@ -949,7 +992,11 @@ function DecisionRoom({
 
       <AskTheRoom onOpenPersona={setSelected} />
 
-      <TryAnIdea currentProposition={proposition} onOpenPersona={setSelected} />
+      <TryAnIdea
+        currentProposition={proposition}
+        onOpenPersona={setSelected}
+        onApply={(idea) => setWorkingMessage(idea.proposition)}
+      />
 
       <section className="communitySection" id="community">
         <div className="communityHeader">
@@ -1007,10 +1054,37 @@ function DecisionRoom({
           These are synthetic people: made up, but built from our audience data. They make the data
           easier to explore, and don&rsquo;t represent any real individual.
         </p>
-        <button className="textButton">How this audience is built →</button>
+        <a className="textButton" href="/about">
+          How this audience is built →
+        </a>
       </footer>
 
-      {selected && <PersonaPanel persona={selected} onClose={() => setSelected(null)} />}
+      <section className="exploreOnward">
+        <h2>Where to next?</h2>
+        <div className="nextSteps onDark">
+          <a className="nextLink primary" href="/recommendation">
+            See the recommendation
+          </a>
+          <a className="nextLink" href="/">
+            Back to the room
+          </a>
+          <a className="nextLink" href="/about">
+            How this works
+          </a>
+        </div>
+        <McCannCredit />
+      </section>
+
+      {selected && (
+        <PersonaPanel
+          persona={selected}
+          onClose={() => setSelected(null)}
+          onAsk={() => {
+            setSelected(null);
+            document.getElementById("ask")?.scrollIntoView({ behavior: "smooth" });
+          }}
+        />
+      )}
     </main>
   );
 }
@@ -1049,10 +1123,6 @@ export default function Explore() {
       objective={challenge.objective}
       proposition={challenge.proposition}
       initialPersonaId={initialPersonaId}
-      onReset={() => {
-        window.history.replaceState(null, "", "/explore");
-        setChallenge(null);
-      }}
     />
   );
 }

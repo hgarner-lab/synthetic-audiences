@@ -45,11 +45,13 @@ button {
 
 .topBar,
 .roomHeader {
-  height: 74px;
+  min-height: 74px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 clamp(24px, 5vw, 76px);
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding: 12px clamp(24px, 5vw, 76px);
   border-bottom: 1px solid var(--line);
 }
 
@@ -253,8 +255,9 @@ legend,
 
 .headerContext {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 22px;
+  gap: 8px 22px;
   color: var(--muted);
   font-size: 12px;
 }
@@ -266,6 +269,8 @@ legend,
 
 .quietButton,
 .textButton {
+  color: inherit;
+  font-size: inherit;
   border: 0;
   padding: 0;
   background: transparent;
@@ -1312,7 +1317,7 @@ legend,
 @media (max-width: 760px) {
   .topBar,
   .roomHeader {
-    padding: 0 20px;
+    padding: 12px 16px;
   }
 
   .headerContext > span {
@@ -2502,4 +2507,173 @@ legend,
   .workingRoute > small {
     grid-column: 1;
   }
+}
+
+/* McCann branding (components/Brand.tsx) */
+
+.brandLockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brandLockup-light {
+  color: var(--white);
+}
+
+.brandLockupName {
+  font-size: 11px;
+  letter-spacing: 0.19em;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.brandLockupRule {
+  width: 1px;
+  height: 16px;
+  background: currentColor;
+  opacity: 0.3;
+}
+
+.brandLockupLogo {
+  height: 13px;
+  width: auto;
+  display: block;
+}
+
+.mccannCredit {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Shared "what next" links */
+
+.nextSteps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.nextSteps > span {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+.nextLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 11px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: var(--white);
+  cursor: pointer;
+}
+
+.nextLink:hover {
+  border-color: var(--ink);
+}
+
+.nextLink.primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+.nextSteps.onDark > span {
+  color: rgba(255, 253, 248, 0.6);
+}
+
+.nextSteps.onDark .nextLink {
+  background: transparent;
+  color: var(--white);
+  border-color: rgba(255, 253, 248, 0.3);
+}
+
+.nextSteps.onDark .nextLink.primary {
+  background: var(--white);
+  color: var(--ink);
+  border-color: var(--white);
+}
+
+@media (max-width: 640px) {
+  .brandLockupName {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .brandLockupLogo {
+    height: 11px;
+  }
+}
+
+/* Explore: fixed demo message, and onward links */
+
+.lockedMessage {
+  margin: 0;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 2.5vw, 34px);
+  line-height: 1.25;
+}
+
+.lockedNote {
+  display: block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+a.prototypeTag {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.blueprintLink {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--teal-dark);
+}
+
+.personaPanel .nextSteps {
+  margin-top: 28px;
+}
+
+.exploreOnward {
+  padding: 40px clamp(24px, 5vw, 76px) 48px;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.exploreOnward h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.exploreOnward .mccannCredit {
+  display: block;
+  margin-top: 28px;
+  color: rgba(255, 253, 248, 0.6);
+}
+
+.workingRoute .nextSteps {
+  grid-column: 1 / -1;
 }
