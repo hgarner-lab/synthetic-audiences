@@ -18,18 +18,6 @@ export const versionTallies: VersionTally[] = roomMessages.map((message) => ({
 }));
 
 export const recommendation = {
-  headline: "Lead with independent proof. Then show what it's worth, and add a real Chinese partner story once you have one.",
-  why: "Of the five versions we tested, this one wins over the most people and creates no new objections. It turns round the toughest critics in the room: the people who check facts and the people who can say no.",
-  stillNeedsWork: [
-    {
-      personaId: "CN_FL_V",
-      text: "Finance believes the number now, but still can't see what it's worth in money. They need a business case.",
-    },
-    {
-      personaId: "CN_EN_A",
-      text: "The people who'd spread the message still have nothing to share. They need a real Chinese partner or customer story.",
-    },
-  ],
   needs: [
     {
       title: "Get the carbon data independently checked",
@@ -71,9 +59,10 @@ export const recommendation = {
   ],
   nextSteps: [
     "Share this recommendation with the client team and agree which evidence already exists.",
-    "Commission the independent check of the carbon data, and the business case, in parallel.",
-    "Start looking for a Chinese partner or customer willing to be named.",
-    "Brief the creative team using this page: the message, what each audience needs, and what to avoid.",
-    "Put the finished creative back in front of the room, then test it with real people before launch.",
+    "Commission the independent check of the carbon data first. Stages 1 and 2 depend on it.",
+    "Build the business case and value calculator in parallel, ready for stage 3.",
+    "Start looking for a Chinese partner willing to be named, ready for stage 4.",
+    "Brief the creative team on the big idea and the four stages.",
+    "Put the finished work for each stage back in front of the room, then test it with real people before launch.",
   ],
 };

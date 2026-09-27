@@ -297,7 +297,7 @@ export default function Room() {
           <section className="frRecommend" aria-labelledby="recommend-title">
             <div>
               <h2 id="recommend-title">Seen enough?</h2>
-              <p>See which version we&rsquo;d recommend, what the campaign needs before launch, and what to do next.</p>
+              <p>See the campaign we&rsquo;d build from this: one big idea, played out stage by stage, with who it wins over at each step.</p>
             </div>
             <a className="nextLink primary" href={`/recommendation?version=${message.id}`}>
               See the recommendation →

@@ -1,22 +1,48 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { personas } from "@/data/personas";
-import { roomMessages, stanceLabels, stanceOrder } from "@/data/reactions";
+import { personas, segments, InfluenceRole } from "@/data/personas";
+import { Stance, stanceLabels, stanceOrder } from "@/data/reactions";
 import { recommendation, recommendedId, versionTallies } from "@/data/recommendation";
+import { bigIdea, channelsNote, countStances, snapshots, stages } from "@/data/campaign";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import "./recommendation.css";
 
 const personById = Object.fromEntries(personas.map((persona) => [persona.id, persona]));
-const recommended = roomMessages.find((message) => message.id === recommendedId)!;
 const recommendedTally = versionTallies.find((tally) => tally.id === recommendedId)!;
-const wonOver = recommended.reactions.filter(
-  (reaction) => reaction.shift?.direction === "more-resolved" && reaction.shift.from !== "in"
+const roleOrder: InfluenceRole[] = ["validate", "block", "amplify", "reframe"];
+
+// The room laid out as on the home page: groups across, roles down.
+const roomOrder = roleOrder.flatMap((role) =>
+  segments.map((segment) => personas.find((p) => p.segment === segment && p.influenceRole === role)!.id)
 );
 
 function firstName(personaId: string) {
   return personById[personaId].name.split(" ")[0];
+}
+
+function MiniRoom({ stances, focus }: { stances: Record<string, Stance>; focus: string[] }) {
+  return (
+    <div className="rcMiniRoom" aria-hidden="true">
+      {roomOrder.map((id) => (
+        <span key={id} className={`rcMiniFace st-${stances[id]} ${focus.includes(id) ? "focus" : ""}`}>
+          <Face id={id} mood={stances[id]} size={34} />
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function StanceBar({ stances }: { stances: Record<string, Stance> }) {
+  const counts = countStances(stances);
+  return (
+    <div className="rcBar" aria-hidden="true">
+      {stanceOrder.map((stance) => (
+        <span key={stance} className={`st-${stance}`} style={{ flexGrow: counts[stance] }} />
+      ))}
+    </div>
+  );
 }
 
 export default function Recommendation() {
@@ -29,6 +55,7 @@ export default function Recommendation() {
   }, []);
 
   const picked = versionTallies.find((tally) => tally.id === pickedId);
+  const finalCounts = countStances(snapshots[snapshots.length - 1].stances);
 
   async function copyLink() {
     try {
@@ -52,18 +79,20 @@ export default function Recommendation() {
 
       <section className="rcHero">
         <p className="rcEyebrow">Campaign recommendation · Aramco Advantage Crude · China</p>
-        <h1>{recommendation.headline}</h1>
-        <p className="rcLead">{recommendation.why}</p>
+        <h1>{bigIdea.name}</h1>
+        <p className="rcLine">“{bigIdea.line}”</p>
+        <p className="rcLead">{bigIdea.summary}</p>
 
         {picked && (
           <p className="rcPicked">
             {picked.id === recommendedId ? (
-              <>You picked <strong>{picked.label}</strong>. That&rsquo;s the version we&rsquo;d recommend too.</>
+              <>You picked <strong>{picked.label}</strong>. That&rsquo;s the version this campaign is built on.</>
             ) : (
               <>
                 You picked <strong>{picked.label}</strong>: {picked.counts.in} people leaning in and{" "}
-                {picked.counts.pushback} pushing back. We&rsquo;d lead with independent proof instead:{" "}
-                {recommendedTally.counts.in} leaning in, and nobody pushing back.
+                {picked.counts.pushback} pushing back. This campaign leads with independent proof instead (
+                {recommendedTally.counts.in} leaning in, nobody pushing back), and brings in your angle later
+                where it helps.
               </>
             )}
           </p>
@@ -71,8 +100,43 @@ export default function Recommendation() {
       </section>
 
       <section className="rcSection">
-        <h2>How the five versions compare</h2>
-        <p className="rcIntro">How the 24 people in the room reacted to each version of the message.</p>
+        <h2>How the room moves through the campaign</h2>
+        <p className="rcIntro">
+          Each stage wins over a different group. By the end, {finalCounts.in} of 24 people are leaning in.
+        </p>
+        <div className="rcCompare">
+          {snapshots.map((snapshot, index) => {
+            const counts = countStances(snapshot.stances);
+            return (
+              <div key={snapshot.id} className={`rcRow ${index === snapshots.length - 1 ? "best" : ""}`}>
+                <div className="rcRowLabel">
+                  <strong>
+                    {index > 0 && <span className="rcStageNum">{index}</span>}
+                    {snapshot.label}
+                  </strong>
+                </div>
+                <StanceBar stances={snapshot.stances} />
+                <p className="rcRowCounts">
+                  <strong>{counts.in}</strong> leaning in · <strong>{counts.pushback}</strong> pushing back
+                  <span className="rcSr">
+                    {" "}
+                    · {counts.unsure} not convinced · {counts.out} tuning out
+                  </span>
+                </p>
+              </div>
+            );
+          })}
+        </div>
+        <Key />
+        <p className="rcSmall">This assumes the proof for each stage is real and ready before that stage starts.</p>
+      </section>
+
+      <section className="rcSection">
+        <h2>How we chose where to start</h2>
+        <p className="rcIntro">
+          We put five versions of the message to the room. Leading with independent proof won over the most people
+          and created no new objections, so the campaign opens with it.
+        </p>
         <div className="rcCompare">
           {versionTallies.map((tally) => (
             <div
@@ -82,7 +146,7 @@ export default function Recommendation() {
               <div className="rcRowLabel">
                 <strong>{tally.label}</strong>
                 <span>
-                  {tally.id === recommendedId && <em className="rcTag">Recommended</em>}
+                  {tally.id === recommendedId && <em className="rcTag">Where we start</em>}
                   {tally.id === pickedId && tally.id !== recommendedId && <em className="rcTag alt">Your pick</em>}
                 </span>
               </div>
@@ -93,77 +157,148 @@ export default function Recommendation() {
               </div>
               <p className="rcRowCounts">
                 <strong>{tally.counts.in}</strong> leaning in · <strong>{tally.counts.pushback}</strong> pushing back
-                <span className="rcSr">
-                  {" "}
-                  · {tally.counts.unsure} {stanceLabels.unsure.toLowerCase()} · {tally.counts.out}{" "}
-                  {stanceLabels.out.toLowerCase()}
-                </span>
               </p>
             </div>
           ))}
         </div>
-        <ul className="rcKey" aria-hidden="true">
-          {stanceOrder.map((stance) => (
-            <li key={stance}>
-              <span className={`rcDot st-${stance}`} />
-              {stanceLabels[stance]}
-            </li>
-          ))}
-        </ul>
       </section>
 
       <section className="rcSection">
-        <h2>The message</h2>
-        <blockquote className="rcMessage">“{recommended.proposition}”</blockquote>
+        <h2>The campaign, stage by stage</h2>
         <p className="rcIntro">
-          Tested in the room: {recommendedTally.counts.in} of 24 leaning in, nobody pushing back.{" "}
-          <a href={`/?version=${recommendedId}`}>See the room react to it →</a>
+          Each stage speaks to the people who matter most at that point, and gives them the proof they need to move
+          on.
         </p>
+
+        {stages.map((stage, index) => {
+          const before = snapshots[index].stances;
+          const after = snapshots[index + 1].stances;
+          const gained = countStances(after).in - countStances(before).in;
+          return (
+            <article key={stage.id} className="rcStage" id={`stage-${stage.id}`}>
+              <header className="rcStageHead">
+                <span className="rcStageBadge">
+                  Stage {stage.number} · {stage.funnel}
+                </span>
+                <h3>{stage.name}</h3>
+                <p>{stage.goal}</p>
+              </header>
+
+              <div className="rcStageBody">
+                <div className="rcStageRoom">
+                  <MiniRoom stances={after} focus={stage.people.map((p) => p.personaId)} />
+                  <p>
+                    <strong>{countStances(after).in} of 24</strong> leaning in after this stage
+                    {gained > 0 && <span className="rcGain"> +{gained}</span>}
+                  </p>
+                </div>
+                <div>
+                  <p className="rcLabel">Who matters now</p>
+                  <p className="rcWho">{stage.whoMatters}</p>
+                  <p className="rcLabel">What we say</p>
+                  <blockquote className="rcStageMessage">“{stage.message}”</blockquote>
+                  {stage.messageNote && <p className="rcNote">{stage.messageNote}</p>}
+                  <p className="rcLabel">Why it works</p>
+                  <p className="rcWhy">{stage.whyItWorks}</p>
+                </div>
+              </div>
+
+              <ul className="rcPeople rcStagePeople">
+                {stage.people.map((person) => {
+                  const from = before[person.personaId];
+                  return (
+                    <li key={person.personaId}>
+                      <span className={`rcFace st-${person.stance}`}>
+                        <Face id={person.personaId} mood={person.stance} size={48} />
+                      </span>
+                      <div>
+                        <strong>{personById[person.personaId].name}</strong>
+                        <small>{personById[person.personaId].role}</small>
+                        <span className="rcShift">
+                          {from !== person.stance && (
+                            <>
+                              <em className={`st-${from}`}>{stanceLabels[from]}</em> →{" "}
+                            </>
+                          )}
+                          <em className={`st-${person.stance}`}>{stanceLabels[person.stance]}</em>
+                        </span>
+                        <p>“{person.line}”</p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className="rcStageCols">
+                <div>
+                  <p className="rcLabel">Proof they need</p>
+                  <div className="rcChips">
+                    {stage.proof.map((item) => (
+                      <span key={item}>{item}</span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="rcLabel">Channels and formats</p>
+                  <ul>
+                    {stage.channels.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="rcLabel">Signs it&rsquo;s working</p>
+                  <ul>
+                    {stage.successSigns.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+        <p className="rcSmall">{channelsNote}</p>
       </section>
 
-      <section className="rcSection rcTwoCol">
-        <div>
-          <h2>Who it wins over</h2>
-          <ul className="rcPeople">
-            {wonOver.map((reaction) => (
-              <li key={reaction.personaId}>
-                <span className="rcFace st-in">
-                  <Face id={reaction.personaId} mood="in" size={52} />
-                </span>
-                <div>
-                  <strong>{personById[reaction.personaId].name}</strong>
-                  <small>{personById[reaction.personaId].role}</small>
-                  <p>“{reaction.line}”</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h2>Who still needs work</h2>
-          <ul className="rcPeople">
-            {recommendation.stillNeedsWork.map((item) => {
-              const stance = recommended.reactions.find((r) => r.personaId === item.personaId)!.stance;
-              return (
-                <li key={item.personaId}>
-                  <span className={`rcFace st-${stance}`}>
-                    <Face id={item.personaId} mood={stance} size={52} />
-                  </span>
-                  <div>
-                    <strong>{personById[item.personaId].name}</strong>
-                    <small>{personById[item.personaId].role}</small>
-                    <p>{item.text}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+      <section className="rcSection">
+        <h2>The whole plan on one page</h2>
+        <p className="rcIntro">
+          <strong>{bigIdea.name}.</strong> “{bigIdea.line}”
+        </p>
+        <div className="rcPlan">
+          {stages.map((stage) => (
+            <div key={stage.id} className="rcPlanCol">
+              <span className="rcStageBadge">
+                Stage {stage.number} · {stage.funnel}
+              </span>
+              <h3>{stage.name}</h3>
+              <p className="rcLabel">Who</p>
+              <p>{stage.people.map((p) => firstName(p.personaId)).join(", ")}</p>
+              <p className="rcLabel">Message</p>
+              <p className="rcPlanMessage">“{stage.message}”</p>
+              <p className="rcLabel">Proof</p>
+              <p>{stage.proof.join(" · ")}</p>
+              <p className="rcLabel">Channels</p>
+              <ul>
+                {stage.channels.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="rcLabel">Working when</p>
+              <ul>
+                {stage.successSigns.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="rcSection">
-        <h2>What the campaign needs before launch</h2>
-        <p className="rcIntro">Four things the room asked for. None of them can be skipped.</p>
+        <h2>What has to be true first</h2>
+        <p className="rcIntro">The campaign only works if these exist. None of them can be skipped.</p>
         <ol className="rcNeeds">
           {recommendation.needs.map((need) => (
             <li key={need.title}>
@@ -235,11 +370,25 @@ export default function Recommendation() {
 
       <footer className="rcFoot">
         <p>
-          This recommendation is based on synthetic people: made up, but built from our audience data. It shows
-          which way opinion is likely to move. Test the finished work with real people before launch.
+          This recommendation is based on synthetic people: made up, but built from our audience data. Reactions to
+          each stage are our team&rsquo;s judgement from what each person needs. Test the finished work with real
+          people before launch.
         </p>
         <McCannCredit />
       </footer>
     </main>
+  );
+}
+
+function Key() {
+  return (
+    <ul className="rcKey" aria-hidden="true">
+      {stanceOrder.map((stance) => (
+        <li key={stance}>
+          <span className={`rcDot st-${stance}`} />
+          {stanceLabels[stance]}
+        </li>
+      ))}
+    </ul>
   );
 }
