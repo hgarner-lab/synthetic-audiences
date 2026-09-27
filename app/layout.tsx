@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Anton, Inter } from "next/font/google";
+import { Archivo, Inter } from "next/font/google";
 import "./globals.css";
 
-// Display and thin fonts for the collage direction (loaded as CSS variables only).
-const display = Anton({ weight: "400", subsets: ["latin"], variable: "--font-display", display: "swap" });
-const thin = Inter({ weight: ["200", "300", "400"], subsets: ["latin"], variable: "--font-thin", display: "swap" });
+// Archivo runs from very heavy and condensed to very thin, so headlines can mix weights
+// the way McCann's current work does. Loaded as a variable font with its width axis.
+const brand = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-brand", display: "swap" });
+// Inter for body text, which stays even and readable at small sizes.
+const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
 const description =
   "Put a campaign message in front of the people who decide on it, and see how they react. A McCann prototype.";
@@ -21,8 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${thin.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${brand.variable} ${body.variable}`}>
+      <body>
+        {/* Brand texture: a thin gradient bar along the top edge, and printed grain over everything. */}
+        <div className="edgeBar" aria-hidden="true" />
+        {children}
+        <div className="edgeBar edgeBarBottom" aria-hidden="true" />
+        <div className="grain" aria-hidden="true" />
+      </body>
     </html>
   );
 }

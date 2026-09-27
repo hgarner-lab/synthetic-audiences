@@ -1,5 +1,5 @@
 // Product name with the McCann wordmark, used at the top of every page.
-export function BrandLockup({ tone = "dark" }: { tone?: "dark" | "light" }) {
+export function BrandLockup({ tone = "light" }: { tone?: "dark" | "light" }) {
   return (
     <a className={`brandLockup brandLockup-${tone}`} href="/" aria-label="Synthetic Audiences by McCann, back to the room">
       <span className="brandLockupName">SYNTHETIC AUDIENCES</span>

@@ -7,7 +7,7 @@ import { roomMessages, stanceLabels, stanceOrder, Reaction } from "@/data/reacti
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import "./room.css";
-import "./room-themes.css";
+import "./room-brand.css";
 
 const roleRows: { role: InfluenceRole; label: string; hint: string }[] = [
   { role: "validate", label: "Checkers", hint: "Test whether it's true" },
@@ -21,11 +21,7 @@ const originalSpeakers = ["CN_EN_A", "CN_IC_A", "CN_CH_B", "CN_FL_V", "CN_EN_R",
 
 const SPEAK_MS = 4200;
 
-// Colour directions being trialled: ?theme=stage (dark), ?theme=bright (light and colourful)
-// or ?theme=collage (McCann's black, gradient and cut-out collage look).
-type Theme = "stage" | "bright" | "collage" | null;
-
-// In the trial themes, each person sits on their own colour until the room reacts.
+// Each person sits on their own colour until the room reacts.
 // Colours are dealt out in a shuffled order so they never line up with role or group.
 const restColours = ["--rest-1", "--rest-2", "--rest-3", "--rest-4", "--rest-5", "--rest-6"];
 const restOrder = personas
@@ -42,7 +38,7 @@ function restColour(id: string) {
   return `var(${restColours[restOrder.indexOf(id) % restColours.length]})`;
 }
 
-// A different tilt for each person's cut-out in the collage direction.
+// A different direction for each person's offset print layer.
 function tilt(id: string) {
   return `${((restOrder.indexOf(id) * 47) % 50) - 25}deg`;
 }
@@ -74,15 +70,12 @@ export default function Room() {
   const [speakerIndex, setSpeakerIndex] = useState(0);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
   const [playing, setPlaying] = useState(true);
-  const [theme, setTheme] = useState<Theme>(null);
 
   // Links from other pages can open the room on a version (?version=) or a person (?person=).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const version = params.get("version");
     const person = params.get("person");
-    const themeParam = params.get("theme");
-    if (themeParam === "stage" || themeParam === "bright" || themeParam === "collage") setTheme(themeParam);
     if (version && roomMessages.some((item) => item.id === version)) {
       setMessageId(version);
       setReacted(true);
@@ -157,9 +150,9 @@ export default function Room() {
   }
 
   return (
-    <main className={theme ? `fr theme-${theme}` : "fr"}>
+    <main className="fr">
       <header className="frTop">
-        <BrandLockup tone={theme === "stage" || theme === "collage" ? "light" : "dark"} />
+        <BrandLockup />
         <nav className="frNav">
           <span className="frTag">Prototype · China</span>
           <a href="/explore">Explore the full audience</a>
@@ -167,10 +160,12 @@ export default function Room() {
         </nav>
       </header>
 
-      {theme === "collage" && !reacted && (
+      {!reacted && (
         <section className="frDisplay">
-          <h1>24 people. One decision.</h1>
-          <p>What will the room say?</p>
+          <h1 className="heavy">
+            24 people. <span className="thin">One</span> decision.
+          </h1>
+          <p className="thin">What will the room say?</p>
         </section>
       )}
 
