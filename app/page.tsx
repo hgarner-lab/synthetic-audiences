@@ -235,6 +235,7 @@ export default function Room() {
                 </div>
                 <div>
                   <h2>{speaker.name}</h2>
+                  <p className="frSpotZh" lang="zh-Hans">{speaker.nameZh}</p>
                   <p className="frSpotRole">{speaker.role}</p>
                   <p className="frSpotStance">
                     {speakerReaction.shift && speakerReaction.shift.from !== speakerReaction.stance && (
@@ -260,7 +261,7 @@ export default function Room() {
               </div>
 
               <div className="frNeeds">
-                <p className="frEyebrow">What {speaker.name.split(" ")[0]} needs</p>
+                <p className="frEyebrow">What {speaker.name} needs</p>
                 <div>
                   {speaker.needs.map((need) => (
                     <span key={need}>{need}</span>
@@ -297,7 +298,7 @@ export default function Room() {
           <section className="frRecommend" aria-labelledby="recommend-title">
             <div>
               <h2 id="recommend-title">Seen enough?</h2>
-              <p>See which version we&rsquo;d recommend, what the campaign needs before launch, and what to do next.</p>
+              <p>See the campaign we&rsquo;d build from this: one big idea, played out stage by stage, with who it wins over at each step.</p>
             </div>
             <a className="nextLink primary" href={`/recommendation?version=${message.id}`}>
               See the recommendation →
@@ -390,7 +391,10 @@ function RoleRow({
                 </span>
               )}
             </span>
-            <span className="frName">{person.name.split(" ")[0]}</span>
+            <span className="frName">
+              <span className="frNameFull">{person.name}</span>
+              <span className="frNameShort">{person.name.split(" ")[0]}</span>
+            </span>
             <span className="frState">{reacted ? stanceLabels[reaction.stance] : " "}</span>
           </button>
         );

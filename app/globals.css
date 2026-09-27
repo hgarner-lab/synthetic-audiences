@@ -2677,3 +2677,9 @@ a.prototypeTag {
 .workingRoute .nextSteps {
   grid-column: 1 / -1;
 }
+
+.panelNameZh {
+  margin: 4px 0 0;
+  font-size: 18px;
+  color: var(--muted);
+}

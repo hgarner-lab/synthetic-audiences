@@ -213,26 +213,7 @@
   margin-right: 6px;
 }
 
-/* Message */
-
-.rcMessage {
-  margin: 8px 0 14px;
-  padding: 26px 28px;
-  background: var(--white);
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(20px, 2.6vw, 28px);
-  line-height: 1.3;
-}
-
 /* People */
-
-.rcTwoCol {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 36px;
-}
 
 .rcPeople {
   list-style: none;
@@ -406,13 +387,275 @@
   max-width: 640px;
 }
 
+/* Big idea */
+
+.rcLine {
+  margin: 14px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: clamp(22px, 3vw, 32px);
+  color: var(--in);
+}
+
+.rcStageNum {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 11px;
+}
+
+.rcSmall {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Stages */
+
+.rcStage {
+  margin-top: 22px;
+  padding: 26px;
+  border-radius: 20px;
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+.rcStageHead h3 {
+  margin: 8px 0 6px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: 30px;
+}
+
+.rcStageHead p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #3b423e;
+  max-width: 720px;
+}
+
+.rcStageBadge {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--ink);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.rcStageBody {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.rcStageRoom p {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.rcStageRoom strong {
+  color: var(--ink);
+}
+
+.rcGain {
+  color: var(--in);
+  font-weight: 700;
+}
+
+.rcMiniRoom {
+  display: grid;
+  grid-template-columns: repeat(6, 34px);
+  gap: 6px;
+}
+
+.rcMiniFace {
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--c);
+  opacity: 0.35;
+}
+
+.rcMiniFace.focus {
+  opacity: 1;
+}
+
+.rcMiniFace.st-in { --bg: var(--in-soft); }
+.rcMiniFace.st-unsure { --bg: var(--unsure-soft); }
+.rcMiniFace.st-pushback { --bg: var(--pushback-soft); }
+.rcMiniFace.st-out { --bg: var(--out-soft); }
+
+.rcMiniFace .face {
+  display: block;
+}
+
+.rcLabel {
+  margin: 16px 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.rcLabel:first-child {
+  margin-top: 0;
+}
+
+.rcWho,
+.rcWhy {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.rcStageMessage {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(19px, 2.2vw, 24px);
+  line-height: 1.3;
+}
+
+.rcNote {
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--in);
+}
+
+.rcStagePeople {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 28px;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.rcShift {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.rcShift em {
+  font-style: normal;
+  font-weight: 700;
+  color: #fff;
+  background: var(--c);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.rcStageCols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.rcStageCols ul,
+.rcPlanCol ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 5px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.rcChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rcChips span {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+/* One-page plan */
+
+.rcPlan {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+}
+
+.rcPlanCol {
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+.rcPlanCol h3 {
+  margin: 8px 0 0;
+  font-size: 18px;
+}
+
+.rcPlanCol p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.rcPlanCol .rcLabel {
+  margin-top: 14px;
+  font-size: 10px;
+}
+
+.rcPlanMessage {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px !important;
+}
+
+.rcPlanCol ul {
+  font-size: 13px;
+}
+
 @media (max-width: 760px) {
+  .rcStage {
+    padding: 18px;
+  }
+
+  .rcStageBody,
+  .rcStagePeople,
+  .rcStageCols,
+  .rcPlan {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rcMiniRoom {
+    grid-template-columns: repeat(6, 30px);
+  }
+
   .rcRow {
     grid-template-columns: minmax(0, 1fr);
     gap: 8px;
   }
 
-  .rcTwoCol,
   .rcNeeds,
   .rcWatch {
     grid-template-columns: minmax(0, 1fr);
@@ -442,14 +685,28 @@
   .rcRow,
   .rcNeeds li,
   .rcWatch li,
-  .rcMessage {
+  .rcStage,
+  .rcPlanCol {
     break-inside: avoid;
   }
 
   .rcBar span,
   .rcDot,
-  .rcTag {
+  .rcTag,
+  .rcStageBadge,
+  .rcShift em,
+  .face {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+}
+
+.rcPlanFunnel {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--in);
 }

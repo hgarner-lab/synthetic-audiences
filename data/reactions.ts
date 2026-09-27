@@ -91,11 +91,11 @@ const surprises: Record<string, { personaIds: string[]; text: string }> = {
   },
   resilience: {
     personaIds: ["CN_FL_V"],
-    text: "Making the long-term value more visible wins over strategy, but it raises the bar for finance. Rui now pushes back.",
+    text: "Making the long-term value more visible wins over strategy, but it raises the bar for finance. Sun Ying now pushes back.",
   },
   proof: {
     personaIds: ["CN_CH_B"],
-    text: "Yan, the toughest critic in the room, comes round. Finance still isn't moved, and nobody new will share it.",
+    text: "Gao Yan, the toughest critic in the room, comes round. Finance still isn't moved, and nobody new will share it.",
   },
   economics: {
     personaIds: ["CN_EN_V", "CN_CH_B"],

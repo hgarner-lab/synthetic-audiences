@@ -2,7 +2,12 @@ export type InfluenceRole = "validate" | "block" | "amplify" | "reframe";
 
 export type Persona = {
   id: string;
+  // Surname first, as in China. Names, gender and age are a draft for review by
+  // Chinese colleagues; see the balance notes in the commit that added them.
   name: string;
+  nameZh: string;
+  gender: "woman" | "man";
+  ageRange: [number, number];
   role: string;
   segment: string;
   influenceRole: InfluenceRole;
@@ -26,7 +31,10 @@ export const segments = [
 export const personas: Persona[] = [
   {
     id: "CN_EN_V",
-    name: "Wei Chen",
+    name: "Chen Jing",
+    nameZh: "陈静",
+    gender: "woman",
+    ageRange: [40, 50],
     role: "Director, Energy Technology and Decarbonisation",
     segment: "Energy",
     influenceRole: "validate",
@@ -39,7 +47,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_EN_B",
-    name: "Li Zhang",
+    name: "Zhang Lixin",
+    nameZh: "张立新",
+    gender: "man",
+    ageRange: [45, 55],
     role: "Director, Energy Strategy and Risk",
     segment: "Energy",
     influenceRole: "block",
@@ -51,7 +62,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_EN_A",
-    name: "Jun Wang",
+    name: "Wang Haitao",
+    nameZh: "王海涛",
+    gender: "man",
+    ageRange: [45, 55],
     role: "Vice President, Industry Partnerships",
     segment: "Energy",
     influenceRole: "amplify",
@@ -63,7 +77,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_EN_R",
-    name: "Mei Liu",
+    name: "Liu Xuemei",
+    nameZh: "刘雪梅",
+    gender: "woman",
+    ageRange: [50, 60],
     role: "Chief Strategy Officer",
     segment: "Energy",
     influenceRole: "reframe",
@@ -76,7 +93,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_CH_V",
-    name: "Qiang Hu",
+    name: "Hu Zhiqiang",
+    nameZh: "胡志强",
+    gender: "man",
+    ageRange: [40, 50],
     role: "Director, Process Technology",
     segment: "Chemicals",
     influenceRole: "validate",
@@ -88,7 +108,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_CH_B",
-    name: "Yan Gao",
+    name: "Gao Yan",
+    nameZh: "高燕",
+    gender: "woman",
+    ageRange: [40, 50],
     role: "Director, Environment Health and Safety",
     segment: "Chemicals",
     influenceRole: "block",
@@ -101,7 +124,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_CH_A",
-    name: "Lian Xu",
+    name: "Xu Lihua",
+    nameZh: "徐丽华",
+    gender: "woman",
+    ageRange: [45, 55],
     role: "Vice President, Industry Collaboration",
     segment: "Chemicals",
     influenceRole: "amplify",
@@ -113,7 +139,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_CH_R",
-    name: "Shuo Lin",
+    name: "Lin Guodong",
+    nameZh: "林国栋",
+    gender: "man",
+    ageRange: [40, 50],
     role: "Director, Strategic Investment",
     segment: "Chemicals",
     influenceRole: "reframe",
@@ -125,7 +154,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_FL_V",
-    name: "Rui Sun",
+    name: "Sun Ying",
+    nameZh: "孙颖",
+    gender: "woman",
+    ageRange: [45, 55],
     role: "Managing Director, Energy and Infrastructure Finance",
     segment: "Finance & legal",
     influenceRole: "validate",
@@ -138,7 +170,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_FL_B",
-    name: "Fang Zhou",
+    name: "Zhou Bin",
+    nameZh: "周斌",
+    gender: "man",
+    ageRange: [50, 60],
     role: "Chief Compliance Officer",
     segment: "Finance & legal",
     influenceRole: "block",
@@ -150,7 +185,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_FL_A",
-    name: "Tao He",
+    name: "He Jie",
+    nameZh: "何洁",
+    gender: "woman",
+    ageRange: [40, 50],
     role: "Partner, Corporate and Project Finance",
     segment: "Finance & legal",
     influenceRole: "amplify",
@@ -162,7 +200,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_FL_R",
-    name: "Ning Wu",
+    name: "Wu Xiaodong",
+    nameZh: "吴晓东",
+    gender: "man",
+    ageRange: [45, 55],
     role: "Chief Investment Strategist",
     segment: "Finance & legal",
     influenceRole: "reframe",
@@ -174,7 +215,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_PG_V",
-    name: "Haoran Zhao",
+    name: "Zhao Peng",
+    nameZh: "赵鹏",
+    gender: "man",
+    ageRange: [45, 60],
     role: "Senior Policy Research Director",
     segment: "Government",
     influenceRole: "validate",
@@ -186,7 +230,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_PG_B",
-    name: "Xinyi Ma",
+    name: "Ma Lijuan",
+    nameZh: "马丽娟",
+    gender: "woman",
+    ageRange: [40, 50],
     role: "Division Director, Regulatory Affairs",
     segment: "Government",
     influenceRole: "block",
@@ -198,7 +245,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_PG_A",
-    name: "Jia Ren",
+    name: "Ren Zhigang",
+    nameZh: "任志刚",
+    gender: "man",
+    ageRange: [55, 65],
     role: "Secretary General",
     segment: "Government",
     influenceRole: "amplify",
@@ -210,7 +260,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_PG_R",
-    name: "Yifei Peng",
+    name: "Peng Dan",
+    nameZh: "彭丹",
+    gender: "woman",
+    ageRange: [40, 50],
     role: "Director, Industrial Development Planning",
     segment: "Government",
     influenceRole: "reframe",
@@ -222,7 +275,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_TE_V",
-    name: "Bo Tang",
+    name: "Tang Lin",
+    nameZh: "唐琳",
+    gender: "woman",
+    ageRange: [38, 48],
     role: "Chief Technology Officer, Industrial AI",
     segment: "Technology",
     influenceRole: "validate",
@@ -234,7 +290,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_TE_B",
-    name: "Ling Dai",
+    name: "Dai Lei",
+    nameZh: "戴磊",
+    gender: "man",
+    ageRange: [40, 50],
     role: "Vice President, Data Governance and Cybersecurity",
     segment: "Technology",
     influenceRole: "block",
@@ -246,7 +305,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_TE_A",
-    name: "Zhe Luo",
+    name: "Luo Chao",
+    nameZh: "罗超",
+    gender: "man",
+    ageRange: [38, 48],
     role: "Vice President, Strategic Ecosystem Partnerships",
     segment: "Technology",
     influenceRole: "amplify",
@@ -258,7 +320,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_TE_R",
-    name: "Min Shi",
+    name: "Shi Hui",
+    nameZh: "石慧",
+    gender: "woman",
+    ageRange: [38, 48],
     role: "Director, Industrial Digitalisation Strategy",
     segment: "Technology",
     influenceRole: "reframe",
@@ -270,7 +335,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_IC_V",
-    name: "An Qi",
+    name: "Qi Ming",
+    nameZh: "齐明",
+    gender: "man",
+    ageRange: [45, 60],
     role: "Senior Energy Research Fellow",
     segment: "Media & commentary",
     influenceRole: "validate",
@@ -282,7 +350,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_IC_B",
-    name: "Lei Guo",
+    name: "Guo Ting",
+    nameZh: "郭婷",
+    gender: "woman",
+    ageRange: [35, 45],
     role: "Senior Business and Energy Correspondent",
     segment: "Media & commentary",
     influenceRole: "block",
@@ -294,7 +365,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_IC_A",
-    name: "Yuna Song",
+    name: "Song Qian",
+    nameZh: "宋倩",
+    gender: "woman",
+    ageRange: [40, 50],
     role: "Executive Editor, Business and Technology",
     segment: "Media & commentary",
     influenceRole: "amplify",
@@ -306,7 +380,10 @@ export const personas: Persona[] = [
   },
   {
     id: "CN_IC_R",
-    name: "Wen Yu",
+    name: "Yu Feng",
+    nameZh: "于峰",
+    gender: "man",
+    ageRange: [45, 55],
     role: "Director, Global Energy and Geopolitics Programme",
     segment: "Media & commentary",
     influenceRole: "reframe",
