@@ -53,8 +53,13 @@ export const recommendation = {
     },
     {
       title: "Don't let the number become the story",
-      detail: "If a precise carbon figure makes the headline before anyone can explain it, journalists will focus on that instead of the message.",
+      detail: "If a precise carbon figure makes the headline before anyone can explain it, journalists will focus on that instead of the message. Publish the method with the report, and have a spokesperson ready to explain it.",
       personaIds: ["CN_IC_B"],
+    },
+    {
+      title: "Keep refinery data secure",
+      detail: "If the value calculator uses a refinery's own numbers, their data security team will want to know how that data is stored and who can see it. Agree this before stage 4.",
+      personaIds: ["CN_TE_B"],
     },
   ],
   nextSteps: [

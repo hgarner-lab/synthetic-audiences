@@ -18,6 +18,7 @@ export type CampaignStage = {
   name: string;
   funnel: string;
   goal: string;
+  startsWhen: string;
   whoMatters: string;
   message: string;
   messageNote?: string;
@@ -42,10 +43,11 @@ export const stages: CampaignStage[] = [
     name: "Get noticed",
     funnel: "Awareness",
     goal: "Make senior people in China's energy and industrial world aware that there's a lower-carbon crude whose numbers have been independently checked.",
+    startsWhen: "The independent check of the carbon data is complete and published.",
     whoMatters: "Journalists, commentators and researchers. They decide whether this becomes a story people hear about.",
     message: "Lower-carbon crude, with the numbers independently checked. Don't take our word for it: read the report.",
     whyItWorks:
-      "Journalists and researchers tuned out the original message because there was no news and nothing to check. An independent report gives them both, and a senior spokesperson gives them someone to question.",
+      "The original message gave journalists and researchers nothing new to report and nothing to check, so they tuned out or held back. An independent report gives them both, and a senior spokesperson gives them someone to question. Publishing the method with the report stops the number itself becoming the story.",
     proof: ["Independent evidence", "An open, clear method", "A news moment", "Access to a senior spokesperson"],
     channels: [
       "Publish the independent report and how the figure was worked out",
@@ -72,9 +74,10 @@ export const stages: CampaignStage[] = [
     name: "Help them understand",
     funnel: "Education",
     goal: "Explain what lower-carbon crude means for China's refiners: how the carbon is measured, why it matters for energy security, and where it fits national policy.",
+    startsWhen: "Alongside stage 1, and it keeps going. The guide and white paper should be ready soon after launch.",
     whoMatters: "Strategy and policy people, and the commentators who frame the issue. They shape how everyone else thinks about it.",
     message:
-      "What lower-carbon crude means for China's refiners: how the carbon is measured, why it matters for energy security, and where it fits national policy.",
+      "The carbon in your crude, explained: how it's measured, why it matters for China's energy security, and where it fits national policy.",
     whyItWorks:
       "B2B decisions take time, and people need to understand the issue before they'll judge the claim. This stage doesn't win many people outright, but fewer people tune out, and it builds the energy security case that finance and strategy will need later.",
     proof: ["An open, clear method", "Fit with national policy", "What-if scenarios", "Review by other experts"],
@@ -104,6 +107,7 @@ export const stages: CampaignStage[] = [
     name: "Get considered",
     funnel: "Consideration",
     goal: "Get technical, safety and compliance teams to check the claim for themselves, and clear it.",
+    startsWhen: "The full data pack is ready, and the claim has been confirmed to meet Chinese rules.",
     whoMatters: "The people who check facts and the people who can say no. Nothing moves forward until they're satisfied.",
     message:
       "Aramco Advantage Crude comes with independently checked carbon data, so refiners can judge the carbon and commercial benefits for themselves.",
@@ -113,7 +117,7 @@ export const stages: CampaignStage[] = [
     proof: [
       "Checked data from real operations",
       "A like-for-like comparison",
-      "Checked by an independent body",
+      "Independent certification",
       "Proof it meets Chinese rules",
       "Proper internal sign-off",
     ],
@@ -143,6 +147,7 @@ export const stages: CampaignStage[] = [
     name: "Get chosen",
     funnel: "Selection",
     goal: "Show finance and strategy what it's worth, so choosing it becomes a sound business decision.",
+    startsWhen: "The business case and value calculator are ready, and it's agreed how the calculator keeps refinery data secure.",
     whoMatters: "Finance and strategy. They decide whether it's worth the money.",
     message:
       "Because the carbon data is checked, the value is real: reliable supply, lower risk, and savings you can model with your own numbers.",
@@ -174,12 +179,13 @@ export const stages: CampaignStage[] = [
     name: "Get recommended",
     funnel: "Recommendation",
     goal: "Give the people who spread ideas a real Chinese example to point to, so others hear about it from someone they trust.",
+    startsWhen: "A real Chinese partner has agreed to be named, and compliance has approved how their results are described.",
     whoMatters: "The people who pass ideas on across industry, government and finance.",
     message:
       "See how [a Chinese refinery partner] is using Aramco Advantage Crude, with checked carbon data and measured results for its customers.",
     messageNote: "Only with a real partner who has agreed to be named.",
     whyItWorks:
-      "The people who spread ideas ignored every version so far because there was nothing real to point to. A named partner changes that. Compliance will need to approve how the partner and their results are described.",
+      "The people who spread ideas have held back at every stage so far, because there was nothing real to point to. A named partner changes that. The catch: compliance pushes back until the partner has agreed to be named and legal has approved how their results are described.",
     proof: ["A partner people trust", "A measured result", "Permission to name the partner", "Legal advice"],
     channels: [
       "A joint case study with the partner",
@@ -203,6 +209,35 @@ export const stages: CampaignStage[] = [
         line: "Before we name them: do we have their permission, and are their results described accurately?",
       },
     ],
+  },
+];
+
+// Which stage each tested angle feeds into, so a visitor's pick can be placed in the plan.
+export const angleStage: Record<string, string> = {
+  resilience: "understood",
+  proof: "considered",
+  economics: "chosen",
+  "local-proof": "recommended",
+};
+
+// Which stage each campaign goal (chosen on the explore page) lines up with.
+export const goalStage: Record<string, string> = {
+  "Get noticed": "noticed",
+  "Change what people think": "understood",
+  "Get people considering us": "considered",
+  "Help people decide to buy": "chosen",
+  "Get people recommending us": "recommended",
+};
+
+// The people still to win at the end of the campaign, and what it takes.
+export const stillToWin = [
+  {
+    personaId: "CN_TE_B",
+    text: "needs to know how the value calculator stores refinery data and who can see it.",
+  },
+  {
+    personaId: "CN_FL_B",
+    text: "needs the partner's permission and legal sign-off before the partner is named.",
   },
 ];
 

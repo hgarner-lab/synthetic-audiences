@@ -41,7 +41,7 @@ export const personas: Persona[] = [
     action: "Skeptical",
     actionDetail: "Thinks the claim could be true, but won't back it without checked data from real operations and results from trials.",
     internalThought: "Too vague to judge whether it's reliable and safe to use at scale.",
-    lens: ["Reliability", "Safe to scale up", "Technical proof"],
+    lens: ["Reliability", "Scaling up safely", "Technical proof"],
     needs: ["Checked data from real operations", "Results from trials", "A like-for-like comparison"],
     featured: true,
   },
@@ -119,7 +119,7 @@ export const personas: Persona[] = [
     actionDetail: "Won't accept the claim until it's been checked by an independent body and shown to meet Chinese rules.",
     internalThought: "Big questions remain about worker safety and meeting environmental rules.",
     lens: ["Worker safety", "Environmental rules", "Keeping operations under control"],
-    needs: ["Checked by an independent body", "Proof it meets Chinese rules", "Clear, open reporting"],
+    needs: ["Independent certification", "Proof it meets Chinese rules", "Clear, open reporting"],
     featured: true,
   },
   {
@@ -375,7 +375,7 @@ export const personas: Persona[] = [
     action: "Ignore",
     actionDetail: "The claim could make a headline, but there's no news moment, independent evidence or partner story to run with.",
     internalThought: "Nothing here makes it news or relevant to readers.",
-    lens: ["Is it news?", "Does it matter to readers?"],
+    lens: ["Whether it's news", "Whether readers care"],
     needs: ["A news moment", "Independent evidence", "A partner's story"],
   },
   {

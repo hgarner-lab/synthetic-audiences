@@ -17,6 +17,16 @@ const objectives = [
   "Get people recommending us",
 ];
 
+// "Independent certification" -> "checked by an independent body", keeping words like "Chinese" as they are.
+function lowerFirst(text: string) {
+  return text.charAt(0).toLowerCase() + text.slice(1);
+}
+
+function listOf(items: string[]) {
+  if (items.length < 2) return items.join("");
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+}
+
 const defaultObjective = "Get people considering us";
 const defaultProposition = originalMessage.proposition;
 
@@ -430,29 +440,9 @@ function AskTheRoom({
         return [];
       }
 
-      let response = "";
-      if (persona.influenceRole === "validate") {
-        response =
-          `Before I could answer that, I'd need ${persona.needs
-            .slice(0, 2)
-            .join(" and ")
-            .toLowerCase()}. Without those, I can't believe the message.`;
-      } else if (persona.influenceRole === "block") {
-        response =
-          `I'd check that against ${persona.lens[0].toLowerCase()} first. Show me ${persona.needs[0].toLowerCase()} before asking me to support it.`;
-      } else if (persona.influenceRole === "amplify") {
-        response =
-          `I'd need a reason to pass that on, like ${persona.needs
-            .slice(0, 2)
-            .join(" or ")
-            .toLowerCase()}.`;
-      } else {
-        response =
-          `For me, that's really a question about ${persona.lens
-            .slice(0, 2)
-            .join(" and ")
-            .toLowerCase()}. Give me ${persona.needs[0].toLowerCase()} and I can make it useful.`;
-      }
+      const cares = persona.lens.slice(0, 2).map(lowerFirst).join(" and ");
+      const needs = listOf(persona.needs.map(lowerFirst));
+      const response = `What matters most to me is ${cares}. Before I'd back anything, I'd want to see ${needs}.`;
 
       return [
         {
@@ -506,7 +496,7 @@ function AskTheRoom({
     } else {
       setResponses(synthesizeCustomResponses());
       setTakeaway(
-        "People hear this question differently. Some think about proof, some about risk, some about business value or local relevance. Where they disagree shows you what the campaign still has to solve."
+        "We haven't prepared answers to that exact question yet. Instead, here's what each of these people cares about and needs to see, which is a good guide to how they'd answer."
       );
     }
   };
@@ -957,6 +947,15 @@ function DecisionRoom({
   );
   const [activeSegment, setActiveSegment] = useState<string>("All");
   const [workingMessage, setWorkingMessage] = useState<string | null>(null);
+
+  // Remember the goal so the recommendation can point to the matching stage.
+  useEffect(() => {
+    try {
+      window.sessionStorage.setItem("sa-goal", objective);
+    } catch {
+      // Storage can be unavailable (e.g. private browsing); nothing else depends on it.
+    }
+  }, [objective]);
 
   const visiblePeople = useMemo(
     () => (activeSegment === "All" ? personas : personas.filter((p) => p.segment === activeSegment)),

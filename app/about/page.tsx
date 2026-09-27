@@ -4,7 +4,7 @@ import "../recommendation/recommendation.css";
 import "./about.css";
 
 export const metadata: Metadata = {
-  title: "How this works · Synthetic Audiences",
+  title: "How this works",
   description: "Who the synthetic people are, where their reactions come from, and what they can and can't tell you.",
 };
 

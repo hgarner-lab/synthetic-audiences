@@ -4,7 +4,16 @@ import { useEffect, useState } from "react";
 import { personas, segments, InfluenceRole } from "@/data/personas";
 import { Stance, stanceLabels, stanceOrder } from "@/data/reactions";
 import { recommendation, recommendedId, versionTallies } from "@/data/recommendation";
-import { bigIdea, channelsNote, countStances, snapshots, stages } from "@/data/campaign";
+import {
+  angleStage,
+  bigIdea,
+  channelsNote,
+  countStances,
+  goalStage,
+  snapshots,
+  stages,
+  stillToWin,
+} from "@/data/campaign";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import "./recommendation.css";
@@ -47,14 +56,25 @@ function StanceBar({ stances }: { stances: Record<string, Stance> }) {
 
 export default function Recommendation() {
   const [pickedId, setPickedId] = useState<string | null>(null);
+  const [goal, setGoal] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const version = new URLSearchParams(window.location.search).get("version");
     if (version && versionTallies.some((tally) => tally.id === version)) setPickedId(version);
+    // The goal chosen on the explore page, if the visitor went through it.
+    try {
+      const saved = window.sessionStorage.getItem("sa-goal");
+      if (saved && goalStage[saved]) setGoal(saved);
+    } catch {
+      // Storage can be unavailable (e.g. private browsing); the page works without it.
+    }
   }, []);
 
   const picked = versionTallies.find((tally) => tally.id === pickedId);
+  const pickedStage = stages.find((stage) => stage.id === angleStage[pickedId ?? ""]);
+  const goalStageId = goal ? goalStage[goal] : null;
+  const goalStageInfo = stages.find((stage) => stage.id === goalStageId);
   const finalCounts = countStances(snapshots[snapshots.length - 1].stances);
 
   async function copyLink() {
@@ -83,16 +103,39 @@ export default function Recommendation() {
         <p className="rcLine">“{bigIdea.line}”</p>
         <p className="rcLead">{bigIdea.summary}</p>
 
+        {goal && goalStageInfo && (
+          <p className="rcPicked">
+            Your goal is to <strong>{goal.toLowerCase()}</strong>. That&rsquo;s{" "}
+            <a href={`#stage-${goalStageInfo.id}`}>
+              stage {goalStageInfo.number}, {goalStageInfo.name.toLowerCase()}
+            </a>
+            .{" "}
+            {goalStageInfo.number === 1
+              ? "It's where the campaign starts."
+              : goalStageInfo.number === 2
+                ? "Stage 1 builds the awareness it depends on."
+                : `Stages 1 to ${goalStageInfo.number - 1} build what it depends on.`}
+          </p>
+        )}
+
         {picked && (
           <p className="rcPicked">
             {picked.id === recommendedId ? (
-              <>You picked <strong>{picked.label}</strong>. That&rsquo;s the version this campaign is built on.</>
-            ) : (
+              <>
+                You picked <strong>{picked.label}</strong>. That&rsquo;s the version this campaign is built on: it&rsquo;s
+                the message for stage 3, {stages[2].name.toLowerCase()}.
+              </>
+            ) : pickedStage ? (
               <>
                 You picked <strong>{picked.label}</strong>: {picked.counts.in} people leaning in and{" "}
-                {picked.counts.pushback} pushing back. This campaign leads with independent proof instead (
-                {recommendedTally.counts.in} leaning in, nobody pushing back), and brings in your angle later
-                where it helps.
+                {picked.counts.pushback} pushing back. It works better later on, once the proof has landed, so it
+                comes in at <a href={`#stage-${pickedStage.id}`}>stage {pickedStage.number}, {pickedStage.name.toLowerCase()}</a>.
+              </>
+            ) : (
+              <>
+                You looked at the <strong>{picked.label.toLowerCase()}</strong>: {picked.counts.in} people leaning in.
+                This campaign replaces it with independent proof ({recommendedTally.counts.in} leaning in, nobody
+                pushing back).
               </>
             )}
           </p>
@@ -128,6 +171,15 @@ export default function Recommendation() {
           })}
         </div>
         <Key />
+        <p className="rcStill">
+          <strong>Still to win:</strong>{" "}
+          {stillToWin.map((item, index) => (
+            <span key={item.personaId}>
+              {index > 0 && " "}
+              {nameOf(item.personaId)} {item.text}
+            </span>
+          ))}
+        </p>
         <p className="rcSmall">This assumes the proof for each stage is real and ready before that stage starts.</p>
       </section>
 
@@ -175,13 +227,22 @@ export default function Recommendation() {
           const after = snapshots[index + 1].stances;
           const gained = countStances(after).in - countStances(before).in;
           return (
-            <article key={stage.id} className="rcStage" id={`stage-${stage.id}`}>
+            <article
+              key={stage.id}
+              className={`rcStage ${stage.id === goalStageId ? "isGoal" : ""}`}
+              id={`stage-${stage.id}`}
+            >
               <header className="rcStageHead">
                 <span className="rcStageBadge">
                   Stage {stage.number} · {stage.funnel}
                 </span>
+                {stage.id === goalStageId && <em className="rcTag">Your goal</em>}
+                {stage.id === pickedStage?.id && <em className="rcTag alt">Your pick comes in here</em>}
                 <h3>{stage.name}</h3>
                 <p>{stage.goal}</p>
+                <p className="rcStarts">
+                  <strong>Starts when:</strong> {stage.startsWhen}
+                </p>
               </header>
 
               <div className="rcStageBody">
@@ -268,10 +329,12 @@ export default function Recommendation() {
         </p>
         <div className="rcPlan">
           {stages.map((stage) => (
-            <div key={stage.id} className="rcPlanCol">
+            <div key={stage.id} className={`rcPlanCol ${stage.id === goalStageId ? "isGoal" : ""}`}>
               <span className="rcStageBadge">Stage {stage.number}</span>
               <span className="rcPlanFunnel">{stage.funnel}</span>
               <h3>{stage.name}</h3>
+              <p className="rcLabel">Starts when</p>
+              <p>{stage.startsWhen}</p>
               <p className="rcLabel">Who</p>
               <p>{stage.people.map((p) => nameOf(p.personaId)).join(", ")}</p>
               <p className="rcLabel">Message</p>
