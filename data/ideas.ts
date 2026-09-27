@@ -71,7 +71,7 @@ export const ideaOptions: IdeaOption[] = [
         label: "Still needs an independent check",
         reason:
           "A bigger story doesn't make the environmental claim any safer without an independent check and proof it meets Chinese rules.",
-        evidence: ["Checked by an independent body", "Proof it meets Chinese rules"],
+        evidence: ["Independent certification", "Proof it meets Chinese rules"],
       },
       {
         personaId: "CN_FL_V",
@@ -115,7 +115,7 @@ export const ideaOptions: IdeaOption[] = [
         label: "Now safer to say",
         reason:
           "An independent check is exactly what's needed to stand behind an environmental claim.",
-        evidence: ["Checked by an independent body", "Clear, open reporting"],
+        evidence: ["Independent certification", "Clear, open reporting"],
       },
       {
         personaId: "CN_IC_V",
@@ -215,7 +215,7 @@ export const ideaOptions: IdeaOption[] = [
         label: "More to check",
         reason:
           "Claiming savings and customer value means more claims to prove and report carefully.",
-        evidence: ["Checked by an independent body", "Clear, open reporting"],
+        evidence: ["Independent certification", "Clear, open reporting"],
       },
     ],
     routeImpact: {

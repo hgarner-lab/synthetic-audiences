@@ -31,7 +31,7 @@ export const audienceQuestions: AudienceQuestion[] = [
         theme: "An independent check",
         response:
           "An independent check, and proof it meets Chinese rules. I need to know the claim will hold up if someone questions it.",
-        evidence: ["Checked by an independent body", "Proof it meets Chinese rules", "Clear, open reporting"],
+        evidence: ["Independent certification", "Proof it meets Chinese rules", "Clear, open reporting"],
       },
       {
         personaId: "CN_FL_V",
@@ -74,7 +74,7 @@ export const audienceQuestions: AudienceQuestion[] = [
         theme: "Claiming too much",
         response:
           "That the environmental benefit is being claimed more strongly than the checks can support.",
-        evidence: ["Checked by an independent body", "Clear, open reporting"],
+        evidence: ["Independent certification", "Clear, open reporting"],
       },
       {
         personaId: "CN_FL_B",
@@ -195,7 +195,7 @@ export const audienceQuestions: AudienceQuestion[] = [
         theme: "An independent check",
         response:
           "An independent check, proof it meets Chinese rules, and open reporting, so the claim can stand up to questions.",
-        evidence: ["Checked by an independent body", "Proof it meets Chinese rules", "Clear, open reporting"],
+        evidence: ["Independent certification", "Proof it meets Chinese rules", "Clear, open reporting"],
       },
       {
         personaId: "CN_PG_R",

@@ -106,7 +106,8 @@ export default function Room() {
   }
 
   function pickPerson(id: string) {
-    if (!reacted) return;
+    // Tapping a face before the room has reacted starts the reaction on that person.
+    setReacted(true);
     setPinnedId(id);
     setPlaying(false);
     if (window.matchMedia("(max-width: 999px)").matches) {
@@ -222,7 +223,9 @@ export default function Room() {
             ))}
           </div>
           <p className="frHint">
-            {reacted ? "Tap anyone to hear why." : "24 synthetic people who shape this decision in China."}
+            {reacted
+              ? "Tap anyone to hear why."
+              : "24 synthetic people who shape this decision in China. Tap anyone to see their reaction."}
           </p>
         </section>
 

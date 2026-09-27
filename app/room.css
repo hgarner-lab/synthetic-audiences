@@ -292,7 +292,6 @@
   outline: none;
 }
 
-.frTile.st-waiting { cursor: default; }
 .frTile.st-in { --ring: var(--in); --bg: var(--in-soft); }
 .frTile.st-unsure { --ring: var(--unsure); --bg: var(--unsure-soft); }
 .frTile.st-pushback { --ring: var(--pushback); --bg: var(--pushback-soft); }

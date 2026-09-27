@@ -51,7 +51,7 @@ export const journeySteps: JourneyStep[] = [
       title: "Make the claim safe to say",
       description:
         "Support any environmental benefit with an independent check, proof it meets Chinese rules and open reporting.",
-      evidence: ["Checked by an independent body", "Proof it meets Chinese rules", "Clear, open reporting"],
+      evidence: ["Independent certification", "Proof it meets Chinese rules", "Clear, open reporting"],
     },
   },
   {
