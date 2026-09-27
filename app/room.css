@@ -16,27 +16,21 @@
 }
 
 .frTop {
-  height: 64px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 0 clamp(16px, 5vw, 64px);
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  padding: 12px clamp(16px, 5vw, 64px);
   border-bottom: 1px solid var(--line);
-}
-
-.frBrand {
-  font-size: 11px;
-  letter-spacing: 0.19em;
-  font-weight: 800;
-  color: var(--ink);
-  text-decoration: none;
 }
 
 .frNav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
+  gap: 8px 20px;
   font-size: 13px;
 }
 
@@ -547,7 +541,7 @@
 
 .frDeeper {
   width: min(1180px, calc(100% - 32px));
-  margin: 48px auto 0;
+  margin: 40px auto 0;
   padding-top: 32px;
   border-top: 1px solid var(--line);
   animation: frFadeUp 500ms ease 1200ms both;
@@ -607,9 +601,57 @@
 .frFoot {
   width: min(1180px, calc(100% - 32px));
   margin: 40px auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
   font-size: 12px;
   color: var(--muted);
   line-height: 1.5;
+}
+
+.frFoot p {
+  margin: 0;
+  max-width: 760px;
+}
+
+.frFoot a {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.frRecommend {
+  width: min(1180px, calc(100% - 32px));
+  margin: 48px auto 0;
+  padding: 28px 32px;
+  border-radius: 20px;
+  background: var(--ink);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  flex-wrap: wrap;
+  animation: frFadeUp 500ms ease 1200ms both;
+}
+
+.frRecommend h2 {
+  margin: 0 0 6px;
+  font-size: 24px;
+}
+
+.frRecommend p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(255, 253, 248, 0.75);
+  max-width: 620px;
+}
+
+.frRecommend .nextLink.primary {
+  background: var(--white);
+  color: var(--ink);
+  border-color: var(--white);
 }
 
 @keyframes frFadeUp {
@@ -669,8 +711,9 @@
 
   .frNav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
+  gap: 8px 20px;
   font-size: 13px;
 }
 

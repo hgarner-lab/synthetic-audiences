@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import { personas, segments, InfluenceRole } from "@/data/personas";
 import { roomMessages, stanceLabels, stanceOrder, Reaction } from "@/data/reactions";
 import { Face } from "@/components/Face";
+import { BrandLockup, McCannCredit } from "@/components/Brand";
 import "./room.css";
 
 const roleRows: { role: InfluenceRole; label: string; hint: string }[] = [
@@ -46,6 +47,22 @@ export default function Room() {
   const [speakerIndex, setSpeakerIndex] = useState(0);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
   const [playing, setPlaying] = useState(true);
+
+  // Links from other pages can open the room on a version (?version=) or a person (?person=).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const version = params.get("version");
+    const person = params.get("person");
+    if (version && roomMessages.some((item) => item.id === version)) {
+      setMessageId(version);
+      setReacted(true);
+    }
+    if (person && personas.some((item) => item.id === person)) {
+      setReacted(true);
+      setPinnedId(person);
+      setPlaying(false);
+    }
+  }, []);
 
   const message = roomMessages.find((item) => item.id === messageId) ?? roomMessages[0];
   const reactionById = useMemo(
@@ -111,12 +128,11 @@ export default function Room() {
   return (
     <main className="fr">
       <header className="frTop">
-        <a className="frBrand" href="/">
-          SYNTHETIC AUDIENCES
-        </a>
+        <BrandLockup />
         <nav className="frNav">
           <span className="frTag">Prototype · China</span>
-          <a href="/explore">Explore the full audience →</a>
+          <a href="/explore">Explore the full audience</a>
+          <a href="/recommendation">See the recommendation</a>
         </nav>
       </header>
 
@@ -277,23 +293,39 @@ export default function Room() {
       </div>
 
       {reacted && (
-        <section className="frDeeper" aria-labelledby="deeper-title">
-          <h2 id="deeper-title">Go deeper</h2>
-          <div className="frDeeperCards">
-            {deeperLinks.map((link) => (
-              <a key={link.href} className="frDeeperCard" href={link.href}>
-                <strong>{link.title}</strong>
-                <span>{link.body}</span>
-                <em>{link.cta} →</em>
-              </a>
-            ))}
-          </div>
-        </section>
+        <>
+          <section className="frRecommend" aria-labelledby="recommend-title">
+            <div>
+              <h2 id="recommend-title">Seen enough?</h2>
+              <p>See which version we&rsquo;d recommend, what the campaign needs before launch, and what to do next.</p>
+            </div>
+            <a className="nextLink primary" href={`/recommendation?version=${message.id}`}>
+              See the recommendation →
+            </a>
+          </section>
+
+          <section className="frDeeper" aria-labelledby="deeper-title">
+            <h2 id="deeper-title">Go deeper</h2>
+            <div className="frDeeperCards">
+              {deeperLinks.map((link) => (
+                <a key={link.href} className="frDeeperCard" href={link.href}>
+                  <strong>{link.title}</strong>
+                  <span>{link.body}</span>
+                  <em>{link.cta} →</em>
+                </a>
+              ))}
+            </div>
+          </section>
+        </>
       )}
 
       <footer className="frFoot">
-        These are synthetic people: made up, but built from our audience data. Their reactions show the likely
-        direction of opinion. They are not quotes from real people, and not a forecast.
+        <p>
+          These are synthetic people: made up, but built from our audience data. Their reactions show the likely
+          direction of opinion. They are not quotes from real people, and not a forecast.{" "}
+          <a href="/about">How this works</a>
+        </p>
+        <McCannCredit />
       </footer>
     </main>
   );
