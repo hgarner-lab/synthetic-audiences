@@ -269,9 +269,8 @@ export default function Recommendation() {
         <div className="rcPlan">
           {stages.map((stage) => (
             <div key={stage.id} className="rcPlanCol">
-              <span className="rcStageBadge">
-                Stage {stage.number} · {stage.funnel}
-              </span>
+              <span className="rcStageBadge">Stage {stage.number}</span>
+              <span className="rcPlanFunnel">{stage.funnel}</span>
               <h3>{stage.name}</h3>
               <p className="rcLabel">Who</p>
               <p>{stage.people.map((p) => firstName(p.personaId)).join(", ")}</p>

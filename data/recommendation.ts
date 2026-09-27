@@ -59,10 +59,11 @@ export const recommendation = {
   ],
   nextSteps: [
     "Share this recommendation with the client team and agree which evidence already exists.",
-    "Commission the independent check of the carbon data first. Stages 1 and 2 depend on it.",
-    "Build the business case and value calculator in parallel, ready for stage 3.",
-    "Start looking for a Chinese partner willing to be named, ready for stage 4.",
-    "Brief the creative team on the big idea and the four stages.",
+    "Commission the independent check of the carbon data first. Stages 1 to 3 depend on it.",
+    "Start the education content early. B2B decisions take months, so the guide and white paper need to be ready soon after launch.",
+    "Build the business case and value calculator in parallel, ready for stage 4.",
+    "Start looking for a Chinese partner willing to be named, ready for stage 5.",
+    "Brief the creative team on the big idea and the five stages.",
     "Put the finished work for each stage back in front of the room, then test it with real people before launch.",
   ],
 };

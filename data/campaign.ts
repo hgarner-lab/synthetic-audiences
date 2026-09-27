@@ -1,7 +1,7 @@
 import { personas } from "@/data/personas";
 import { roomMessages, Stance, stanceOrder } from "@/data/reactions";
 
-// The campaign recommendation: one big idea, delivered in four funnel stages.
+// The campaign recommendation: one big idea, delivered in five funnel stages.
 // Each stage says who matters most at that point, what we tell them, the proof they
 // need, and how the room reacts. Reactions are our team's judgement from each
 // person's needs, like the rest of the room, and assume each stage's proof is real.
@@ -32,7 +32,7 @@ export const bigIdea = {
   name: "Proof, not promises",
   line: "Don't take our word for it.",
   summary:
-    "Most energy marketing asks people to trust a claim. This campaign does the opposite: it invites them to check it. We open with independently checked carbon data, then give each group the proof it needs at the moment it gets involved, from journalists and technical teams to finance and, finally, the partners who'll recommend it.",
+    "Most energy marketing asks people to trust a claim. This campaign does the opposite: it invites them to check it. We open with independently checked carbon data, then give each group the proof it needs at the moment it gets involved: from journalists, to the strategy and policy people who frame the issue, to technical teams, finance and, finally, the partners who'll recommend it.",
 };
 
 export const stages: CampaignStage[] = [
@@ -67,8 +67,40 @@ export const stages: CampaignStage[] = [
     ],
   },
   {
-    id: "considered",
+    id: "understood",
     number: 2,
+    name: "Help them understand",
+    funnel: "Education",
+    goal: "Explain what lower-carbon crude means for China's refiners: how the carbon is measured, why it matters for energy security, and where it fits national policy.",
+    whoMatters: "Strategy and policy people, and the commentators who frame the issue. They shape how everyone else thinks about it.",
+    message:
+      "What lower-carbon crude means for China's refiners: how the carbon is measured, why it matters for energy security, and where it fits national policy.",
+    whyItWorks:
+      "B2B decisions take time, and people need to understand the issue before they'll judge the claim. This stage doesn't win many people outright, but fewer people tune out, and it builds the energy security case that finance and strategy will need later.",
+    proof: ["An open, clear method", "Fit with national policy", "What-if scenarios", "Review by other experts"],
+    channels: [
+      "A plain-language guide to how the carbon in crude is measured",
+      "A white paper on lower-carbon crude and China's energy security, reviewed by independent experts",
+      "Seminars with industry associations",
+      "A series of short WeChat explainers",
+    ],
+    successSigns: [
+      "People coming back for more, such as returning readers and series subscribers",
+      "Refinery and policy teams downloading the guide and white paper",
+      "Questions moving from \"what is this?\" to \"how would this work for us?\"",
+    ],
+    people: [
+      { personaId: "CN_EN_B", stance: "in", line: "It links lower carbon to energy security and policy. Now it's a strategic question for us." },
+      { personaId: "CN_EN_R", stance: "in", line: "This gives me the story I'd tell my board." },
+      { personaId: "CN_IC_R", stance: "in", line: "Finally, the energy security context. I can build on this." },
+      { personaId: "CN_PG_V", stance: "unsure", line: "It fits the direction of policy. I still need to see the numbers." },
+      { personaId: "CN_CH_A", stance: "unsure", line: "It explains why this matters for supply chains. Still no example I'd share." },
+      { personaId: "CN_TE_A", stance: "unsure", line: "Useful background. I'd share it if there were a partner story." },
+    ],
+  },
+  {
+    id: "considered",
+    number: 3,
     name: "Get considered",
     funnel: "Consideration",
     goal: "Get technical, safety and compliance teams to check the claim for themselves, and clear it.",
@@ -106,10 +138,10 @@ export const stages: CampaignStage[] = [
     ],
   },
   {
-    id: "decision",
-    number: 3,
-    name: "Win the decision",
-    funnel: "Decision",
+    id: "chosen",
+    number: 4,
+    name: "Get chosen",
+    funnel: "Selection",
     goal: "Show finance and strategy what it's worth, so choosing it becomes a sound business decision.",
     whoMatters: "Finance and strategy. They decide whether it's worth the money.",
     message:
@@ -130,7 +162,7 @@ export const stages: CampaignStage[] = [
     people: [
       { personaId: "CN_FL_V", stance: "in", line: "Now I can see what it's worth, under scenarios I recognise. I'd back this." },
       { personaId: "CN_FL_R", stance: "in", line: "Return for the risk, compared with the alternatives. This is an investment case." },
-      { personaId: "CN_EN_B", stance: "in", line: "It supports energy security and holds up under different futures. That fits our plans." },
+      { personaId: "CN_CH_R", stance: "in", line: "A clear return on investment. I can take this to the investment committee." },
       { personaId: "CN_PG_V", stance: "in", line: "It fits national policy and the numbers add up. I can support it." },
       { personaId: "CN_EN_V", stance: "in", line: "The proof came first, so I trust the business case built on it." },
       { personaId: "CN_TE_B", stance: "unsure", line: "If the calculator uses our operating data, I need to know it's kept secure." },
@@ -138,9 +170,9 @@ export const stages: CampaignStage[] = [
   },
   {
     id: "recommended",
-    number: 4,
+    number: 5,
     name: "Get recommended",
-    funnel: "Advocacy",
+    funnel: "Recommendation",
     goal: "Give the people who spread ideas a real Chinese example to point to, so others hear about it from someone they trust.",
     whoMatters: "The people who pass ideas on across industry, government and finance.",
     message:
