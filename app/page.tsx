@@ -75,6 +75,7 @@ export default function Room() {
     const person = params.get("person");
     const linkedMarket = readMarket();
     setMarketId(linkedMarket);
+    saveMarket(linkedMarket);
     const linkedPeople = markets[linkedMarket].people;
     if (version && markets[linkedMarket].messages.some((item) => item.id === version)) {
       setMessageId(version);
@@ -414,16 +415,14 @@ export default function Room() {
 
           <nav className="frDeeper" aria-label="Go deeper">
             <span className="frDeeperLabel">Or go deeper</span>
-            {deeperLinks
-              .filter((link) => marketId === "china" || link.id === "people")
-              .map((link) => (
+            {deeperLinks.map((link) => (
               <a
                 key={link.href}
                 className="frDeeperLink"
                 href={
                   link.id === "journey"
-                    ? `${link.href}?version=${messageId}`
-                    : link.id === "people" && marketId === "ksa"
+                    ? `${link.href}?${marketId === "ksa" ? "market=ksa&" : ""}version=${messageId}`
+                    : marketId === "ksa"
                       ? `${link.href}?market=ksa`
                       : link.href
                 }
@@ -433,9 +432,6 @@ export default function Room() {
                 {link.cta}
               </a>
             ))}
-            {marketId === "ksa" && (
-              <span className="frDeeperNote">Ask the room and Follow the decision are China only for now.</span>
-            )}
           </nav>
         </>
       )}

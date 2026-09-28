@@ -22,7 +22,9 @@ export function PeopleList() {
     setVersionId(readVersion());
     const params = new URLSearchParams(window.location.search);
     const person = params.get("person");
-    setMarket(readMarket());
+    const linkedMarket = readMarket();
+    setMarket(linkedMarket);
+    saveMarket(linkedMarket);
     // A ?person= link opens that person's profile straight away.
     if (person && [...personas, ...ksaPeople].some((item) => item.id === person)) openProfile(person);
   }, [openProfile]);
