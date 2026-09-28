@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
-import { personas, segments, InfluenceRole } from "@/data/personas";
-import { roomMessages, stanceLabels, stanceOrder, Reaction } from "@/data/reactions";
+import { segments, InfluenceRole } from "@/data/personas";
+import { stanceLabels, stanceOrder, Reaction } from "@/data/reactions";
+import { markets, MarketId, RoomPerson, readMarket, saveMarket } from "@/data/markets";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import { SectionIcon, SectionId, sections } from "@/components/Sections";
@@ -19,16 +20,13 @@ const roleRows: { role: InfluenceRole; label: string; hint: string }[] = [
   { role: "reframe", label: "Reshapers", hint: "Change what it means" },
 ];
 
-// Order in which voices take turns in the spotlight for the original message.
-const originalSpeakers = ["CN_EN_A", "CN_IC_A", "CN_CH_B", "CN_FL_V", "CN_EN_R", "CN_IC_B"];
-
 const SPEAK_MS = 4200;
 
 // Each person sits on their own colour until the room reacts.
 // Colours are dealt out in a shuffled order so they never line up with role or group.
 const restColours = ["--rest-1", "--rest-2", "--rest-3", "--rest-4", "--rest-5", "--rest-6"];
-const restOrder = personas
-  .map((persona) => persona.id)
+const restOrder = [...markets.china.people, ...markets.ksa.people]
+  .map((person) => person.id)
   .sort((a, b) => hashText(`${a}:rest`) - hashText(`${b}:rest`));
 
 function hashText(text: string) {
@@ -64,20 +62,27 @@ export default function Room() {
   const [playing, setPlaying] = useState(true);
   // Whether the visitor has tried at least one version other than the original.
   const [tried, setTried] = useState(false);
+  const [marketId, setMarketId] = useState<MarketId>("china");
   const { openProfile } = useProfile();
+  const market = markets[marketId];
+  const roomMessages = market.messages;
+  const people = market.people;
 
   // Links from other pages can open the room on a version (?version=) or a person (?person=).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const version = params.get("version");
     const person = params.get("person");
-    if (version && roomMessages.some((item) => item.id === version)) {
+    const linkedMarket = readMarket();
+    setMarketId(linkedMarket);
+    const linkedPeople = markets[linkedMarket].people;
+    if (version && markets[linkedMarket].messages.some((item) => item.id === version)) {
       setMessageId(version);
       saveVersion(version);
       setReacted(true);
       if (version !== "original") setTried(true);
     }
-    if (person && personas.some((item) => item.id === person)) {
+    if (person && linkedPeople.some((item) => item.id === person)) {
       setReacted(true);
       setPinnedId(person);
       setPlaying(false);
@@ -91,9 +96,9 @@ export default function Room() {
   );
 
   const speakers = useMemo(() => {
-    if (message.id === "original") return originalSpeakers;
+    if (message.id === "original") return market.originalSpeakers;
     return message.reactions.filter((item) => item.shift).map((item) => item.personaId);
-  }, [message]);
+  }, [message, market]);
 
   useEffect(() => {
     if (!reacted || !playing || pinnedId) return;
@@ -105,7 +110,7 @@ export default function Room() {
   }, [reacted, playing, pinnedId, speakers.length]);
 
   const speakerId = pinnedId ?? speakers[speakerIndex % speakers.length];
-  const speaker = personas.find((item) => item.id === speakerId)!;
+  const speaker = people.find((item) => item.id === speakerId)!;
   const speakerReaction = reactionById[speakerId];
 
   const counts = stanceOrder.map((stance) => ({
@@ -125,6 +130,20 @@ export default function Room() {
     setSpeakerIndex(0);
     setPinnedId(null);
     setPlaying(true);
+  }
+
+  function chooseMarket(id: MarketId) {
+    setMarketId(id);
+    saveMarket(id);
+    setSpeakerIndex(0);
+    setPinnedId(null);
+    setPlaying(true);
+    // Keep the address shareable: ?market=ksa for Saudi Arabia, nothing for China.
+    const url = new URL(window.location.href);
+    if (id === "ksa") url.searchParams.set("market", "ksa");
+    else url.searchParams.delete("market");
+    url.searchParams.delete("person");
+    window.history.replaceState(null, "", url);
   }
 
   function pickPerson(id: string) {
@@ -160,7 +179,11 @@ export default function Room() {
               return (
                 <li key={step} className={done ? "done" : current ? "current" : ""}>
                   <span className="frPathDot">{done ? "✓" : index + 1}</span>
-                  {index === 2 && tried ? <a href={`/recommendation?version=${messageId}`}>{step}</a> : step}
+                  {index === 2 && tried && marketId === "china" ? (
+                    <a href={`/recommendation?version=${messageId}`}>{step}</a>
+                  ) : (
+                    step
+                  )}
                 </li>
               );
             })}
@@ -178,6 +201,19 @@ export default function Room() {
       )}
 
       <section className="frMessage">
+        <div className="marketSwitch frMarket" role="group" aria-label="Choose a market">
+          {(["china", "ksa"] as MarketId[]).map((id) => (
+            <button
+              key={id}
+              className={marketId === id ? "active" : ""}
+              aria-pressed={marketId === id}
+              onClick={() => chooseMarket(id)}
+            >
+              {markets[id].name}
+              {id === "ksa" && <span>New</span>}
+            </button>
+          ))}
+        </div>
         <p className="frEyebrow">{reacted ? message.label : "The message"}</p>
         <blockquote key={message.id} className="frProposition">
           “{message.proposition}”
@@ -260,6 +296,7 @@ export default function Room() {
                 speakerId={reacted ? speakerId : null}
                 highlightIds={message.surprise.personaIds}
                 messageId={message.id}
+                people={people}
                 onPick={pickPerson}
               />
             ))}
@@ -267,7 +304,7 @@ export default function Room() {
           <p className="frHint">
             {reacted
               ? "Tap anyone to hear why."
-              : "24 synthetic people who shape this decision in China. Tap anyone to see their reaction."}
+              : `24 synthetic people who shape this decision in ${market.name}. Tap anyone to see their reaction.`}
           </p>
         </section>
 
@@ -279,8 +316,10 @@ export default function Room() {
                   <Face id={speaker.id} mood={speakerReaction.stance} size={112} />
                 </div>
                 <div>
-                  <h2>{speaker.name}</h2>
-                  <p className="frSpotZh" lang="zh-Hans">{speaker.nameZh}</p>
+                  <h2>{speaker.name.replace(/-/g, "\u2011")}</h2>
+                  <p className="frSpotZh" lang={speaker.lang} dir={speaker.lang === "ar" ? "rtl" : undefined}>
+                    {speaker.nameLocal}
+                  </p>
                   <p className="frSpotRole">{speaker.role}</p>
                   <p className="frSpotStance">
                     {speakerReaction.shift && speakerReaction.shift.from !== speakerReaction.stance && (
@@ -302,7 +341,7 @@ export default function Room() {
 
               <div className="frWhy">
                 <p className="frEyebrow">Why we think this</p>
-                <p>{speakerReaction.shift ? speakerReaction.shift.reason : speaker.actionDetail}</p>
+                <p>{speakerReaction.shift ? speakerReaction.shift.reason : speaker.why}</p>
               </div>
 
               <div className="frNeeds">
@@ -340,7 +379,21 @@ export default function Room() {
 
       {reacted && (
         <>
-          {tried ? (
+          {tried && marketId === "ksa" ? (
+            <section className="frRecommend" aria-labelledby="recommend-title">
+              <SectionIcon id="recommendation" size={56} />
+              <div className="frRecommendText">
+                <h2 id="recommend-title">Compare the two rooms</h2>
+                <p>
+                  The campaign recommendation is built for China so far; the Saudi one comes next. Meanwhile, see how
+                  China reacts to the same version.
+                </p>
+              </div>
+              <button className="nextLink primary" onClick={() => chooseMarket("china")}>
+                See the China room →
+              </button>
+            </section>
+          ) : tried ? (
             <section className="frRecommend" aria-labelledby="recommend-title">
               <SectionIcon id="recommendation" size={56} />
               <div className="frRecommendText">
@@ -372,17 +425,28 @@ export default function Room() {
 
           <nav className="frDeeper" aria-label="Go deeper">
             <span className="frDeeperLabel">Or go deeper</span>
-            {deeperLinks.map((link) => (
+            {deeperLinks
+              .filter((link) => marketId === "china" || link.id === "people")
+              .map((link) => (
               <a
                 key={link.href}
                 className="frDeeperLink"
-                href={link.id === "journey" ? `${link.href}?version=${messageId}` : link.href}
+                href={
+                  link.id === "journey"
+                    ? `${link.href}?version=${messageId}`
+                    : link.id === "people" && marketId === "ksa"
+                      ? `${link.href}?market=ksa`
+                      : link.href
+                }
                 style={{ "--accent": sections[link.id].colour } as CSSProperties}
               >
                 <SectionIcon id={link.id} size={30} />
                 {link.cta}
               </a>
             ))}
+            {marketId === "ksa" && (
+              <span className="frDeeperNote">Ask the room and Follow the decision are China only for now.</span>
+            )}
           </nav>
         </>
       )}
@@ -407,6 +471,7 @@ function RoleRow({
   speakerId,
   highlightIds,
   messageId,
+  people,
   onPick,
 }: {
   row: (typeof roleRows)[number];
@@ -416,6 +481,7 @@ function RoleRow({
   speakerId: string | null;
   highlightIds: string[];
   messageId: string;
+  people: RoomPerson[];
   onPick: (id: string) => void;
 }) {
   return (
@@ -425,7 +491,7 @@ function RoleRow({
         <small>{row.hint}</small>
       </span>
       {segments.map((segment, colIndex) => {
-        const person = personas.find((item) => item.segment === segment && item.influenceRole === row.role)!;
+        const person = people.find((item) => item.segment === segment && item.influenceRole === row.role)!;
         const reaction = reactionById[person.id];
         const mood = reacted ? reaction.stance : "waiting";
         // Ripple outwards from the middle of the room.
@@ -465,7 +531,7 @@ function RoleRow({
               )}
             </span>
             <span className="frName">
-              <span className="frNameFull">{person.name}</span>
+              <span className="frNameFull">{person.name.replace(/-/g, "\u2011")}</span>
               <span className="frNameShort">{person.name.split(" ")[0]}</span>
             </span>
             <span className="frState">{reacted ? stanceLabels[reaction.stance] : " "}</span>

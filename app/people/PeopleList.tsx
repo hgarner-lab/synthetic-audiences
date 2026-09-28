@@ -5,6 +5,8 @@ import { personas, segments } from "@/data/personas";
 import { roomMessages, stanceLabels } from "@/data/reactions";
 import { Portrait } from "@/components/Portrait";
 import { ksaPeople } from "@/data/ksaPeople";
+import { ksaRoomMessages } from "@/data/ksaRoom";
+import { readMarket, saveMarket } from "@/data/markets";
 import { SectionTag } from "@/components/Sections";
 import { useProfile } from "@/components/Profile";
 import { readVersion, versionLabel } from "@/components/version";
@@ -20,13 +22,14 @@ export function PeopleList() {
     setVersionId(readVersion());
     const params = new URLSearchParams(window.location.search);
     const person = params.get("person");
-    if (params.get("market") === "ksa" || person?.startsWith("SA_")) setMarket("ksa");
+    setMarket(readMarket());
     // A ?person= link opens that person's profile straight away.
     if (person && [...personas, ...ksaPeople].some((item) => item.id === person)) openProfile(person);
   }, [openProfile]);
 
   const chooseMarket = (next: "china" | "ksa") => {
     setMarket(next);
+    saveMarket(next);
     setActiveSegment("All");
     const url = new URL(window.location.href);
     if (next === "ksa") url.searchParams.set("market", "ksa");
@@ -36,9 +39,10 @@ export function PeopleList() {
   };
 
   const reactions = useMemo(() => {
-    const message = roomMessages.find((item) => item.id === versionId) ?? roomMessages[0];
+    const messages = market === "ksa" ? ksaRoomMessages : roomMessages;
+    const message = messages.find((item) => item.id === versionId) ?? messages[0];
     return Object.fromEntries(message.reactions.map((item) => [item.personaId, item.stance]));
-  }, [versionId]);
+  }, [versionId, market]);
 
   const visiblePeople = activeSegment === "All" ? personas : personas.filter((p) => p.segment === activeSegment);
   const visibleKsa = activeSegment === "All" ? ksaPeople : ksaPeople.filter((p) => p.segment === activeSegment);
@@ -73,8 +77,15 @@ export function PeopleList() {
             </p>
           ) : (
             <p className="communityIntroCopy">
-              Meet the 24 people who shape the same kind of decision in Saudi Arabia. They haven&rsquo;t reacted to a
-              message yet: that comes next.
+              Meet the 24 people who shape the same kind of decision in Saudi Arabia. Their reactions are to the{" "}
+              <strong>
+                {(versionId === "original"
+                  ? "Original message"
+                  : ksaRoomMessages.find((item) => item.id === versionId)?.label ?? "Original message"
+                ).toLowerCase()}
+              </strong>
+              .{" "}
+              <a href={`/?market=ksa&version=${versionId}`}>Try another version in the room</a>.
             </p>
           )}
         </div>
@@ -112,7 +123,7 @@ export function PeopleList() {
                   <strong>{person.name.replace(/-/g, "\u2011")}</strong>
                 </div>
                 <span>{person.role}</span>
-                <em className="personStance st-waiting">Not in the room yet</em>
+                <em className={`personStance st-${reactions[person.id]}`}>{stanceLabels[reactions[person.id]]}</em>
               </div>
             </button>
           ))}
