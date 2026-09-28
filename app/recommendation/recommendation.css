@@ -918,3 +918,155 @@
     display: none;
   }
 }
+
+/* People names and faces open their profile in place. */
+.rcPersonLink,
+button.rcAskedPerson,
+button.rcTestPerson {
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.rcPersonLink {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.rcPersonLink:hover {
+  text-decoration: underline;
+}
+
+button.rcAskedPerson {
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+button.rcAskedPerson:hover {
+  text-decoration: underline;
+}
+
+button.rcTestPerson {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+button.rcTestPerson:hover {
+  border-color: var(--accent);
+}
+
+button.rcTestPerson small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* Goal picker */
+.rcGoal {
+  margin-top: 26px;
+}
+
+.rcGoal > span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.rcGoalChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rcGoalChips button {
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.rcGoalChips button.isActive {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+/* Main navigation (components/PageShell.tsx) */
+.shellNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.shellNav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 5px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.shellNav a:hover {
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.shellNav a.isCurrent {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+.shellNav .sectionIcon {
+  opacity: 0.85;
+}
+
+@media (max-width: 760px) {
+  .shellNav span {
+    display: none;
+  }
+
+  .shellNav a {
+    padding: 5px;
+  }
+}
+
+@media print {
+  .shellNav,
+  .rcGoal {
+    display: none;
+  }
+}
+
+.rcFoot a {
+  color: var(--ink);
+  font-weight: 700;
+}

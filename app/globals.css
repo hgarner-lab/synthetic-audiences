@@ -2979,3 +2979,104 @@ a.prototypeTag {
   font-size: 13px;
   color: var(--muted);
 }
+
+/* Profile additions (components/Profile.tsx). */
+.profileStance {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 3px 10px;
+  color: #000 !important;
+}
+
+.profileStance.st-in { background: #4fd6b8; }
+.profileStance.st-unsure { background: #f5b83d; }
+.profileStance.st-pushback { background: #ff5a3c; }
+.profileStance.st-out { background: #8a8a8a; }
+
+.profileVersions,
+.profileWins {
+  margin-top: 26px;
+}
+
+.profileVersions ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.profileVersions a {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.profileVersions a:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.profileVersions li.isCurrent a {
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 700;
+}
+
+.profileVersions em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.profileDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.profileDot.st-in { background: #4fd6b8; }
+.profileDot.st-unsure { background: #f5b83d; }
+.profileDot.st-pushback { background: #ff5a3c; }
+.profileDot.st-out { background: #8a8a8a; }
+
+.profileWins p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.profileWins a {
+  color: #f08b62;
+  font-weight: 700;
+}
+
+.personaPanel .nextLink .face {
+  --bg: #eee;
+  border-radius: 50%;
+}
+
+.personStance {
+  display: inline-block;
+  margin-top: 8px;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #000;
+  justify-self: start;
+}
+
+.personStance.st-in { background: #4fd6b8; }
+.personStance.st-unsure { background: #f5b83d; }
+.personStance.st-pushback { background: #ff5a3c; }
+.personStance.st-out { background: #8a8a8a; }
+
+.profileWins + .panelGrid {
+  margin-top: 26px;
+}
