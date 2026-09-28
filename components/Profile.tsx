@@ -8,6 +8,7 @@ import { snapshots, stages } from "@/data/campaign";
 import { Face } from "@/components/Face";
 import { Portrait } from "@/components/Portrait";
 import { ksaPeople, KsaPerson } from "@/data/ksaPeople";
+import { ksaRoomMessages } from "@/data/ksaRoom";
 import { readVersion, versionLabel } from "@/components/version";
 import type { CardExtras } from "@/data/cards";
 
@@ -205,10 +206,24 @@ function ProfilePanel({ persona, onClose }: { persona: Persona; onClose: () => v
   );
 }
 
-// A Saudi person's profile. They haven't reacted to anything yet, so the profile shows
-// who they are and what they need, from the persona cards.
+// A Saudi person's profile: their reaction in the Saudi room, and who they are and what
+// they need, from the persona cards. The campaign recommendation is China only for now.
 function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () => void }) {
   const [extras, setExtras] = useState<CardExtras | null>(null);
+  const [versionId, setVersionId] = useState("original");
+  const reactionTo = (id: string) =>
+    (ksaRoomMessages.find((item) => item.id === id) ?? ksaRoomMessages[0]).reactions.find(
+      (item) => item.personaId === person.id
+    )!;
+  const labelFor = (id: string) => {
+    const message = ksaRoomMessages.find((item) => item.id === id);
+    return !message || message.id === "original" ? "Original message" : message.label;
+  };
+  const current = reactionTo(versionId);
+
+  useEffect(() => {
+    setVersionId(readVersion());
+  }, []);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => event.key === "Escape" && onClose();
@@ -251,11 +266,28 @@ function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () =
         </div>
 
         <div className="likelyQuestion">
-          <span>Not in the room yet</span>
-          <p>
-            The Saudi room hasn&rsquo;t heard a message yet, so there are no reactions to show yet.
-          </p>
+          <span>Reaction to {labelFor(versionId).toLowerCase()}</span>
+          <strong className={`profileStance st-${current.stance}`}>{stanceLabels[current.stance]}</strong>
+          <p>&ldquo;{current.line}&rdquo;</p>
         </div>
+
+        <section className="profileVersions">
+          <p className="eyebrow">Across all five versions</p>
+          <ul>
+            {ksaRoomMessages.map((message) => {
+              const reaction = reactionTo(message.id);
+              return (
+                <li key={message.id} className={message.id === versionId ? "isCurrent" : ""}>
+                  <a href={`/?market=ksa&version=${message.id}&person=${person.id}`}>
+                    <span className={`profileDot st-${reaction.stance}`} title={stanceLabels[reaction.stance]} />
+                    <span>{labelFor(message.id)}</span>
+                    <em>{stanceLabels[reaction.stance]}</em>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
 
         {extras && (
           <div className="panelGrid">
@@ -289,6 +321,13 @@ function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () =
         </div>
 
         <MoreAboutThem personaId={person.id} name={person.name} />
+
+        <div className="nextSteps">
+          <a className="nextLink primary" href={`/?market=ksa&version=${versionId}&person=${person.id}`}>
+            <Face id={person.id} mood={current.stance} size={22} />
+            See {person.name} in the room
+          </a>
+        </div>
       </aside>
     </div>
   );

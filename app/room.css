@@ -358,9 +358,10 @@
   font-size: 12px;
   font-weight: 700;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.2;
+  text-align: center;
+  /* Longer names (e.g. "Hanan Al-Ghamdi") wrap onto a second line instead of being cut off. */
+  overflow-wrap: normal;
 }
 
 .frState {

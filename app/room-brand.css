@@ -226,3 +226,14 @@
 .fr .frRecommendText {
   flex: 1 1 320px;
 }
+
+/* China / Saudi Arabia switch above the message. */
+.fr .frMarket {
+  margin: 0 0 18px;
+}
+
+.fr .frDeeperNote {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 13px;
+}
