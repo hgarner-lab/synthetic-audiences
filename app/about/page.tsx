@@ -6,9 +6,9 @@ import "../recommendation/recommendation.css";
 import "./about.css";
 
 export const metadata: Metadata = {
-  title: "About MATE",
+  title: "About",
   description:
-    "How MATE, the McCann Audience Truth Engine, turns what McCann knows about an audience into people you can see, question and test ideas on.",
+    "How the McCann Audience Truth Engine turns what McCann knows about an audience into people you can see, question and test ideas on.",
 };
 
 const enginePillars = [
@@ -84,14 +84,14 @@ export default function About() {
       </header>
 
       <section className="rcHero abHero">
-        <p className="rcEyebrow">About MATE · McCann Audience Truth Engine</p>
+        <p className="rcEyebrow">About the McCann Audience Truth Engine</p>
         <h1>Audience truth you can work with.</h1>
         <p className="abHeroLead">
-          MATE turns what McCann knows about an audience into people you can see, question and
+          The Engine turns what McCann knows about an audience into people you can see, question and
           test ideas on. Every reaction traces back to the evidence behind it.
         </p>
         <p className="abHeroSupport">
-          MATE is designed to work with AI, so the people can answer new questions and react to
+          The Engine is designed to work with AI, so the people can answer new questions and react to
           new ideas. In this demo, their reactions are prepared in advance from their data.
         </p>
       </section>
@@ -108,7 +108,7 @@ export default function About() {
           </p>
         </div>
 
-        <div className="abStack" aria-label="How MATE fits together">
+        <div className="abStack" aria-label="How the Engine fits together">
           <div className="abLayer abLayerExperience">
             <div className="abLayerLabel">What you use</div>
             <div className="abLayerBody">
@@ -175,8 +175,8 @@ export default function About() {
                 ))}
               </div>
               <p className="abLayerNote">
-                Sources vary by project. MATE can combine McCann&rsquo;s own research with approved
-                outside, client and commissioned sources.
+                Sources vary by project. The Engine can combine McCann&rsquo;s own research, data from our
+                partners, client data and commissioned research.
               </p>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function About() {
       </section>
 
       <footer className="rcFoot">
-        <p>MATE is an early prototype of the McCann Audience Truth Engine.</p>
+        <p>The McCann Audience Truth Engine is an early prototype.</p>
         <McCannCredit />
       </footer>
     </main>
