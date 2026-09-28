@@ -1,19 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { personas, segments, InfluenceRole } from "@/data/personas";
+import { segments, InfluenceRole } from "@/data/personas";
 import { Stance, stanceLabels, stanceOrder } from "@/data/reactions";
-import { recommendation, recommendedId, versionTallies } from "@/data/recommendation";
-import {
-  angleStage,
-  bigIdea,
-  channelsNote,
-  countStances,
-  goalStage,
-  snapshots,
-  stages,
-  stillToWin,
-} from "@/data/campaign";
+import { goalStage } from "@/data/campaign";
+import { countStances, Plan, plans } from "@/data/plans";
+import { MarketId, markets, readMarket, saveMarket } from "@/data/markets";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import { SectionIcon, SectionTag, sections } from "@/components/Sections";
@@ -22,23 +14,19 @@ import { useProfile } from "@/components/Profile";
 import { audienceQuestions } from "@/data/questions";
 import "./recommendation.css";
 
-const personById = Object.fromEntries(personas.map((persona) => [persona.id, persona]));
-const recommendedTally = versionTallies.find((tally) => tally.id === recommendedId)!;
 const roleOrder: InfluenceRole[] = ["validate", "block", "amplify", "reframe"];
 
 // The room laid out as on the home page: groups across, roles down.
-const roomOrder = roleOrder.flatMap((role) =>
-  segments.map((segment) => personas.find((p) => p.segment === segment && p.influenceRole === role)!.id)
-);
-
-function nameOf(personaId: string) {
-  return personById[personaId].name;
+function roomOrder(plan: Plan) {
+  return roleOrder.flatMap((role) =>
+    segments.map((segment) => plan.people.find((p) => p.segment === segment && p.influenceRole === role)!.id)
+  );
 }
 
-function MiniRoom({ stances, focus }: { stances: Record<string, Stance>; focus: string[] }) {
+function MiniRoom({ plan, stances, focus }: { plan: Plan; stances: Record<string, Stance>; focus: string[] }) {
   return (
     <div className="rcMiniRoom" aria-hidden="true">
-      {roomOrder.map((id) => (
+      {roomOrder(plan).map((id) => (
         <span key={id} className={`rcMiniFace st-${stances[id]} ${focus.includes(id) ? "focus" : ""}`}>
           <Face id={id} mood={stances[id]} size={34} />
         </span>
@@ -59,6 +47,13 @@ function StanceBar({ stances }: { stances: Record<string, Stance> }) {
 }
 
 export default function Recommendation() {
+  const [marketId, setMarketId] = useState<MarketId>("china");
+  const plan = plans[marketId];
+  const { stages, snapshots, versionTallies, recommendedId, angleStage, stillToWin, recommendation, bigIdea } = plan;
+  const personById = Object.fromEntries(plan.people.map((person) => [person.id, person]));
+  const nameOf = (personaId: string) => personById[personaId].name;
+  const recommendedTally = versionTallies.find((tally) => tally.id === recommendedId)!;
+  const marketQuery = marketId === "ksa" ? "market=ksa&" : "";
   const [pickedId, setPickedId] = useState<string | null>(null);
   const [goal, setGoal] = useState<string | null>(null);
   const { openProfile } = useProfile();
@@ -75,7 +70,9 @@ export default function Recommendation() {
 
   useEffect(() => {
     const version = new URLSearchParams(window.location.search).get("version");
-    if (version && versionTallies.some((tally) => tally.id === version)) setPickedId(version);
+    const linkedMarket = readMarket();
+    setMarketId(linkedMarket);
+    if (version && plans[linkedMarket].versionTallies.some((tally) => tally.id === version)) setPickedId(version);
     // The goal chosen on the explore page, if the visitor went through it.
     try {
       const saved = window.sessionStorage.getItem("sa-goal");
@@ -91,13 +88,25 @@ export default function Recommendation() {
   const goalStageInfo = stages.find((stage) => stage.id === goalStageId);
   const finalCounts = countStances(snapshots[snapshots.length - 1].stances);
 
+  function chooseMarket(id: MarketId) {
+    setMarketId(id);
+    saveMarket(id);
+    setPickedId(null);
+    const url = new URL(window.location.href);
+    if (id === "ksa") url.searchParams.set("market", "ksa");
+    else url.searchParams.delete("market");
+    url.searchParams.delete("version");
+    window.history.replaceState(null, "", url);
+  }
+
   async function copyLink() {
+    const link = `${window.location.origin}/recommendation${marketId === "ksa" ? "?market=ksa" : ""}`;
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/recommendation`);
+      await navigator.clipboard.writeText(link);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2500);
     } catch {
-      window.prompt("Copy this link:", `${window.location.origin}/recommendation`);
+      window.prompt("Copy this link:", link);
     }
   }
 
@@ -110,7 +119,15 @@ export default function Recommendation() {
 
       <section className="rcHero">
         <SectionTag id="recommendation" />
-        <p className="rcEyebrow">Aramco Advantage Crude · China</p>
+        <div className="marketSwitch rcMarket" role="group" aria-label="Choose a market">
+          {(["china", "ksa"] as MarketId[]).map((id) => (
+            <button key={id} className={marketId === id ? "active" : ""} aria-pressed={marketId === id} onClick={() => chooseMarket(id)}>
+              {markets[id].name}
+              {id === "ksa" && <span>New</span>}
+            </button>
+          ))}
+        </div>
+        <p className="rcEyebrow">Aramco Advantage Crude · {plan.marketName}</p>
         <h1>{bigIdea.name}</h1>
         <p className="rcLine">“{bigIdea.line}”</p>
         <p className="rcLead">{bigIdea.summary}</p>
@@ -154,8 +171,7 @@ export default function Recommendation() {
           <p className="rcPicked">
             {picked.id === recommendedId ? (
               <>
-                You picked <strong>{picked.label}</strong>. That&rsquo;s the version this campaign is built on: it&rsquo;s
-                the message for stage 3, {stages[2].name.toLowerCase()}.
+                You picked <strong>{picked.label}</strong>. {plan.builtOn}
               </>
             ) : pickedStage ? (
               <>
@@ -166,8 +182,8 @@ export default function Recommendation() {
             ) : (
               <>
                 You looked at the <strong>{picked.label.toLowerCase()}</strong>: {picked.counts.in} people leaning in.
-                This campaign replaces it with independent proof ({recommendedTally.counts.in} leaning in, nobody
-                pushing back).
+                This campaign is built on {recommendedTally.label.toLowerCase()} instead ({recommendedTally.counts.in}{" "}
+                leaning in).
               </>
             )}
           </p>
@@ -177,7 +193,8 @@ export default function Recommendation() {
       <section className="rcSection">
         <h2>How the room moves through the campaign</h2>
         <p className="rcIntro">
-          Each stage wins over a different group. By the end, {finalCounts.in} of 24 people are leaning in.
+          Each stage wins over a different group. By the end, {finalCounts.in} of 24 people in {plan.marketName} are
+          leaning in.
         </p>
         <div className="rcCompare">
           {snapshots.map((snapshot, index) => {
@@ -217,10 +234,7 @@ export default function Recommendation() {
 
       <section className="rcSection">
         <h2>How we chose where to start</h2>
-        <p className="rcIntro">
-          We put five versions of the message to the room. Leading with independent proof won over the most people
-          and created no new objections, so the campaign opens with it.
-        </p>
+        <p className="rcIntro">{plan.choseWhy}</p>
         <div className="rcCompare">
           {versionTallies.map((tally) => (
             <div
@@ -230,7 +244,9 @@ export default function Recommendation() {
               <div className="rcRowLabel">
                 <strong>{tally.label}</strong>
                 <span>
-                  {tally.id === recommendedId && <em className="rcTag">Where we start</em>}
+                  {tally.id === recommendedId && (
+                    <em className="rcTag">{marketId === "china" ? "Where we start" : "What we build on"}</em>
+                  )}
                   {tally.id === pickedId && tally.id !== recommendedId && <em className="rcTag alt">Your pick</em>}
                 </span>
               </div>
@@ -279,7 +295,7 @@ export default function Recommendation() {
 
               <div className="rcStageBody">
                 <div className="rcStageRoom">
-                  <MiniRoom stances={after} focus={stage.people.map((p) => p.personaId)} />
+                  <MiniRoom plan={plan} stances={after} focus={stage.people.map((p) => p.personaId)} />
                   <p>
                     <strong>{countStances(after).in} of 24</strong> leaning in after this stage
                     {gained > 0 && <span className="rcGain"> +{gained}</span>}
@@ -353,7 +369,7 @@ export default function Recommendation() {
             </article>
           );
         })}
-        <p className="rcSmall">{channelsNote}</p>
+        <p className="rcSmall">{plan.channelsNote}</p>
       </section>
 
       <section className="rcSection">
@@ -395,10 +411,12 @@ export default function Recommendation() {
       <section className="rcSection rcTest" id="test">
         <h2>Test this plan with the room</h2>
         <p className="rcIntro">
-          Put the plan back to the people it&rsquo;s for. Ask them a question, see what happens if you change course, or
-          work on the people still to win.
+          {plan.hasAsk
+            ? "Put the plan back to the people it's for. Ask them a question, see what happens if you change course, or work on the people still to win."
+            : "Put the plan back to the people it's for. See what happens if you change course, or work on the people still to win."}
         </p>
         <div className="rcTestGrid">
+          {plan.hasAsk && (
           <div className="rcTestCard" style={{ "--accent": sections.ask.colour } as React.CSSProperties}>
             <SectionIcon id="ask" size={44} />
             <h3>Ask the room</h3>
@@ -411,6 +429,7 @@ export default function Recommendation() {
               ))}
             </div>
           </div>
+          )}
 
           <div className="rcTestCard" style={{ "--accent": sections.try.colour } as React.CSSProperties}>
             <SectionIcon id="try" size={44} />
@@ -420,7 +439,7 @@ export default function Recommendation() {
               {versionTallies
                 .filter((tally) => tally.id !== recommendedId)
                 .map((tally) => (
-                  <a key={tally.id} href={`/?version=${tally.id}`}>
+                  <a key={tally.id} href={`/?${marketQuery}version=${tally.id}`}>
                     {tally.label}
                     <small>
                       {tally.counts.in} leaning in · {tally.counts.pushback} pushing back
@@ -432,8 +451,11 @@ export default function Recommendation() {
 
           <div className="rcTestCard" style={{ "--accent": sections.people.colour } as React.CSSProperties}>
             <SectionIcon id="people" size={44} />
-            <h3>Win the last two</h3>
-            <p>Two people are still holding out at the end. See what they care about and need.</p>
+            <h3>Win the last {stillToWin.length === 2 ? "two" : stillToWin.length}</h3>
+            <p>
+              {stillToWin.length === 2 ? "Two people are" : `${stillToWin.length} people are`} still holding out at the
+              end. See what they care about and need.
+            </p>
             <div className="rcTestLinks">
               {stillToWin.map((item) => (
                 <button key={item.personaId} className="rcTestPerson" onClick={() => openProfile(item.personaId)}>
@@ -444,7 +466,9 @@ export default function Recommendation() {
                   </span>
                 </button>
               ))}
-              <a href={`/decision?version=${pickedId ?? recommendedId}`}>Follow your message through a refinery</a>
+              {plan.hasDecision && (
+                <a href={`/decision?version=${pickedId ?? recommendedId}`}>Follow your message through a refinery</a>
+              )}
             </div>
           </div>
         </div>

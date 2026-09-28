@@ -9,6 +9,7 @@ import { Face } from "@/components/Face";
 import { Portrait } from "@/components/Portrait";
 import { ksaPeople, KsaPerson } from "@/data/ksaPeople";
 import { ksaRoomMessages } from "@/data/ksaRoom";
+import { plans } from "@/data/plans";
 import { readVersion, versionLabel } from "@/components/version";
 import type { CardExtras } from "@/data/cards";
 
@@ -206,8 +207,18 @@ function ProfilePanel({ persona, onClose }: { persona: Persona; onClose: () => v
   );
 }
 
-// A Saudi person's profile: their reaction in the Saudi room, and who they are and what
-// they need, from the persona cards. The campaign recommendation is China only for now.
+// The Saudi campaign stage that first brings this person to leaning in, if any.
+function ksaWinningStage(personaId: string) {
+  const { snapshots: ksaSnapshots, stages: ksaStages } = plans.ksa;
+  if (ksaSnapshots[0].stances[personaId] === "in") return { kind: "already" as const };
+  for (let index = 1; index < ksaSnapshots.length; index += 1) {
+    if (ksaSnapshots[index].stances[personaId] === "in") return { kind: "stage" as const, stage: ksaStages[index - 1] };
+  }
+  return { kind: "never" as const, stance: ksaSnapshots[ksaSnapshots.length - 1].stances[personaId] as Stance };
+}
+
+// A Saudi person's profile: their reaction in the Saudi room, where the Saudi campaign
+// wins them over, and who they are and what they need, from the persona cards.
 function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () => void }) {
   const [extras, setExtras] = useState<CardExtras | null>(null);
   const [versionId, setVersionId] = useState("original");
@@ -288,6 +299,8 @@ function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () =
             })}
           </ul>
         </section>
+
+        <KsaCampaignNote personaId={person.id} />
 
         {extras && (
           <div className="panelGrid">
@@ -474,4 +487,29 @@ function listWords(items: string[]) {
   const unique = [...new Set(items)];
   if (unique.length <= 1) return unique.join("");
   return `${unique.slice(0, -1).join(", ")} and ${unique[unique.length - 1]}`;
+}
+
+function KsaCampaignNote({ personaId }: { personaId: string }) {
+  const wins = ksaWinningStage(personaId);
+  return (
+    <section className="profileWins">
+      <p className="eyebrow">In the recommended campaign</p>
+      {wins.kind === "already" && <p>Already leaning in before the campaign starts.</p>}
+      {wins.kind === "stage" && (
+        <p>
+          Won over at{" "}
+          <a href={`/recommendation?market=ksa#stage-${wins.stage.id}`}>
+            stage {wins.stage.number}, {wins.stage.name.toLowerCase()}
+          </a>
+          .
+        </p>
+      )}
+      {wins.kind === "never" && (
+        <p>
+          Still to win at the end ({stanceLabels[wins.stance].toLowerCase()}).{" "}
+          <a href="/recommendation?market=ksa#test">See what it would take</a>.
+        </p>
+      )}
+    </section>
+  );
 }

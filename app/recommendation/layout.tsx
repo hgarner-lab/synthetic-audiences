@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Campaign recommendation",
   description:
-    "Proof you can check: a five-stage campaign for Aramco Advantage Crude in China, tested with 24 synthetic decision-makers.",
+    "A five-stage campaign for Aramco Advantage Crude in China and Saudi Arabia, tested with 24 synthetic decision-makers in each.",
   openGraph: {
     title: "Campaign recommendation · McCann Audience Truth Engine",
     description:
-      "Proof you can check: a five-stage campaign for Aramco Advantage Crude in China, tested with 24 synthetic decision-makers.",
+      "A five-stage campaign for Aramco Advantage Crude in China and Saudi Arabia, tested with 24 synthetic decision-makers in each.",
   },
 };
 
