@@ -13,9 +13,9 @@ const description =
   "Put a campaign message in front of the people who decide on it, and see how they react. A McCann prototype.";
 
 export const metadata: Metadata = {
-  title: { default: "MATE · McCann Audience Truth Engine", template: "%s · MATE" },
+  title: { default: "McCann Audience Truth Engine", template: "%s · McCann Audience Truth Engine" },
   description,
-  openGraph: { title: "MATE · McCann Audience Truth Engine", description },
+  openGraph: { title: "McCann Audience Truth Engine", description },
 };
 
 export default function RootLayout({

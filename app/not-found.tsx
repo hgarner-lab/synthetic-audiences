@@ -26,7 +26,7 @@ export default function NotFound() {
       </section>
 
       <footer className="rcFoot">
-        <p>MATE is an early prototype.</p>
+        <p>The McCann Audience Truth Engine is an early prototype.</p>
         <McCannCredit />
       </footer>
     </main>
