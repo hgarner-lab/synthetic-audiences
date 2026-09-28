@@ -248,17 +248,40 @@ function MoreAboutThem({ personaId, name }: { personaId: string; name: string })
           {extras.group && (
             <section className="moreBlock moreGroup">
               <p className="eyebrow">What counts as proof in their group</p>
+              <p className="moreHint">
+                The kinds of evidence their group&rsquo;s institutions accept. If your message can&rsquo;t point to
+                something like this, expect them to hold back.
+              </p>
               <ul className="moreList">
                 {extras.group.proof.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item.research}>{item.plain}</li>
                 ))}
               </ul>
               <p className="eyebrow">What their group is talking about</p>
+              <p className="moreHint">
+                The live debates in their world right now. A message that speaks to these will feel relevant to
+                them.
+              </p>
               <ul className="moreList">
                 {extras.group.debates.map((item) => (
-                  <li key={item}>{item}</li>
+                  <li key={item.research}>{item.plain}</li>
                 ))}
               </ul>
+              <details className="moreResearch">
+                <summary>Show the full research</summary>
+                <p className="eyebrow">Proof, in full</p>
+                <ul className="moreList">
+                  {extras.group.proof.map((item) => (
+                    <li key={item.research}>{item.research}</li>
+                  ))}
+                </ul>
+                <p className="eyebrow">Debates, in full</p>
+                <ul className="moreList">
+                  {extras.group.debates.map((item) => (
+                    <li key={item.research}>{item.research}</li>
+                  ))}
+                </ul>
+              </details>
               <p className="moreSources">
                 Researched on {extras.group.researched}. Sources:{" "}
                 {extras.group.sources.map((source, index, all) => {
@@ -280,7 +303,8 @@ function MoreAboutThem({ personaId, name }: { personaId: string; name: string })
           )}
           <p className="methodNote">
             From McCann&rsquo;s audience cards, last reviewed {extras.reviewed}. The person is synthetic; the
-            background on their group is researched from public sources.
+            background on their group is researched from public sources, and the short versions are our plain
+            summaries of that research.
           </p>
         </div>
       )}

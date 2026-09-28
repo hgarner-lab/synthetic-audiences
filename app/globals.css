@@ -3136,3 +3136,25 @@ a.prototypeTag {
 .moreSources a {
   color: inherit;
 }
+
+.moreDetails .moreHint {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.moreResearch {
+  margin: 0 0 14px;
+}
+
+.moreResearch summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 0 12px;
+}
+
+.moreResearch .moreList {
+  color: var(--muted);
+}

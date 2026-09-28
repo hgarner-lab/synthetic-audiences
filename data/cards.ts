@@ -3,6 +3,7 @@
 // reactions.ts; this only adds to the profile. Load it with import() so pages don't
 // carry the whole file until someone opens a profile's "More about them".
 import source from "@/data/source/synthetic_communities_all_markets.json";
+import { plainGrounding } from "@/data/cardPlain";
 
 type Card = {
   persona_id: string;
@@ -43,8 +44,9 @@ export type CardExtras = {
   influences: string[];
   influenceNote: string;
   group: {
-    proof: string[];
-    debates: string[];
+    // Plain-English lines to show first, and the full research behind them.
+    proof: { plain: string; research: string }[];
+    debates: { plain: string; research: string }[];
     sources: { title: string; url: string }[];
     researched: string;
   } | null;
@@ -95,6 +97,17 @@ export function formatDate(iso: string) {
   });
 }
 
+// Some research lines end with a web-search citation like "([site](url))". The sources
+// are listed separately, so drop it.
+function clean(text: string) {
+  return text.replace(/\s*\(\[[^\]]*\]\([^)]*\)\)/g, "").trim();
+}
+
+// Matches each research line with its plain version, falling back to the research itself.
+function pair(research: string[], plain: string[] = []) {
+  return research.map((line, index) => ({ plain: plain[index] ?? clean(line), research: clean(line) }));
+}
+
 const datasets = (source as { datasets: Dataset[] }).datasets;
 
 // Returns null when the cards have no one with this ID, so the profile simply leaves the section out.
@@ -114,8 +127,8 @@ export function cardExtras(personaId: string): CardExtras | null {
     influenceNote: card.influence_model.role_description,
     group: grounding
       ? {
-          proof: grounding.grounding.proof_currencies.slice(0, 3),
-          debates: grounding.grounding.current_dynamics.slice(0, 2),
+          proof: pair(grounding.grounding.proof_currencies.slice(0, 3), plainGrounding[card.audience_id]?.proof),
+          debates: pair(grounding.grounding.current_dynamics.slice(0, 2), plainGrounding[card.audience_id]?.debates),
           sources: grounding.grounding.key_sources.slice(0, 3),
           researched: formatDate(grounding.retrieved),
         }
