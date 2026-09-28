@@ -22,7 +22,7 @@ export const journeySteps: JourneyStep[] = [
     requirement: {
       title: "Show why it matters to the business",
       description:
-        "Link the choice to competitiveness, secure supply and long-term value, not only to lower carbon.",
+        "Link the choice to competitiveness, secure supply and long-term value, as well as lower carbon.",
       evidence: ["Costs and returns worked out", "A plan for rolling it out"],
     },
   },
@@ -30,7 +30,7 @@ export const journeySteps: JourneyStep[] = [
     personaId: "CN_EN_V",
     stage: "Is it true?",
     arrival: "Once strategy is interested, the technical team checks the claim.",
-    question: "Can we actually prove the carbon advantage?",
+    question: "Can we prove the carbon advantage?",
     interpretation:
       "A carbon figure gets attention, but it won't go far unless people can trust it, compare it and see real operating data behind it.",
     requirement: {

@@ -8,6 +8,7 @@ import { ideaOptions, IdeaOption, IdeaShiftDirection } from "@/data/ideas";
 import { originalMessage } from "@/data/reactions";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
+import { SectionTag } from "@/components/Sections";
 
 const objectives = [
   "Get noticed",
@@ -142,7 +143,7 @@ function PersonaPanel({
             <p>{persona.internalThought}</p>
             <p className="methodNote">
               This person is synthetic: made up, but built from our audience data. This isn't a
-              quote from a real person, or a record of what someone actually did.
+              quote from a real person, or a record of anything someone did.
             </p>
           </div>
         </details>
@@ -271,12 +272,12 @@ function GuidedJourney({
     <section className="journeySection" id="journey">
       <div className="journeyHeader">
         <div>
-          <p className="sectionNumber lightSectionNumber">03 — FOLLOW THE DECISION</p>
+          <SectionTag id="journey" number="03" />
           <h2>See who gets involved, and why.</h2>
         </div>
         <p className="journeyMethod">
-          A likely path this decision could take, based on our audience data. It&rsquo;s an informed
-          example, not a record of real buying decisions.
+          A likely path this decision could take, based on our audience data. Use it as an informed
+          example of how the decision might unfold.
         </p>
       </div>
 
@@ -430,6 +431,12 @@ function AskTheRoom({
   const [askedPrompt, setAskedPrompt] = useState("");
   const [activeSuggestion, setActiveSuggestion] = useState<string | null>(null);
   const [responses, setResponses] = useState<AudienceResponseFixture[]>([]);
+  const [activeAnswer, setActiveAnswer] = useState<string | null>(null);
+
+  const showAnswer = (personaId: string) => {
+    setActiveAnswer(personaId);
+    document.getElementById(`answer-${personaId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
   const [takeaway, setTakeaway] = useState("");
 
   const synthesizeCustomResponses = (): AudienceResponseFixture[] =>
@@ -488,6 +495,7 @@ function AskTheRoom({
       : findClosestQuestion(cleanPrompt);
 
     setAskedPrompt(cleanPrompt);
+    setActiveAnswer(null);
     setActiveSuggestion(suggestionId ?? matched?.id ?? null);
 
     if (matched) {
@@ -496,7 +504,7 @@ function AskTheRoom({
     } else {
       setResponses(synthesizeCustomResponses());
       setTakeaway(
-        "We haven't prepared answers to that exact question yet. Instead, here's what each of these people cares about and needs to see, which is a good guide to how they'd answer."
+        "We haven't prepared answers to that exact question yet. Here's what each of these people cares about and needs to see, which is a good guide to how they'd answer."
       );
     }
   };
@@ -505,7 +513,7 @@ function AskTheRoom({
     <section className="askRoomSection" id="ask">
       <div className="askRoomHeader">
         <div>
-          <p className="sectionNumber">04 — ASK THE ROOM</p>
+          <SectionTag id="ask" number="04" />
           <h2>Don’t just read about your audience. Ask them.</h2>
         </div>
         <p>
@@ -565,7 +573,7 @@ function AskTheRoom({
             <span>The room is listening</span>
             <p>
               Pick a question above or ask your own. You&rsquo;ll hear from several people, each in
-              their own words, instead of one blended answer.
+              their own words.
             </p>
           </div>
         </div>
@@ -581,6 +589,9 @@ function AskTheRoom({
               <span>people answered</span>
             </div>
           </div>
+
+          <AskRoomGrid key={askedPrompt} responses={responses} onPick={showAnswer} />
+          <p className="askHint">Tap a lit-up face to read that person&rsquo;s answer.</p>
 
           <div className="roomTakeaway">
             <span>What the room is telling you</span>
@@ -598,7 +609,8 @@ function AskTheRoom({
 
               return (
                 <article
-                  className="responseCard"
+                  className={activeAnswer === answer.personaId ? "responseCard isActive" : "responseCard"}
+                  id={`answer-${answer.personaId}`}
                   key={answer.personaId}
                   style={{ animationDelay: `${index * 70}ms` }}
                 >
@@ -658,6 +670,52 @@ function AskTheRoom({
         </div>
       )}
     </section>
+  );
+}
+
+// The whole room when a question is asked: the people answering light up with a
+// short speech bubble, everyone else fades back. Colour here marks who is speaking,
+// since answers to a question aren't a verdict.
+const askRoles: Persona["influenceRole"][] = ["validate", "block", "amplify", "reframe"];
+
+function AskRoomGrid({
+  responses,
+  onPick,
+}: {
+  responses: AudienceResponseFixture[];
+  onPick: (personaId: string) => void;
+}) {
+  const answering = new Map(responses.map((answer, index) => [answer.personaId, { answer, index }]));
+  return (
+    <div className="askGrid" role="group" aria-label="Who answered">
+      {askRoles.flatMap((role) =>
+        segments.map((segment) => {
+          const person = personas.find((p) => p.segment === segment && p.influenceRole === role)!;
+          const speaking = answering.get(person.id);
+          return speaking ? (
+            <button
+              key={person.id}
+              className="askSeat speaking"
+              style={{ animationDelay: `${speaking.index * 120}ms` } as React.CSSProperties}
+              onClick={() => onPick(person.id)}
+              aria-label={`${person.name}: ${speaking.answer.theme}. Show full answer`}
+            >
+              <span className="askFace">
+                <Face id={person.id} mood="waiting" size={64} />
+              </span>
+              <span className="askBubble">{speaking.answer.theme}</span>
+              <span className="askName">{person.name}</span>
+            </button>
+          ) : (
+            <span key={person.id} className="askSeat quiet" aria-hidden="true">
+              <span className="askFace">
+                <Face id={person.id} mood="waiting" size={64} />
+              </span>
+            </span>
+          );
+        })
+      )}
+    </div>
   );
 }
 
@@ -743,7 +801,7 @@ function TryAnIdea({
     <section className="tryIdeaSection" id="try">
       <div className="tryIdeaHeader">
         <div>
-          <p className="sectionNumber lightSectionNumber">05 — TRY AN IDEA</p>
+          <SectionTag id="try" number="05" />
           <h2>Change the story. Put it back into the room.</h2>
         </div>
         <p>
@@ -1001,7 +1059,7 @@ function DecisionRoom({
       <section className="communitySection" id="community">
         <div className="communityHeader">
           <div>
-            <p className="eyebrow">Explore</p>
+            <SectionTag id="people" number="06" />
             <h2>Everyone involved in the decision</h2>
             <p className="communityIntroCopy">
               The walkthrough above follows four people. Here you can meet all 24 and see what each
@@ -1107,7 +1165,11 @@ export default function Explore() {
 
   useEffect(() => {
     if (!challenge || !window.location.hash) return;
-    document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
+    const target = () => document.getElementById(window.location.hash.slice(1));
+    target()?.scrollIntoView();
+    // Faces load after the first scroll and push the page down, so scroll again once they have.
+    const timer = window.setTimeout(() => target()?.scrollIntoView(), 700);
+    return () => window.clearTimeout(timer);
   }, [challenge]);
 
   if (!challenge) {

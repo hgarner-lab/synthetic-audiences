@@ -46,7 +46,7 @@ export const ideaOptions: IdeaOption[] = [
         direction: "more-resolved",
         label: "Now connects to a priority",
         reason:
-          "Secure supply and energy security are now part of the message instead of missing from it.",
+          "Secure supply and energy security are now part of the message.",
         evidence: ["Fit with national policy", "What-if scenarios"],
       },
       {
@@ -106,7 +106,7 @@ export const ideaOptions: IdeaOption[] = [
         direction: "more-resolved",
         label: "Can now check the claim",
         reason:
-          "The message now leads with the independent check and the evidence, instead of asking a number to stand on its own.",
+          "The message now leads with the independent check and the evidence behind the number.",
         evidence: ["Checked data from real operations", "A like-for-like comparison"],
       },
       {
@@ -122,7 +122,7 @@ export const ideaOptions: IdeaOption[] = [
         direction: "more-resolved",
         label: "Now open to review",
         reason:
-          "The method and the independent review are now at the centre of the story, not tucked away.",
+          "The method and the independent review are now at the centre of the story.",
         evidence: ["Review by other experts", "An open, clear method"],
       },
       {
@@ -190,7 +190,7 @@ export const ideaOptions: IdeaOption[] = [
         direction: "more-resolved",
         label: "Value to industry is clearer",
         reason:
-          "The message now talks about return on investment and modernising industry, not sustainability on its own.",
+          "The message now talks about return on investment and modernising industry, with sustainability built in.",
         evidence: ["A business case", "Costs and returns worked out"],
       },
       {
@@ -198,7 +198,7 @@ export const ideaOptions: IdeaOption[] = [
         direction: "more-resolved",
         label: "Long-term value is clearer",
         reason:
-          "The decision is now linked to a real business result, not only a carbon advantage.",
+          "The decision is now linked to a real business result as well as a carbon advantage.",
         evidence: ["Costs and returns worked out", "A plan for rolling it out"],
       },
       {
@@ -206,7 +206,7 @@ export const ideaOptions: IdeaOption[] = [
         direction: "new-tension",
         label: "Now wants proof of cause and effect",
         reason:
-          "The bigger the promise about profits, the more evidence is needed that lower carbon actually causes it.",
+          "The bigger the promise about profits, the more evidence is needed that lower carbon causes it.",
         evidence: ["Checked data from real operations", "Results from trials"],
       },
       {

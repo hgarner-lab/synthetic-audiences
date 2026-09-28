@@ -539,61 +539,40 @@
 
 .frDeeper {
   width: min(1180px, calc(100% - 32px));
-  margin: 40px auto 0;
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
-  animation: frFadeUp 500ms ease 1200ms both;
-}
-
-.frDeeper h2 {
-  margin: 0 0 16px;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.frDeeperCards {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.frDeeperCard {
+  margin: 22px auto 0;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border-radius: 16px;
-  background: var(--white);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  animation: frFadeUp 500ms ease 1300ms both;
+}
+
+
+/* A quiet row of secondary links under the main next step. */
+.frDeeperLabel {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+  margin-right: 4px;
+}
+
+.frDeeperLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
   border: 1px solid var(--line);
   color: var(--ink);
-  text-decoration: none;
-  transition: border-color 160ms ease, transform 160ms ease;
-}
-
-.frDeeperCard:hover {
-  border-color: var(--ink);
-  transform: translateY(-2px);
-}
-
-.frDeeperCard strong {
-  font-size: 18px;
-}
-
-.frDeeperCard span {
   font-size: 14px;
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.72);
+  font-weight: 700;
+  text-decoration: none;
 }
 
-.frDeeperCard em {
-  margin-top: auto;
-  padding-top: 6px;
-  font-style: normal;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--in);
+.frDeeperLink:hover {
+  border-color: var(--accent);
 }
 
 .frFoot {
@@ -765,5 +744,83 @@
 
   .frNameShort {
     display: inline;
+  }
+}
+
+
+/* Progress through the main path. */
+.frPath {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.frPath li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.frPath li + li::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--line);
+  margin-right: 10px;
+}
+
+.frPathDot {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.frPath li.done {
+  color: var(--ink);
+}
+
+.frPath li.done .frPathDot {
+  background: var(--in);
+  border-color: var(--in);
+  color: #000;
+}
+
+.frPath li.current {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.frPath li.current .frPathDot {
+  border-color: #fff;
+}
+
+.frPath a {
+  color: inherit;
+}
+
+.frSwitchLabel.prompt {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+@media (max-width: 640px) {
+  .frPath {
+    font-size: 12px;
+    gap: 6px 10px;
+  }
+
+  .frPath li + li::before {
+    display: none;
   }
 }

@@ -75,8 +75,7 @@
 
 .fr .frEyebrow,
 .fr .frColHead,
-.fr .frSurprise span,
-.fr .frDeeper h2 {
+.fr .frSurprise span {
   font-family: var(--font-thin);
   font-stretch: 85%;
   color: rgba(255, 255, 255, 0.74);
@@ -190,14 +189,14 @@
   color: #000;
 }
 
-.fr .frWhy p:last-child,
-.fr .frDeeperCard span {
+.fr .frWhy p:last-child {
   color: var(--muted);
 }
 
 /* ---------- What next ---------- */
 
 .fr .frRecommend {
+  justify-content: flex-start;
   background: var(--grad-field), #0a0a0a;
   border: 1px solid var(--line);
   color: #fff;
@@ -222,10 +221,8 @@
   border-color: #fff;
 }
 
-.fr .frDeeperCard strong {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-stretch: 75%;
-  text-transform: uppercase;
-  font-size: 22px;
+
+
+.fr .frRecommendText {
+  flex: 1 1 320px;
 }
