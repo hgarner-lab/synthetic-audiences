@@ -1,17 +1,10 @@
-// Product name with the McCann wordmark, used at the top of every page.
+// The product lockup, used at the top of every page: MATE, with its full name beside it.
 export function BrandLockup({ tone = "light" }: { tone?: "dark" | "light" }) {
   return (
-    <a className={`brandLockup brandLockup-${tone}`} href="/" aria-label="Synthetic Audiences by McCann, back to the room">
-      <span className="brandLockupName">SYNTHETIC AUDIENCES</span>
+    <a className={`brandLockup brandLockup-${tone}`} href="/" aria-label="MATE, the McCann Audience Truth Engine. Back to the room">
+      <span className="brandLockupName">MATE</span>
       <span className="brandLockupRule" aria-hidden="true" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="brandLockupLogo"
-        src={tone === "light" ? "/brand/mccann-white.png" : "/brand/mccann-black.png"}
-        alt="McCann"
-        width={482}
-        height={114}
-      />
+      <span className="brandLockupFull">McCann Audience Truth Engine</span>
     </a>
   );
 }

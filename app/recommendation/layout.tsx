@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description:
     "Proof you can check: a five-stage campaign for Aramco Advantage Crude in China, tested with 24 synthetic decision-makers.",
   openGraph: {
-    title: "Campaign recommendation · Synthetic Audiences",
+    title: "Campaign recommendation · MATE",
     description:
       "Proof you can check: a five-stage campaign for Aramco Advantage Crude in China, tested with 24 synthetic decision-makers.",
   },
