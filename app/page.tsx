@@ -44,33 +44,15 @@ function tilt(id: string) {
   return `${((restOrder.indexOf(id) * 47) % 50) - 25}deg`;
 }
 
-// The core parts of the experience, offered once the room has reacted.
-const deeperLinks: { id: SectionId; href: string; body: string; cta: string }[] = [
-  {
-    id: "journey",
-    href: "/explore#journey",
-    body: "Walk through the four people this decision passes through, and what each one needs before it moves on.",
-    cta: "Start the walkthrough",
-  },
-  {
-    id: "ask",
-    href: "/explore#ask",
-    body: "Put a question to the room and hear several people answer side by side.",
-    cta: "Ask a question",
-  },
-  {
-    id: "try",
-    href: "/explore#try",
-    body: "Rewrite the message and see who changes their mind, and why.",
-    cta: "Try a new version",
-  },
-  {
-    id: "people",
-    href: "/explore#community",
-    body: "Browse all 24 people: what shapes their view, what they need and how they affect the room.",
-    cta: "See all 24",
-  },
+// Other parts of the experience, offered quietly once the room has reacted.
+const deeperLinks: { id: SectionId; href: string; cta: string }[] = [
+  { id: "ask", href: "/explore#ask", cta: "Ask the room a question" },
+  { id: "journey", href: "/explore#journey", cta: "Follow the decision" },
+  { id: "people", href: "/explore#community", cta: "Meet all 24 people" },
 ];
+
+// The main path through the experience, shown as a small progress line.
+const pathSteps = ["See the reaction", "Try another version", "Get the recommendation"];
 
 export default function Room() {
   const [reacted, setReacted] = useState(false);
@@ -78,6 +60,8 @@ export default function Room() {
   const [speakerIndex, setSpeakerIndex] = useState(0);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
   const [playing, setPlaying] = useState(true);
+  // Whether the visitor has tried at least one version other than the original.
+  const [tried, setTried] = useState(false);
 
   // Links from other pages can open the room on a version (?version=) or a person (?person=).
   useEffect(() => {
@@ -87,6 +71,7 @@ export default function Room() {
     if (version && roomMessages.some((item) => item.id === version)) {
       setMessageId(version);
       setReacted(true);
+      if (version !== "original") setTried(true);
     }
     if (person && personas.some((item) => item.id === person)) {
       setReacted(true);
@@ -131,6 +116,7 @@ export default function Room() {
 
   function chooseMessage(id: string) {
     setMessageId(id);
+    if (id !== "original") setTried(true);
     setSpeakerIndex(0);
     setPinnedId(null);
     setPlaying(true);
@@ -161,11 +147,20 @@ export default function Room() {
     <main className="fr">
       <header className="frTop">
         <BrandLockup />
-        <nav className="frNav">
-          <span className="frTag">Prototype · China</span>
-          <a href="/explore">Explore the full audience</a>
-          <a href="/recommendation">See the recommendation</a>
-        </nav>
+        {reacted && (
+          <ol className="frPath" aria-label="Your progress">
+            {pathSteps.map((step, index) => {
+              const done = index === 0 || (index === 1 && tried);
+              const current = (index === 1 && !tried) || (index === 2 && tried);
+              return (
+                <li key={step} className={done ? "done" : current ? "current" : ""}>
+                  <span className="frPathDot">{done ? "✓" : index + 1}</span>
+                  {index === 2 && tried ? <a href={`/recommendation?version=${messageId}`}>{step}</a> : step}
+                </li>
+              );
+            })}
+          </ol>
+        )}
       </header>
 
       {!reacted && (
@@ -189,7 +184,9 @@ export default function Room() {
           </button>
         ) : (
           <div className="frSwitch" role="group" aria-label="Try a different angle">
-            <span className="frSwitchLabel">Try a different angle</span>
+            <span className={tried ? "frSwitchLabel" : "frSwitchLabel prompt"}>
+              {tried ? "Try another angle" : "Next: try a different angle. Pick one to see who changes their mind."}
+            </span>
             <div className="frChips">
               {roomMessages.map((item) => (
                 <button
@@ -338,39 +335,50 @@ export default function Room() {
 
       {reacted && (
         <>
-          <section className="frRecommend" aria-labelledby="recommend-title">
-            <SectionIcon id="recommendation" size={56} />
-            <div className="frRecommendText">
-              <h2 id="recommend-title">Seen enough?</h2>
-              <p>See the campaign we&rsquo;d build from this: one big idea, played out stage by stage, with who it wins over at each step.</p>
-            </div>
-            <a className="nextLink primary" href={`/recommendation?version=${message.id}`}>
-              See the recommendation →
-            </a>
-          </section>
+          {tried ? (
+            <section className="frRecommend" aria-labelledby="recommend-title">
+              <SectionIcon id="recommendation" size={56} />
+              <div className="frRecommendText">
+                <h2 id="recommend-title">Seen enough?</h2>
+                <p>
+                  See the campaign we&rsquo;d build from this: one big idea, played out stage by stage, with who it
+                  wins over at each step.
+                </p>
+              </div>
+              <a className="nextLink primary" href={`/recommendation?version=${message.id}`}>
+                See the recommendation →
+              </a>
+            </section>
+          ) : (
+            <section className="frRecommend isNudge" aria-labelledby="recommend-title">
+              <SectionIcon id="try" size={56} />
+              <div className="frRecommendText">
+                <h2 id="recommend-title">Now change the message</h2>
+                <p>Try one of four other versions and watch who changes their mind. Then we&rsquo;ll show you the campaign.</p>
+              </div>
+              <button
+                className="nextLink primary"
+                onClick={() => document.querySelector(".frSwitch")?.scrollIntoView({ behavior: "smooth", block: "center" })}
+              >
+                Try a different angle ↑
+              </button>
+            </section>
+          )}
 
-          <section className="frDeeper" aria-labelledby="deeper-title">
-            <h2 id="deeper-title">Go deeper</h2>
-            <div className="frDeeperCards">
-              {deeperLinks.map((link) => (
-                <a
-                  key={link.href}
-                  className="frDeeperCard"
-                  href={link.href}
-                  style={{ "--accent": sections[link.id].colour } as CSSProperties}
-                >
-                  <SectionIcon id={link.id} size={48} />
-                  <span className="frDeeperText">
-                    <strong>{sections[link.id].name}</strong>
-                    <span>{link.body}</span>
-                  </span>
-                  <em>
-                    {link.cta} <span aria-hidden="true">→</span>
-                  </em>
-                </a>
-              ))}
-            </div>
-          </section>
+          <nav className="frDeeper" aria-label="Go deeper">
+            <span className="frDeeperLabel">Or go deeper</span>
+            {deeperLinks.map((link) => (
+              <a
+                key={link.href}
+                className="frDeeperLink"
+                href={link.href}
+                style={{ "--accent": sections[link.id].colour } as CSSProperties}
+              >
+                <SectionIcon id={link.id} size={30} />
+                {link.cta}
+              </a>
+            ))}
+          </nav>
         </>
       )}
 

@@ -431,6 +431,12 @@ function AskTheRoom({
   const [askedPrompt, setAskedPrompt] = useState("");
   const [activeSuggestion, setActiveSuggestion] = useState<string | null>(null);
   const [responses, setResponses] = useState<AudienceResponseFixture[]>([]);
+  const [activeAnswer, setActiveAnswer] = useState<string | null>(null);
+
+  const showAnswer = (personaId: string) => {
+    setActiveAnswer(personaId);
+    document.getElementById(`answer-${personaId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
   const [takeaway, setTakeaway] = useState("");
 
   const synthesizeCustomResponses = (): AudienceResponseFixture[] =>
@@ -489,6 +495,7 @@ function AskTheRoom({
       : findClosestQuestion(cleanPrompt);
 
     setAskedPrompt(cleanPrompt);
+    setActiveAnswer(null);
     setActiveSuggestion(suggestionId ?? matched?.id ?? null);
 
     if (matched) {
@@ -583,6 +590,9 @@ function AskTheRoom({
             </div>
           </div>
 
+          <AskRoomGrid key={askedPrompt} responses={responses} onPick={showAnswer} />
+          <p className="askHint">Tap a lit-up face to read that person&rsquo;s answer.</p>
+
           <div className="roomTakeaway">
             <span>What the room is telling you</span>
             <p>{takeaway}</p>
@@ -599,7 +609,8 @@ function AskTheRoom({
 
               return (
                 <article
-                  className="responseCard"
+                  className={activeAnswer === answer.personaId ? "responseCard isActive" : "responseCard"}
+                  id={`answer-${answer.personaId}`}
                   key={answer.personaId}
                   style={{ animationDelay: `${index * 70}ms` }}
                 >
@@ -659,6 +670,52 @@ function AskTheRoom({
         </div>
       )}
     </section>
+  );
+}
+
+// The whole room when a question is asked: the people answering light up with a
+// short speech bubble, everyone else fades back. Colour here marks who is speaking,
+// since answers to a question aren't a verdict.
+const askRoles: Persona["influenceRole"][] = ["validate", "block", "amplify", "reframe"];
+
+function AskRoomGrid({
+  responses,
+  onPick,
+}: {
+  responses: AudienceResponseFixture[];
+  onPick: (personaId: string) => void;
+}) {
+  const answering = new Map(responses.map((answer, index) => [answer.personaId, { answer, index }]));
+  return (
+    <div className="askGrid" role="group" aria-label="Who answered">
+      {askRoles.flatMap((role) =>
+        segments.map((segment) => {
+          const person = personas.find((p) => p.segment === segment && p.influenceRole === role)!;
+          const speaking = answering.get(person.id);
+          return speaking ? (
+            <button
+              key={person.id}
+              className="askSeat speaking"
+              style={{ animationDelay: `${speaking.index * 120}ms` } as React.CSSProperties}
+              onClick={() => onPick(person.id)}
+              aria-label={`${person.name}: ${speaking.answer.theme}. Show full answer`}
+            >
+              <span className="askFace">
+                <Face id={person.id} mood="waiting" size={64} />
+              </span>
+              <span className="askBubble">{speaking.answer.theme}</span>
+              <span className="askName">{person.name}</span>
+            </button>
+          ) : (
+            <span key={person.id} className="askSeat quiet" aria-hidden="true">
+              <span className="askFace">
+                <Face id={person.id} mood="waiting" size={64} />
+              </span>
+            </span>
+          );
+        })
+      )}
+    </div>
   );
 }
 

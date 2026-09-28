@@ -539,69 +539,40 @@
 
 .frDeeper {
   width: min(1180px, calc(100% - 32px));
-  margin: 40px auto 0;
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
-  animation: frFadeUp 500ms ease 1200ms both;
-}
-
-.frDeeper h2 {
-  margin: 0 0 16px;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-/* Stacked rows: one per core part, each with its own colour and icon. */
-.frDeeperCards {
-  display: grid;
-  gap: 10px;
-}
-
-.frDeeperCard {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  margin: 22px auto 0;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
-  padding: 18px 22px;
-  border-radius: 16px;
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--accent);
-  color: var(--ink);
-  text-decoration: none;
-  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+  gap: 10px;
+  animation: frFadeUp 500ms ease 1300ms both;
 }
 
-.frDeeperCard:hover {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 9%, var(--white));
-}
 
-.frDeeperText {
-  display: grid;
-  gap: 4px;
-  min-width: 0;
-}
-
-.frDeeperText strong {
-  font-size: 20px;
-  overflow-wrap: anywhere;
-}
-
-.frDeeperText span {
-  font-size: 14px;
-  line-height: 1.45;
+/* A quiet row of secondary links under the main next step. */
+.frDeeperLabel {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
   color: var(--muted);
+  margin-right: 4px;
 }
 
-.frDeeperCard em {
-  font-style: normal;
+.frDeeperLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink);
   font-size: 14px;
   font-weight: 700;
-  color: var(--accent);
-  white-space: nowrap;
+  text-decoration: none;
+}
+
+.frDeeperLink:hover {
+  border-color: var(--accent);
 }
 
 .frFoot {
@@ -776,22 +747,80 @@
   }
 }
 
-/* Phones: icon and title side by side, the link underneath. */
+
+/* Progress through the main path. */
+.frPath {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.frPath li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.frPath li + li::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--line);
+  margin-right: 10px;
+}
+
+.frPathDot {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.frPath li.done {
+  color: var(--ink);
+}
+
+.frPath li.done .frPathDot {
+  background: var(--in);
+  border-color: var(--in);
+  color: #000;
+}
+
+.frPath li.current {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.frPath li.current .frPathDot {
+  border-color: #fff;
+}
+
+.frPath a {
+  color: inherit;
+}
+
+.frSwitchLabel.prompt {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 15px;
+}
+
 @media (max-width: 640px) {
-  .frDeeperCard {
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 8px 14px;
-    padding: 16px;
+  .frPath {
+    font-size: 12px;
+    gap: 6px 10px;
   }
 
-  .frDeeperCard em {
-    grid-column: 2;
-    white-space: normal;
-  }
-
-  .frDeeperCard .sectionIcon {
-    align-self: start;
-    width: 40px !important;
-    height: 40px !important;
+  .frPath li + li::before {
+    display: none;
   }
 }
