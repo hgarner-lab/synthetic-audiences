@@ -26,7 +26,7 @@ export default function NotFound() {
       </section>
 
       <footer className="rcFoot">
-        <p>Synthetic Audiences is an early prototype.</p>
+        <p>MATE is an early prototype.</p>
         <McCannCredit />
       </footer>
     </main>

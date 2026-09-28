@@ -2581,10 +2581,21 @@ legend,
 }
 
 .brandLockupName {
-  font-size: 11px;
-  letter-spacing: 0.19em;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 72%;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.01em;
   white-space: nowrap;
+}
+
+.brandLockupFull {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  opacity: 0.8;
 }
 
 .brandLockupRule {
@@ -2594,11 +2605,6 @@ legend,
   opacity: 0.3;
 }
 
-.brandLockupLogo {
-  height: 13px;
-  width: auto;
-  display: block;
-}
 
 .mccannCredit {
   font-size: 12px;
@@ -2667,12 +2673,14 @@ legend,
 
 @media (max-width: 640px) {
   .brandLockupName {
-    font-size: 10px;
-    letter-spacing: 0.14em;
+    font-size: 22px;
   }
 
-  .brandLockupLogo {
-    height: 11px;
+  .brandLockupFull {
+    font-size: 11.5px;
+    white-space: normal;
+    max-width: 120px;
+    line-height: 1.2;
   }
 }
 
@@ -2816,8 +2824,8 @@ a.prototypeTag {
     color: #fff !important;
   }
 
-  .brandLockupLogo {
-    filter: invert(1);
+  .brandLockup {
+    color: #111613 !important;
   }
 }
 
