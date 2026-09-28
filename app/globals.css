@@ -3080,3 +3080,81 @@ a.prototypeTag {
 .profileWins + .panelGrid {
   margin-top: 26px;
 }
+
+/* "More about them" in the profile: extra depth from the persona cards. */
+.moreDetails .moreText {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.moreLoading {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.moreSay {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-body), Arial, sans-serif !important;
+  font-size: 13px !important;
+}
+
+.moreSay strong {
+  font-size: 18px;
+}
+
+.moreBlock {
+  margin-top: 18px;
+}
+
+.moreDetails .softChip {
+  font-size: 12px;
+}
+
+.moreList {
+  margin: 10px 0 16px;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.moreDetails .moreSources {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.moreSources a {
+  color: inherit;
+}
+
+.moreDetails .moreHint {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.moreResearch {
+  margin: 0 0 14px;
+}
+
+.moreResearch summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 0 12px;
+}
+
+.moreResearch .moreList {
+  color: var(--muted);
+}

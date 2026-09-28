@@ -8,6 +8,7 @@ import { snapshots, stages } from "@/data/campaign";
 import { Face } from "@/components/Face";
 import { Portrait } from "@/components/Portrait";
 import { readVersion, versionLabel } from "@/components/version";
+import type { CardExtras } from "@/data/cards";
 
 // Lets any page open a person's profile in place: const { openProfile } = useProfile().
 const ProfileContext = createContext<{ openProfile: (personaId: string) => void }>({
@@ -184,6 +185,8 @@ function ProfilePanel({ persona, onClose }: { persona: Persona; onClose: () => v
           </div>
         </details>
 
+        <MoreAboutThem personaId={persona.id} name={persona.name} />
+
         <div className="nextSteps">
           <a className="nextLink primary" href={`/?version=${versionId}&person=${persona.id}`}>
             <Face id={persona.id} mood={current.stance} size={22} />
@@ -196,4 +199,147 @@ function ProfilePanel({ persona, onClose }: { persona: Persona; onClose: () => v
       </aside>
     </div>
   );
+}
+
+// Extra depth from McCann's persona cards. The card file is large, so it only loads
+// when someone opens this section. If the cards have no match, the section stays hidden.
+function MoreAboutThem({ personaId, name }: { personaId: string; name: string }) {
+  const [extras, setExtras] = useState<CardExtras | null | undefined>(undefined);
+  const [missing, setMissing] = useState(false);
+
+  useEffect(() => {
+    setExtras(undefined);
+    setMissing(false);
+  }, [personaId]);
+
+  const load = () => {
+    if (extras !== undefined) return;
+    import("@/data/cards")
+      .then(({ cardExtras }) => {
+        const found = cardExtras(personaId);
+        setExtras(found);
+        setMissing(!found);
+      })
+      .catch(() => setMissing(true));
+  };
+
+  if (missing) return null;
+
+  return (
+    <details className="evidenceDetails moreDetails" onToggle={(event) => event.currentTarget.open && load()}>
+      <summary>More about {name}</summary>
+      {extras === undefined && <p className="moreLoading">Loading…</p>}
+      {extras && (
+        <div>
+          <p className="moreSay">
+            <span>Say in the decision</span>
+            <strong>{extras.say} out of 5</strong>
+          </p>
+          <MoreChips title="What makes them wary" items={extras.wary} />
+          <MoreChips title="Who they trust" items={extras.trusts} />
+          <MoreChips title="Where they look" items={extras.looksAt} />
+          <MoreChips title="How to talk to them" items={extras.likes} />
+          <section className="moreBlock">
+            <p className="eyebrow">Who they influence</p>
+            <p className="moreText">
+              {extras.influenceNote} They pass views on to people in {listWords(extras.influences)}.
+            </p>
+          </section>
+          {extras.group && (
+            <section className="moreBlock moreGroup">
+              <p className="eyebrow">What counts as proof in their group</p>
+              <p className="moreHint">
+                The kinds of evidence their group&rsquo;s institutions accept. If your message can&rsquo;t point to
+                something like this, expect them to hold back.
+              </p>
+              <ul className="moreList">
+                {extras.group.proof.map((item) => (
+                  <li key={item.research}>{item.plain}</li>
+                ))}
+              </ul>
+              <p className="eyebrow">What their group is talking about</p>
+              <p className="moreHint">
+                The live debates in their world right now. A message that speaks to these will feel relevant to
+                them.
+              </p>
+              <ul className="moreList">
+                {extras.group.debates.map((item) => (
+                  <li key={item.research}>{item.plain}</li>
+                ))}
+              </ul>
+              <details className="moreResearch">
+                <summary>Show the full research</summary>
+                <p className="eyebrow">Proof, in full</p>
+                <ul className="moreList">
+                  {extras.group.proof.map((item) => (
+                    <li key={item.research}>{item.research}</li>
+                  ))}
+                </ul>
+                <p className="eyebrow">Debates, in full</p>
+                <ul className="moreList">
+                  {extras.group.debates.map((item) => (
+                    <li key={item.research}>{item.research}</li>
+                  ))}
+                </ul>
+              </details>
+              <p className="moreSources">
+                Researched on {extras.group.researched}. Sources:{" "}
+                {extras.group.sources.map((source, index, all) => {
+                  const site = siteName(source.url);
+                  const sameSite = all.filter((item) => siteName(item.url) === site);
+                  const number = sameSite.length > 1 ? ` (${sameSite.indexOf(source) + 1})` : "";
+                  return (
+                    <span key={source.url}>
+                      {index > 0 && "; "}
+                      <a href={source.url} target="_blank" rel="noreferrer" title={source.title}>
+                        {site}
+                        {number}
+                      </a>
+                    </span>
+                  );
+                })}
+              </p>
+            </section>
+          )}
+          <p className="methodNote">
+            From McCann&rsquo;s audience cards, last reviewed {extras.reviewed}. The person is synthetic; the
+            background on their group is researched from public sources, and the short versions are our plain
+            summaries of that research.
+          </p>
+        </div>
+      )}
+    </details>
+  );
+}
+
+function MoreChips({ title, items }: { title: string; items: string[] }) {
+  if (!items.length) return null;
+  return (
+    <section className="moreBlock">
+      <p className="eyebrow">{title}</p>
+      <div className="chipRow">
+        {items.map((item) => (
+          <span className="softChip" key={item}>
+            {item}
+          </span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// Sources are often in Chinese, so the link shows the website: "www.nea.gov.cn" becomes "nea.gov.cn".
+function siteName(url: string) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "Source";
+  }
+}
+
+// "Energy", "Energy and Chemicals", "Energy, Chemicals and Government".
+function listWords(items: string[]) {
+  const unique = [...new Set(items)];
+  if (unique.length <= 1) return unique.join("");
+  return `${unique.slice(0, -1).join(", ")} and ${unique[unique.length - 1]}`;
 }
