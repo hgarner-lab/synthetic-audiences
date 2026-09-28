@@ -3,13 +3,13 @@
 // reactions.ts; this only adds to the profile. Load it with import() so pages don't
 // carry the whole file until someone opens a profile's "More about them".
 import source from "@/data/source/synthetic_communities_all_markets.json";
-import { plainGrounding } from "@/data/cardPlain";
+import { plainGrounding, plainInfluence } from "@/data/cardPlain";
 
 type Card = {
   persona_id: string;
   audience_id: string;
   professional_context: { decision_authority_level: number };
-  belief_and_decision_model: { distrusts: string[] };
+  belief_and_decision_model: { cares: string[]; distrusts: string[]; proof_requirements: string[] };
   information_behaviour: {
     trusted_source_types: string[];
     preferred_channels: string[];
@@ -37,6 +37,8 @@ type Dataset = {
 
 export type CardExtras = {
   say: number;
+  cares: string[];
+  needs: string[];
   wary: string[];
   trusts: string[];
   looksAt: string[];
@@ -119,12 +121,14 @@ export function cardExtras(personaId: string): CardExtras | null {
   const grounding = dataset.audience_grounding.find((item) => item.audience_id === card.audience_id);
   return {
     say: card.professional_context.decision_authority_level,
+    cares: card.belief_and_decision_model.cares.map(label),
+    needs: card.belief_and_decision_model.proof_requirements.map(label),
     wary: card.belief_and_decision_model.distrusts.map(label),
     trusts: card.information_behaviour.trusted_source_types.map(label),
     looksAt: card.information_behaviour.preferred_channels.map(label),
     likes: card.information_behaviour.communications_preferences.map(label),
     influences: card.influence_model.influence_targets.map(groupName),
-    influenceNote: card.influence_model.role_description,
+    influenceNote: plainInfluence[personaId] ?? card.influence_model.role_description,
     group: grounding
       ? {
           proof: pair(grounding.grounding.proof_currencies.slice(0, 3), plainGrounding[card.audience_id]?.proof),
