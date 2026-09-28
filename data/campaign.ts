@@ -30,10 +30,10 @@ export type CampaignStage = {
 };
 
 export const bigIdea = {
-  name: "Proof, not promises",
+  name: "Proof you can check",
   line: "Don't take our word for it.",
   summary:
-    "Most energy marketing asks people to trust a claim. This campaign does the opposite: it invites them to check it. We open with independently checked carbon data, then give each group the proof it needs at the moment it gets involved: from journalists, to the strategy and policy people who frame the issue, to technical teams, finance and, finally, the partners who'll recommend it.",
+    "This campaign invites people to check the claim for themselves. We open with independently checked carbon data, then give each group the proof it needs at the moment it gets involved: from journalists, to the strategy and policy people who frame the issue, to technical teams, finance and, finally, the partners who'll recommend it.",
 };
 
 export const stages: CampaignStage[] = [
@@ -152,7 +152,7 @@ export const stages: CampaignStage[] = [
     message:
       "Because the carbon data is checked, the value is real: reliable supply, lower risk, and savings you can model with your own numbers.",
     whyItWorks:
-      "When we tested leading with profits, the technical and safety people pushed back. Here the proof has already landed, so the business case builds on it instead of stretching it.",
+      "When we tested leading with profits, the technical and safety people pushed back. Here the proof has already landed, so the business case builds on solid ground.",
     proof: ["A business case", "What-if scenarios", "What it means in money terms", "Fit with national policy"],
     channels: [
       "Business case workshops with finance and strategy teams",

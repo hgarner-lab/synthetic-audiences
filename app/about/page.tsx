@@ -56,7 +56,7 @@ export default function About() {
         <h2>Where their reactions come from</h2>
         <p>
           In this demo, our team wrote each reaction from that person&rsquo;s data: what they care about and what they
-          need. The reactions are not generated live by AI, and they are not quotes from real people.
+          need. Each reaction was written in advance by our team, and none of them are quotes from real people.
         </p>
       </section>
 
@@ -73,7 +73,7 @@ export default function About() {
         <div className="abText">
           <h2>What it can&rsquo;t tell you</h2>
           <ul>
-            <li>How many real people will react a certain way. It&rsquo;s not a survey or a forecast.</li>
+            <li>How many real people will react a certain way. For that, you need a survey.</li>
             <li>How people react to wording it hasn&rsquo;t been set up for. This demo covers five versions of one message.</li>
             <li>Whether the finished campaign works. Always test it with real people before launch.</li>
           </ul>

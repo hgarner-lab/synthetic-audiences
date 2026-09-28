@@ -87,7 +87,7 @@ export const audienceQuestions: AudienceQuestion[] = [
         personaId: "CN_EN_B",
         theme: "Missing the bigger picture",
         response:
-          "That the story ignores China's energy security, national policy and the futures decision-makers actually plan for.",
+          "That the story ignores China's energy security, national policy and the futures decision-makers plan for.",
         evidence: ["Fit with national policy", "What-if scenarios"],
       },
       {
@@ -117,7 +117,7 @@ export const audienceQuestions: AudienceQuestion[] = [
     id: "lead",
     prompt: "What should we lead with?",
     takeaway:
-      "Lead with why it's a better business decision over the long term. Use the carbon figure as proof, not as the whole story.",
+      "Lead with why it's a better business decision over the long term. Use the carbon figure as the proof behind that story.",
     responses: [
       {
         personaId: "CN_EN_R",
@@ -144,14 +144,14 @@ export const audienceQuestions: AudienceQuestion[] = [
         personaId: "CN_CH_R",
         theme: "Return on investment",
         response:
-          "Make it about return on investment and modernising industry, not about sustainability on its own.",
+          "Make it about return on investment and modernising industry, with sustainability as part of that.",
         evidence: ["A business case", "Costs and returns worked out"],
       },
       {
         personaId: "CN_IC_R",
         theme: "The bigger picture",
         response:
-          "Acknowledge the wider energy and political picture. Then it feels complete, rather than like an advert.",
+          "Acknowledge the wider energy and political picture. Then it feels complete and credible.",
         evidence: ["What-if scenarios", "An open, clear method"],
       },
       {

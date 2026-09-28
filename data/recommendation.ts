@@ -53,7 +53,7 @@ export const recommendation = {
     },
     {
       title: "Don't let the number become the story",
-      detail: "If a precise carbon figure makes the headline before anyone can explain it, journalists will focus on that instead of the message. Publish the method with the report, and have a spokesperson ready to explain it.",
+      detail: "If a precise carbon figure makes the headline before anyone can explain it, journalists will focus on the number and lose the message. Publish the method with the report, and have a spokesperson ready to explain it.",
       personaIds: ["CN_IC_B"],
     },
     {

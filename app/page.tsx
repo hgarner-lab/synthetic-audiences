@@ -6,6 +6,7 @@ import { personas, segments, InfluenceRole } from "@/data/personas";
 import { roomMessages, stanceLabels, stanceOrder, Reaction } from "@/data/reactions";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
+import { SectionIcon, SectionId, sections } from "@/components/Sections";
 import "./room.css";
 import "./room-brand.css";
 
@@ -43,22 +44,29 @@ function tilt(id: string) {
   return `${((restOrder.indexOf(id) * 47) % 50) - 25}deg`;
 }
 
-const deeperLinks = [
+// The core parts of the experience, offered once the room has reacted.
+const deeperLinks: { id: SectionId; href: string; body: string; cta: string }[] = [
   {
+    id: "journey",
     href: "/explore#journey",
-    title: "Follow the decision",
     body: "Walk through the four people this decision passes through, and what each one needs before it moves on.",
     cta: "Start the walkthrough",
   },
   {
+    id: "ask",
     href: "/explore#ask",
-    title: "Ask the room a question",
     body: "Put a question to the room and hear several people answer side by side.",
     cta: "Ask a question",
   },
   {
+    id: "try",
+    href: "/explore#try",
+    body: "Rewrite the message and see who changes their mind, and why.",
+    cta: "Try a new version",
+  },
+  {
+    id: "people",
     href: "/explore#community",
-    title: "Meet everyone",
     body: "Browse all 24 people: what shapes their view, what they need and how they affect the room.",
     cta: "See all 24",
   },
@@ -331,7 +339,8 @@ export default function Room() {
       {reacted && (
         <>
           <section className="frRecommend" aria-labelledby="recommend-title">
-            <div>
+            <SectionIcon id="recommendation" size={56} />
+            <div className="frRecommendText">
               <h2 id="recommend-title">Seen enough?</h2>
               <p>See the campaign we&rsquo;d build from this: one big idea, played out stage by stage, with who it wins over at each step.</p>
             </div>
@@ -344,10 +353,20 @@ export default function Room() {
             <h2 id="deeper-title">Go deeper</h2>
             <div className="frDeeperCards">
               {deeperLinks.map((link) => (
-                <a key={link.href} className="frDeeperCard" href={link.href}>
-                  <strong>{link.title}</strong>
-                  <span>{link.body}</span>
-                  <em>{link.cta} →</em>
+                <a
+                  key={link.href}
+                  className="frDeeperCard"
+                  href={link.href}
+                  style={{ "--accent": sections[link.id].colour } as CSSProperties}
+                >
+                  <SectionIcon id={link.id} size={48} />
+                  <span className="frDeeperText">
+                    <strong>{sections[link.id].name}</strong>
+                    <span>{link.body}</span>
+                  </span>
+                  <em>
+                    {link.cta} <span aria-hidden="true">→</span>
+                  </em>
                 </a>
               ))}
             </div>
@@ -358,7 +377,7 @@ export default function Room() {
       <footer className="frFoot">
         <p>
           These are synthetic people: made up, but built from our audience data. Their reactions show the likely
-          direction of opinion. They are not quotes from real people, and not a forecast.{" "}
+          direction of opinion. Treat them as a guide, and test the finished work with real people.{" "}
           <a href="/about">How this works</a>
         </p>
         <McCannCredit />

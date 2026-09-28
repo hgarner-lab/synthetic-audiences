@@ -553,47 +553,55 @@
   color: var(--muted);
 }
 
+/* Stacked rows: one per core part, each with its own colour and icon. */
 .frDeeperCards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 10px;
 }
 
 .frDeeperCard {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 22px;
   border-radius: 16px;
   background: var(--white);
   border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
   color: var(--ink);
   text-decoration: none;
-  transition: border-color 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
 }
 
 .frDeeperCard:hover {
-  border-color: var(--ink);
-  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 9%, var(--white));
 }
 
-.frDeeperCard strong {
-  font-size: 18px;
+.frDeeperText {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
 }
 
-.frDeeperCard span {
+.frDeeperText strong {
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+
+.frDeeperText span {
   font-size: 14px;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
 }
 
 .frDeeperCard em {
-  margin-top: auto;
-  padding-top: 6px;
   font-style: normal;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--in);
+  color: var(--accent);
+  white-space: nowrap;
 }
 
 .frFoot {
@@ -765,5 +773,25 @@
 
   .frNameShort {
     display: inline;
+  }
+}
+
+/* Phones: icon and title side by side, the link underneath. */
+@media (max-width: 640px) {
+  .frDeeperCard {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px 14px;
+    padding: 16px;
+  }
+
+  .frDeeperCard em {
+    grid-column: 2;
+    white-space: normal;
+  }
+
+  .frDeeperCard .sectionIcon {
+    align-self: start;
+    width: 40px !important;
+    height: 40px !important;
   }
 }

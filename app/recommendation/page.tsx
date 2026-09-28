@@ -16,6 +16,7 @@ import {
 } from "@/data/campaign";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
+import { SectionTag } from "@/components/Sections";
 import "./recommendation.css";
 
 const personById = Object.fromEntries(personas.map((persona) => [persona.id, persona]));
@@ -98,7 +99,8 @@ export default function Recommendation() {
       </header>
 
       <section className="rcHero">
-        <p className="rcEyebrow">Campaign recommendation · Aramco Advantage Crude · China</p>
+        <SectionTag id="recommendation" />
+        <p className="rcEyebrow">Aramco Advantage Crude · China</p>
         <h1>{bigIdea.name}</h1>
         <p className="rcLine">“{bigIdea.line}”</p>
         <p className="rcLead">{bigIdea.summary}</p>

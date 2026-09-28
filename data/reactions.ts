@@ -58,7 +58,7 @@ const routeLines: Record<string, Record<string, string>> = {
     CN_FL_V: "You're promising long-term value now. Prove it with a model.",
   },
   proof: {
-    CN_EN_V: "Independently checked data? Now I can actually judge it.",
+    CN_EN_V: "Independently checked data? Now I can judge it.",
     CN_CH_B: "That's what I needed. I can stand behind an assured claim.",
     CN_IC_V: "I can see how it was worked out. That I can review.",
     CN_FL_B: "Much lower risk, as long as the scope is clear.",
@@ -70,7 +70,7 @@ const routeLines: Record<string, Record<string, string>> = {
     CN_FL_R: "This is an investment story now. Good.",
     CN_CH_R: "Return on capital, finally. This I can use.",
     CN_EN_R: "Carbon linked to real commercial value. Stronger.",
-    CN_EN_V: "Bigger promise, bigger proof. How does lower carbon actually make money?",
+    CN_EN_V: "Bigger promise, bigger proof. How does lower carbon make money?",
     CN_CH_B: "You're claiming more now, so there's more for me to check.",
   },
   "local-proof": {
