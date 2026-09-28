@@ -179,8 +179,8 @@ export default function Room() {
               return (
                 <li key={step} className={done ? "done" : current ? "current" : ""}>
                   <span className="frPathDot">{done ? "✓" : index + 1}</span>
-                  {index === 2 && tried && marketId === "china" ? (
-                    <a href={`/recommendation?version=${messageId}`}>{step}</a>
+                  {index === 2 && tried ? (
+                    <a href={`/recommendation?${marketId === "ksa" ? "market=ksa&" : ""}version=${messageId}`}>{step}</a>
                   ) : (
                     step
                   )}
@@ -379,21 +379,7 @@ export default function Room() {
 
       {reacted && (
         <>
-          {tried && marketId === "ksa" ? (
-            <section className="frRecommend" aria-labelledby="recommend-title">
-              <SectionIcon id="recommendation" size={56} />
-              <div className="frRecommendText">
-                <h2 id="recommend-title">Compare the two rooms</h2>
-                <p>
-                  The campaign recommendation is built for China so far; the Saudi one comes next. Meanwhile, see how
-                  China reacts to the same version.
-                </p>
-              </div>
-              <button className="nextLink primary" onClick={() => chooseMarket("china")}>
-                See the China room →
-              </button>
-            </section>
-          ) : tried ? (
+          {tried ? (
             <section className="frRecommend" aria-labelledby="recommend-title">
               <SectionIcon id="recommendation" size={56} />
               <div className="frRecommendText">
@@ -403,7 +389,10 @@ export default function Room() {
                   wins over at each step.
                 </p>
               </div>
-              <a className="nextLink primary" href={`/recommendation?version=${message.id}`}>
+              <a
+                className="nextLink primary"
+                href={`/recommendation?${marketId === "ksa" ? "market=ksa&" : ""}version=${message.id}`}
+              >
                 See the recommendation →
               </a>
             </section>

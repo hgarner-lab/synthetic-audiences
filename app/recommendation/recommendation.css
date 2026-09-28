@@ -1070,3 +1070,8 @@ button.rcTestPerson small {
   color: var(--ink);
   font-weight: 700;
 }
+
+/* China / Saudi Arabia switch in the hero. */
+.rcMarket {
+  margin: 4px 0 14px;
+}
