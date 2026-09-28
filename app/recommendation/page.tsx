@@ -16,7 +16,8 @@ import {
 } from "@/data/campaign";
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
-import { SectionTag } from "@/components/Sections";
+import { SectionIcon, SectionTag, sections } from "@/components/Sections";
+import { audienceQuestions } from "@/data/questions";
 import "./recommendation.css";
 
 const personById = Object.fromEntries(personas.map((persona) => [persona.id, persona]));
@@ -104,6 +105,10 @@ export default function Recommendation() {
         <h1>{bigIdea.name}</h1>
         <p className="rcLine">“{bigIdea.line}”</p>
         <p className="rcLead">{bigIdea.summary}</p>
+
+        <p className="rcJump">
+          <a href="#test">Test this plan with the room ↓</a>
+        </p>
 
         {goal && goalStageInfo && (
           <p className="rcPicked">
@@ -360,6 +365,64 @@ export default function Recommendation() {
         </div>
       </section>
 
+      <section className="rcSection rcTest" id="test">
+        <h2>Test this plan with the room</h2>
+        <p className="rcIntro">
+          Put the plan back to the people it&rsquo;s for. Ask them a question, see what happens if you change course, or
+          work on the people still to win.
+        </p>
+        <div className="rcTestGrid">
+          <div className="rcTestCard" style={{ "--accent": sections.ask.colour } as React.CSSProperties}>
+            <SectionIcon id="ask" size={44} />
+            <h3>Ask the room</h3>
+            <p>Hear how the people behind this decision answer, side by side.</p>
+            <div className="rcTestLinks">
+              {audienceQuestions.map((question) => (
+                <a key={question.id} href={`/explore?ask=${question.id}#ask`}>
+                  {question.prompt}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="rcTestCard" style={{ "--accent": sections.try.colour } as React.CSSProperties}>
+            <SectionIcon id="try" size={44} />
+            <h3>Change course</h3>
+            <p>Lead with a different version of the message and watch the room react.</p>
+            <div className="rcTestLinks">
+              {versionTallies
+                .filter((tally) => tally.id !== recommendedId)
+                .map((tally) => (
+                  <a key={tally.id} href={`/?version=${tally.id}`}>
+                    {tally.label}
+                    <small>
+                      {tally.counts.in} leaning in · {tally.counts.pushback} pushing back
+                    </small>
+                  </a>
+                ))}
+            </div>
+          </div>
+
+          <div className="rcTestCard" style={{ "--accent": sections.people.colour } as React.CSSProperties}>
+            <SectionIcon id="people" size={44} />
+            <h3>Win the last two</h3>
+            <p>Two people are still holding out at the end. See what they care about and need.</p>
+            <div className="rcTestLinks">
+              {stillToWin.map((item) => (
+                <a key={item.personaId} className="rcTestPerson" href={`/explore?person=${item.personaId}#community`}>
+                  <Face id={item.personaId} mood="waiting" size={32} />
+                  <span>
+                    {nameOf(item.personaId)}
+                    <small>{personById[item.personaId].role}</small>
+                  </span>
+                </a>
+              ))}
+              <a href="/explore#journey">Follow the decision from start to finish</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="rcSection">
         <h2>What has to be true first</h2>
         <p className="rcIntro">The campaign only works if these exist. None of them can be skipped.</p>
@@ -412,7 +475,7 @@ export default function Recommendation() {
       </section>
 
       <section className="rcOnward">
-        <h2>What would you like to do next?</h2>
+        <h2>Share this recommendation</h2>
         <div className="nextSteps onDark">
           <button className="nextLink primary" onClick={() => window.print()}>
             Save as PDF
@@ -420,11 +483,8 @@ export default function Recommendation() {
           <button className="nextLink" onClick={copyLink}>
             {copied ? "Link copied ✓" : "Copy link to share"}
           </button>
-          <a className="nextLink" href={`/?version=${pickedId && pickedId !== recommendedId ? pickedId : "original"}`}>
-            Try another version in the room
-          </a>
-          <a className="nextLink" href="/explore#ask">
-            Ask the room a question
+          <a className="nextLink" href="#test">
+            Test this plan with the room ↑
           </a>
           <a className="nextLink" href="/about">
             How this works

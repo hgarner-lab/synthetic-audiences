@@ -813,3 +813,108 @@
   border-top: 1px solid var(--line);
   color: #fff;
 }
+
+/* Test this plan with the room. */
+.rcJump {
+  margin: 18px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.rcJump a {
+  color: var(--ink);
+}
+
+.rcTestGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.rcTestCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px;
+  border-radius: 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--accent);
+}
+
+.rcTestCard h3 {
+  margin: 4px 0 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 75%;
+  text-transform: uppercase;
+  font-size: 24px;
+}
+
+.rcTestCard > p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.rcTestLinks {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.rcTestLinks a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.rcTestLinks a:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.rcTestLinks small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.rcTestLinks a.rcTestPerson {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.rcTestPerson .face {
+  --bg: #2a2a2a;
+  flex: none;
+  border-radius: 50%;
+}
+
+.rcTestPerson span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+@media (max-width: 900px) {
+  .rcTestGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media print {
+  .rcTest,
+  .rcJump {
+    display: none;
+  }
+}
