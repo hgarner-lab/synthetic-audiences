@@ -10,12 +10,19 @@ const brand = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-br
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
 const description =
-  "Put a campaign message in front of the people who decide on it, and see how they react. A McCann prototype.";
+  "Put your message in front of 24 people built from McCann audience data, and see who leans in, who pushes back and why.";
+
+// Link previews need the full web address of the share image. On Vercel this is the live site.
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: { default: "McCann Audience Truth Engine", template: "%s · McCann Audience Truth Engine" },
   description,
-  openGraph: { title: "McCann Audience Truth Engine", description },
+  openGraph: { title: "McCann Audience Truth Engine", description, siteName: "McCann Audience Truth Engine", type: "website" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
