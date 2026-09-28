@@ -175,8 +175,8 @@ export default function About() {
                 ))}
               </div>
               <p className="abLayerNote">
-                Sources vary by project. MATE can combine McCann&rsquo;s own research with approved
-                outside, client and commissioned sources.
+                Sources vary by project. MATE can combine McCann&rsquo;s own research, data from our
+                partners, client data and commissioned research.
               </p>
             </div>
           </div>
