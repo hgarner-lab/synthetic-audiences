@@ -3158,3 +3158,62 @@ a.prototypeTag {
 .moreResearch .moreList {
   color: var(--muted);
 }
+
+/* Initials in place of a face (components/Portrait.tsx InitialsPortrait). */
+.portraitInitialsDisc {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--grad);
+  color: #0a0a0a;
+  container-type: inline-size;
+}
+
+.portraitInitialsDisc span {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-stretch: 72%;
+  font-size: 38cqw;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+/* China / Saudi Arabia switch on the people page. */
+.marketSwitch {
+  display: inline-flex;
+  gap: 4px;
+  margin: 14px 0 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.marketSwitch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.marketSwitch button.active {
+  background: #fff;
+  color: #000;
+}
+
+.marketSwitch button span {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--grad);
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+}
+.personStance.st-waiting { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); }

@@ -6,7 +6,8 @@ import { personas, Persona } from "@/data/personas";
 import { roomMessages, stanceLabels, Stance } from "@/data/reactions";
 import { snapshots, stages } from "@/data/campaign";
 import { Face } from "@/components/Face";
-import { Portrait } from "@/components/Portrait";
+import { InitialsPortrait, Portrait } from "@/components/Portrait";
+import { ksaPeople, KsaPerson } from "@/data/ksaPeople";
 import { readVersion, versionLabel } from "@/components/version";
 import type { CardExtras } from "@/data/cards";
 
@@ -23,11 +24,14 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   const [personaId, setPersonaId] = useState<string | null>(null);
   const openProfile = useCallback((id: string) => setPersonaId(id), []);
   const person = personas.find((item) => item.id === personaId);
+  const ksaPerson = ksaPeople.find((item) => item.id === personaId);
+  const close = useCallback(() => setPersonaId(null), []);
 
   return (
     <ProfileContext.Provider value={{ openProfile }}>
       {children}
-      {person && <ProfilePanel persona={person} onClose={() => setPersonaId(null)} />}
+      {person && <ProfilePanel persona={person} onClose={close} />}
+      {ksaPerson && <KsaProfilePanel person={ksaPerson} onClose={close} />}
     </ProfileContext.Provider>
   );
 }
@@ -196,6 +200,96 @@ function ProfilePanel({ persona, onClose }: { persona: Persona; onClose: () => v
             Ask the room a question
           </a>
         </div>
+      </aside>
+    </div>
+  );
+}
+
+// A Saudi person's profile. They haven't reacted to anything yet, so the profile shows
+// who they are and what they need, from the persona cards, with initials for a face.
+function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () => void }) {
+  const [extras, setExtras] = useState<CardExtras | null>(null);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  useEffect(() => {
+    setExtras(null);
+    import("@/data/cards").then(({ cardExtras }) => setExtras(cardExtras(person.id))).catch(() => {});
+  }, [person.id]);
+
+  return (
+    <div className="panelBackdrop" onClick={onClose}>
+      <aside
+        className="personaPanel"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${person.name}'s profile`}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button className="closeButton" onClick={onClose} aria-label="Close profile">
+          ×
+        </button>
+        <div className="panelTop">
+          <InitialsPortrait name={person.name} influenceRole={person.influenceRole} large />
+          <div>
+            <span className="syntheticBadge">Synthetic person · Saudi Arabia</span>
+            {/* A non-breaking hyphen keeps "Al-Zahrani" on one line. */}
+            <h2>{person.name.replace(/-/g, "\u2011")}</h2>
+            <p className="panelNameZh" lang="ar" dir="rtl">
+              {person.nameAr}
+            </p>
+            <p className="panelRole">{person.role}</p>
+            <p className="panelMeta">
+              {person.segment} · {roleLabels[person.influenceRole]}
+              {person.origin && ` · ${person.origin}`}
+            </p>
+          </div>
+        </div>
+
+        <div className="likelyQuestion">
+          <span>Not in the room yet</span>
+          <p>
+            The Saudi room hasn&rsquo;t heard a message yet, so there are no reactions to show. Their faces appear as
+            initials for now.
+          </p>
+        </div>
+
+        {extras && (
+          <div className="panelGrid">
+            <section>
+              <p className="eyebrow">What shapes their view</p>
+              <div className="chipRow">
+                {extras.cares.map((item) => (
+                  <span className="softChip" key={item}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </section>
+            <section>
+              <p className="eyebrow">What they need from you</p>
+              <ul className="needList">
+                {extras.needs.map((need) => (
+                  <li key={need}>{need}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
+        )}
+
+        <div className="influenceCard">
+          <div>
+            <span className={`rolePill rolePill-${person.influenceRole}`}>{roleLabels[person.influenceRole]}</span>
+            <strong>How {person.name} affects the room</strong>
+          </div>
+          <p>{roleEffects[person.influenceRole]}</p>
+        </div>
+
+        <MoreAboutThem personaId={person.id} name={person.name} />
       </aside>
     </div>
   );
