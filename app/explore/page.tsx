@@ -509,6 +509,17 @@ function AskTheRoom({
     }
   };
 
+  // Arriving with ?ask=<question id> (e.g. from the recommendation) asks that question straight away.
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("ask");
+    const question = audienceQuestions.find((item) => item.id === id);
+    if (question) {
+      setInput(question.prompt);
+      askQuestion(question.prompt, question.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section className="askRoomSection" id="ask">
       <div className="askRoomHeader">
