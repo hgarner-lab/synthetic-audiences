@@ -881,15 +881,6 @@ legend,
   height: 100%;
 }
 
-.portraitInitials {
-  position: absolute;
-  right: 10px;
-  bottom: 8px;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-}
-
 .portraitLarge {
   width: min(260px, 34vw);
   flex: 0 0 auto;

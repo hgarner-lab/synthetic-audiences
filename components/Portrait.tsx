@@ -6,22 +6,15 @@ export function Portrait({
   persona,
   large = false,
 }: {
-  persona: Pick<Persona, "id" | "name" | "influenceRole">;
+  persona: Pick<Persona, "id" | "influenceRole">;
   large?: boolean;
 }) {
-  // "Chen Jing" becomes "CJ"; "Adel Al-Harbi" becomes "AH", skipping the "Al-".
-  const initials = persona.name
-    .split(" ")
-    .map((part) => part.replace(/^Al-/, "")[0])
-    .join("");
-
   return (
     <div className={`portrait ${large ? "portraitLarge" : ""} role-${persona.influenceRole}`} aria-hidden="true">
       <div className="portraitGlow" />
       <div className="portraitFace">
         <Face id={persona.id} mood="waiting" size={large ? 200 : 120} />
       </div>
-      <span className="portraitInitials">{initials}</span>
     </div>
   );
 }
