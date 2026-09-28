@@ -3159,25 +3159,6 @@ a.prototypeTag {
   color: var(--muted);
 }
 
-/* Initials in place of a face (components/Portrait.tsx InitialsPortrait). */
-.portraitInitialsDisc {
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--grad);
-  color: #0a0a0a;
-  container-type: inline-size;
-}
-
-.portraitInitialsDisc span {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-stretch: 72%;
-  font-size: 38cqw;
-  letter-spacing: 0.02em;
-  line-height: 1;
-}
-
 /* China / Saudi Arabia switch on the people page. */
 .marketSwitch {
   display: inline-flex;

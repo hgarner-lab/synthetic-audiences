@@ -1,8 +1,8 @@
 // The 24 people for Saudi Arabia (KSA), from the researched list in
-// docs/ksa-people-for-review.md. They replace the names in the persona cards. Their
-// faces show as initials until head coverings are handled, and they have no reactions
-// yet: the room itself is still China only.
+// docs/ksa-people-for-review.md. They replace the names in the persona cards. They have
+// no reactions yet: the room itself is still China only.
 import type { Persona } from "@/data/personas";
+import type { Covering, Wear } from "@/components/faceLayers";
 
 export type KsaPerson = {
   id: string;
@@ -15,6 +15,16 @@ export type KsaPerson = {
   role: string;
   segment: string;
   influenceRole: Persona["influenceRole"];
+  // How their face is drawn: see components/faceLayers.ts and docs/ksa-people-for-review.md.
+  look: {
+    hair: string;
+    skin: string;
+    eyes: string;
+    glasses?: string;
+    beard: boolean;
+    covering: Covering;
+    wear: Wear;
+  };
 };
 
 export const ksaPeople: KsaPerson[] = [
@@ -27,6 +37,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Chief Engineer, Upstream Operations",
     segment: "Energy",
     influenceRole: "validate",
+    look: { hair: "variant03", skin: "e5b48c", eyes: "variant02", beard: true, covering: { kind: "none" }, wear: { kind: "suitTie", color: "#2b3140", shirt: "#f4f4f4", tie: "#6b2433" } },
   },
   {
     id: "SA_EN_B",
@@ -37,6 +48,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Vendor Compliance and Local Content",
     segment: "Energy",
     influenceRole: "block",
+    look: { hair: "variant15", skin: "c28a62", eyes: "variant14", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#1f2433", shirt: "#e9e2d6" } },
   },
   {
     id: "SA_EN_A",
@@ -47,6 +59,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Vice President, Business Development",
     segment: "Energy",
     influenceRole: "amplify",
+    look: { hair: "variant38", skin: "c98f66", eyes: "variant24", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#a07a52", shirt: "#f3ede4" } },
   },
   {
     id: "SA_EN_R",
@@ -57,6 +70,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Downstream Integration Strategy",
     segment: "Energy",
     influenceRole: "reframe",
+    look: { hair: "variant06", skin: "dcae86", eyes: "variant10", glasses: "variant04", beard: true, covering: { kind: "none" }, wear: { kind: "suit", color: "#3a3a3a", shirt: "#dfe6ee" } },
   },
   {
     id: "SA_CH_V",
@@ -67,6 +81,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Process Safety and Reliability",
     segment: "Chemicals",
     influenceRole: "validate",
+    look: { hair: "variant23", skin: "d6a37c", eyes: "variant21", glasses: "variant01", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#111", shirt: "#d9d2c7" } },
   },
   {
     id: "SA_CH_B",
@@ -77,6 +92,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Head of ESG and Regulatory Affairs",
     segment: "Chemicals",
     influenceRole: "block",
+    look: { hair: "variant01", skin: "d9a47a", eyes: "variant06", beard: false, covering: { kind: "none" }, wear: { kind: "suitTie", color: "#23324d", shirt: "#fff", tie: "#1d3b5c" } },
   },
   {
     id: "SA_CH_A",
@@ -87,6 +103,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Supply Chain Development",
     segment: "Chemicals",
     influenceRole: "amplify",
+    look: { hair: "variant02", skin: "a8714c", eyes: "variant20", beard: true, covering: { kind: "none" }, wear: { kind: "suit", color: "#2a2a2a", shirt: "#f4f4f4" } },
   },
   {
     id: "SA_CH_R",
@@ -97,6 +114,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Corporate Investment Planning",
     segment: "Chemicals",
     influenceRole: "reframe",
+    look: { hair: "variant29", skin: "bb7f58", eyes: "variant04", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#6d2a36", shirt: "#efe6dc" } },
   },
   {
     id: "SA_FL_V",
@@ -107,6 +125,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Managing Director, Energy and Infrastructure Finance",
     segment: "Finance & legal",
     influenceRole: "validate",
+    look: { hair: "variant08", skin: "e5b48c", eyes: "variant16", glasses: "variant03", beard: true, covering: { kind: "none" }, wear: { kind: "suitTie", color: "#1d2230", shirt: "#fff", tie: "#2f4b3a" } },
   },
   {
     id: "SA_FL_B",
@@ -117,6 +136,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "General Counsel",
     segment: "Finance & legal",
     influenceRole: "block",
+    look: { hair: "variant16", skin: "c28a62", eyes: "variant02", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#2a2a2a", shirt: "#e7e2da" } },
   },
   {
     id: "SA_FL_A",
@@ -128,6 +148,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Partner, Projects and Infrastructure Finance",
     segment: "Finance & legal",
     influenceRole: "amplify",
+    look: { hair: "variant07", skin: "c98f66", eyes: "variant14", beard: true, covering: { kind: "none" }, wear: { kind: "suitTie", color: "#2b3140", shirt: "#fff", tie: "#5a3a6b" } },
   },
   {
     id: "SA_FL_R",
@@ -138,6 +159,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Chief Investment Strategist",
     segment: "Finance & legal",
     influenceRole: "reframe",
+    look: { hair: "variant42", skin: "dcae86", eyes: "variant24", glasses: "variant03", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#3b4a5a", shirt: "#f1ece4" } },
   },
   {
     id: "SA_PG_V",
@@ -148,6 +170,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Industrial Programs",
     segment: "Government",
     influenceRole: "validate",
+    look: { hair: "variant01", skin: "d6a37c", eyes: "variant10", beard: false, covering: { kind: "scarf", color: "#5b6148", shade: "#454a35" }, wear: { kind: "abaya" } },
   },
   {
     id: "SA_PG_B",
@@ -158,6 +181,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Regulatory Licensing",
     segment: "Government",
     influenceRole: "block",
+    look: { hair: "variant01", skin: "d9a47a", eyes: "variant21", beard: true, covering: { kind: "shemagh" }, wear: { kind: "thobe" } },
   },
   {
     id: "SA_PG_A",
@@ -168,6 +192,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Investor Services",
     segment: "Government",
     influenceRole: "amplify",
+    look: { hair: "variant01", skin: "a8714c", eyes: "variant06", beard: false, covering: { kind: "scarf", color: "#1f1f1f", shade: "#000" }, wear: { kind: "abaya" } },
   },
   {
     id: "SA_PG_R",
@@ -178,6 +203,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Community and Workforce Development",
     segment: "Government",
     influenceRole: "reframe",
+    look: { hair: "variant01", skin: "bb7f58", eyes: "variant20", glasses: "variant01", beard: true, covering: { kind: "ghutra" }, wear: { kind: "thobe" } },
   },
   {
     id: "SA_TE_V",
@@ -188,6 +214,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Head of Industrial Digitalization",
     segment: "Technology",
     influenceRole: "validate",
+    look: { hair: "variant28", skin: "e5b48c", eyes: "variant04", beard: true, covering: { kind: "none" }, wear: { kind: "suit", color: "#3a4252", shirt: "#e8eef5" } },
   },
   {
     id: "SA_TE_B",
@@ -198,6 +225,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Cybersecurity and Data Governance",
     segment: "Technology",
     influenceRole: "block",
+    look: { hair: "variant21", skin: "c28a62", eyes: "variant16", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#161616", shirt: "#c9a36a" } },
   },
   {
     id: "SA_TE_A",
@@ -209,6 +237,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Technology Partnerships",
     segment: "Technology",
     influenceRole: "amplify",
+    look: { hair: "variant33", skin: "c98f66", eyes: "variant02", glasses: "variant04", beard: false, covering: { kind: "none" }, wear: { kind: "top", color: "#2f6f73" } },
   },
   {
     id: "SA_TE_R",
@@ -219,6 +248,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Chief Digital Officer",
     segment: "Technology",
     influenceRole: "reframe",
+    look: { hair: "variant12", skin: "dcae86", eyes: "variant14", beard: true, covering: { kind: "none" }, wear: { kind: "suit", color: "#3a3a3a", shirt: "#dfe6ee" } },
   },
   {
     id: "SA_IC_V",
@@ -229,6 +259,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Editorial Director, Energy and Markets",
     segment: "Media & commentary",
     influenceRole: "validate",
+    look: { hair: "variant01", skin: "d6a37c", eyes: "variant24", beard: false, covering: { kind: "scarf", color: "#2d3b55", shade: "#1f2a40" }, wear: { kind: "abaya" } },
   },
   {
     id: "SA_IC_B",
@@ -239,6 +270,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Gulf Political Risk",
     segment: "Media & commentary",
     influenceRole: "block",
+    look: { hair: "variant39", skin: "d9a47a", eyes: "variant10", beard: true, covering: { kind: "none" }, wear: { kind: "suitTie", color: "#2b2b33", shirt: "#fff", tie: "#8a5a2b" } },
   },
   {
     id: "SA_IC_A",
@@ -249,6 +281,7 @@ export const ksaPeople: KsaPerson[] = [
     role: "Senior Columnist, Industrial Transformation",
     segment: "Media & commentary",
     influenceRole: "amplify",
+    look: { hair: "variant01", skin: "a8714c", eyes: "variant21", glasses: "variant03", beard: true, covering: { kind: "ghutra" }, wear: { kind: "thobe" } },
   },
   {
     id: "SA_IC_R",
@@ -259,5 +292,6 @@ export const ksaPeople: KsaPerson[] = [
     role: "Director, Regional Development Commentary",
     segment: "Media & commentary",
     influenceRole: "reframe",
+    look: { hair: "variant40", skin: "bb7f58", eyes: "variant06", glasses: "variant01", beard: false, covering: { kind: "none" }, wear: { kind: "blazer", color: "#8c6d4f", shirt: "#f3ede4" } },
   },
 ];

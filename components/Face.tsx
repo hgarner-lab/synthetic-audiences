@@ -3,6 +3,8 @@ import { createAvatar } from "@dicebear/core";
 import * as lorelei from "@dicebear/lorelei";
 import type { Options as LoreleiOptions } from "@dicebear/lorelei";
 import { personas } from "@/data/personas";
+import { ksaPeople } from "@/data/ksaPeople";
+import { addFaceLayers, hairColorFor } from "@/components/faceLayers";
 import type { Stance } from "@/data/reactions";
 
 export type FaceMood = Stance | "waiting";
@@ -87,11 +89,38 @@ function looksFor(id: string): Partial<LoreleiOptions> {
 
 const cache = new Map<string, string>();
 
+// Saudi people have a set look, with head coverings, beards and collars drawn on top
+// (components/faceLayers.ts). Their age comes from the middle of their age range.
+function ksaAvatarUri(id: string, mood: FaceMood) {
+  const person = ksaPeople.find((item) => item.id === id);
+  if (!person) return null;
+  const { look } = person;
+  const age = (person.ageRange[0] + person.ageRange[1]) / 2;
+  const svg = createAvatar(lorelei, {
+    seed: id,
+    hair: [look.hair] as LoreleiOptions["hair"],
+    hairColor: [hairColorFor(age)],
+    skinColor: [look.skin],
+    eyes: [look.eyes] as LoreleiOptions["eyes"],
+    glasses: look.glasses ? ([look.glasses] as LoreleiOptions["glasses"]) : undefined,
+    glassesProbability: look.glasses ? 100 : 0,
+    earringsProbability: 0,
+    beardProbability: 0,
+    frecklesProbability: 0,
+    hairAccessoriesProbability: 0,
+    ...expressions[mood],
+  }).toString();
+  const layered = addFaceLayers(svg, { covering: look.covering, wear: look.wear, beard: look.beard, age });
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(layered)}`;
+}
+
 function avatarUri(id: string, mood: FaceMood) {
   const key = `${id}:${mood}`;
   let uri = cache.get(key);
   if (!uri) {
-    uri = createAvatar(lorelei, { seed: id, ...looksFor(id), ...expressions[mood] }).toDataUri();
+    uri =
+      ksaAvatarUri(id, mood) ??
+      createAvatar(lorelei, { seed: id, ...looksFor(id), ...expressions[mood] }).toDataUri();
     cache.set(key, uri);
   }
   return uri;

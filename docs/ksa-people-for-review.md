@@ -72,17 +72,21 @@ clients.
 
 Role titles and person IDs (`SA_EN_V` and so on) are unchanged from the cards.
 
-## Faces: a decision needed before KSA goes live
+## Faces
 
-The current faces show everyone's hair. Many Saudi women wear a headscarf at work, and
-many Saudi men wear a ghutra or shemagh. Showing every Saudi face bareheaded would look
-wrong to a Saudi audience. The face style has no head coverings, so we need to choose one
-of these:
+The faces use the same illustration style as the China room, with extra layers drawn in
+the same line weight: head coverings, short beards, fine age lines and a hint of collar
+(`components/faceLayers.ts`). Each person's look is set in `data/ksaPeople.ts`.
 
-1. Add simple headscarf and ghutra shapes to the face style, used for most (not all) of
-   the Saudi people, since practice varies.
-2. Use a different face style for KSA that includes head coverings.
-3. Show KSA people with initials or silhouettes until the faces are right.
+- **Dress follows the setting.** Senior people in companies (energy, chemicals, finance,
+  technology) wear suits or business wear with no head covering, as Aramco's leadership
+  team does. The two men in government wear the thobe with a ghutra or shemagh, which is
+  required at work. The two women in government wear an abaya with a looser scarf. Media
+  is a mix: one columnist in a ghutra, one editor in a looser scarf, two in business dress.
+- **Looser scarves** sit a little back from the forehead and show the front of the hair.
+- **Age.** Fine lines from 45, more from 55. Hair and beards go grey from 50, lighter
+  grey from 55.
+- **Beards.** Short and neat, on 11 of the 12 men.
 
 ## Questions for reviewers
 
@@ -91,7 +95,7 @@ of these:
    region that would read oddly for the role?
 3. Is it right to include two expatriates, and are their roles plausible?
 4. Is the Arabic spelling correct for each name?
-5. How should head coverings be handled on the faces?
+5. Do the faces, dress and head coverings look right for each role?
 
 ## Sources used
 

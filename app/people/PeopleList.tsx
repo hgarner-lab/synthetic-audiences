@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { personas, segments } from "@/data/personas";
 import { roomMessages, stanceLabels } from "@/data/reactions";
-import { InitialsPortrait, Portrait } from "@/components/Portrait";
+import { Portrait } from "@/components/Portrait";
 import { ksaPeople } from "@/data/ksaPeople";
 import { SectionTag } from "@/components/Sections";
 import { useProfile } from "@/components/Profile";
@@ -74,7 +74,7 @@ export function PeopleList() {
           ) : (
             <p className="communityIntroCopy">
               Meet the 24 people who shape the same kind of decision in Saudi Arabia. They haven&rsquo;t reacted to a
-              message yet: that comes next. Until their faces are ready, each person shows as their initials.
+              message yet: that comes next.
             </p>
           )}
         </div>
@@ -106,7 +106,7 @@ export function PeopleList() {
               onClick={() => openProfile(person.id)}
               style={{ animationDelay: `${Math.min(index * 25, 350)}ms` }}
             >
-              <InitialsPortrait name={person.name} influenceRole={person.influenceRole} />
+              <Portrait persona={person} />
               <div className="personCopy">
                 <div className="personNameRow">
                   <strong>{person.name.replace(/-/g, "\u2011")}</strong>

@@ -6,7 +6,7 @@ import { personas, Persona } from "@/data/personas";
 import { roomMessages, stanceLabels, Stance } from "@/data/reactions";
 import { snapshots, stages } from "@/data/campaign";
 import { Face } from "@/components/Face";
-import { InitialsPortrait, Portrait } from "@/components/Portrait";
+import { Portrait } from "@/components/Portrait";
 import { ksaPeople, KsaPerson } from "@/data/ksaPeople";
 import { readVersion, versionLabel } from "@/components/version";
 import type { CardExtras } from "@/data/cards";
@@ -206,7 +206,7 @@ function ProfilePanel({ persona, onClose }: { persona: Persona; onClose: () => v
 }
 
 // A Saudi person's profile. They haven't reacted to anything yet, so the profile shows
-// who they are and what they need, from the persona cards, with initials for a face.
+// who they are and what they need, from the persona cards.
 function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () => void }) {
   const [extras, setExtras] = useState<CardExtras | null>(null);
 
@@ -234,7 +234,7 @@ function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () =
           ×
         </button>
         <div className="panelTop">
-          <InitialsPortrait name={person.name} influenceRole={person.influenceRole} large />
+          <Portrait persona={person} large />
           <div>
             <span className="syntheticBadge">Synthetic person · Saudi Arabia</span>
             {/* A non-breaking hyphen keeps "Al-Zahrani" on one line. */}
@@ -253,8 +253,7 @@ function KsaProfilePanel({ person, onClose }: { person: KsaPerson; onClose: () =
         <div className="likelyQuestion">
           <span>Not in the room yet</span>
           <p>
-            The Saudi room hasn&rsquo;t heard a message yet, so there are no reactions to show. Their faces appear as
-            initials for now.
+            The Saudi room hasn&rsquo;t heard a message yet, so there are no reactions to show yet.
           </p>
         </div>
 
