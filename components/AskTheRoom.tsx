@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { personas, Persona, segments } from "@/data/personas";
-import { audienceQuestions, defaultResponderIds, AudienceResponseFixture } from "@/data/questions";
+import { Persona, segments } from "@/data/personas";
+import { AudienceResponseFixture } from "@/data/questions";
+import { MarketId, markets, readMarket, RoomPerson, saveMarket } from "@/data/markets";
+import { MarketSwitch, setMarketInUrl } from "@/components/MarketSwitch";
 import { Face } from "@/components/Face";
 import { Portrait } from "@/components/Portrait";
 import { SectionTag } from "@/components/Sections";
@@ -27,7 +29,12 @@ const roleLabels = {
 
 export function AskTheRoom() {
   const { openProfile } = useProfile();
-  const onOpenPersona = (persona: Persona) => openProfile(persona.id);
+  const [marketId, setMarketId] = useState<MarketId>("china");
+  const market = markets[marketId];
+  const personas = market.people;
+  const audienceQuestions = market.questions;
+  const marketQuery = marketId === "ksa" ? "market=ksa&" : "";
+  const onOpenPersona = (persona: RoomPerson) => openProfile(persona.id);
   const [input, setInput] = useState("");
   const [askedPrompt, setAskedPrompt] = useState("");
   const [activeSuggestion, setActiveSuggestion] = useState<string | null>(null);
@@ -41,7 +48,7 @@ export function AskTheRoom() {
   const [takeaway, setTakeaway] = useState("");
 
   const synthesizeCustomResponses = (): AudienceResponseFixture[] =>
-    defaultResponderIds.flatMap((personaId) => {
+    market.defaultResponderIds.flatMap((personaId) => {
       const persona = personas.find((person) => person.id === personaId);
 
       if (!persona) {
@@ -111,15 +118,33 @@ export function AskTheRoom() {
   };
 
   // Arriving with ?ask=<question id> (e.g. from the recommendation) asks that question straight away.
+  // The market comes from the link, or the one chosen earlier in this tab.
   useEffect(() => {
+    const linkedMarket = readMarket();
+    setMarketId(linkedMarket);
+    saveMarket(linkedMarket);
     const id = new URLSearchParams(window.location.search).get("ask");
-    const question = audienceQuestions.find((item) => item.id === id);
+    const question = markets[linkedMarket].questions.find((item) => item.id === id);
     if (question) {
       setInput(question.prompt);
-      askQuestion(question.prompt, question.id);
+      setAskedPrompt(question.prompt);
+      setActiveSuggestion(question.id);
+      setResponses(question.responses);
+      setTakeaway(question.takeaway);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function chooseMarket(id: MarketId) {
+    setMarketId(id);
+    saveMarket(id);
+    setMarketInUrl(id, ["ask"]);
+    // Answers belong to one room, so start again.
+    setResponses([]);
+    setAskedPrompt("");
+    setActiveSuggestion(null);
+    setActiveAnswer(null);
+    setTakeaway("");
+  }
 
   return (
     <section className="askRoomSection" id="ask">
@@ -127,6 +152,7 @@ export function AskTheRoom() {
         <div>
           <SectionTag id="ask" />
           <h2>Don’t just read about your audience. Ask them.</h2>
+          <MarketSwitch value={marketId} onChange={chooseMarket} className="askMarket" />
         </div>
         <p>
           Ask one question and hear how different people answer it. Answers stay separate, so you
@@ -202,7 +228,7 @@ export function AskTheRoom() {
             </div>
           </div>
 
-          <AskRoomGrid key={askedPrompt} responses={responses} onPick={showAnswer} />
+          <AskRoomGrid key={`${marketId}-${askedPrompt}`} people={personas} responses={responses} onPick={showAnswer} />
           <p className="askHint">Tap a lit-up face to read that person&rsquo;s answer.</p>
 
           <div className="roomTakeaway">
@@ -254,7 +280,7 @@ export function AskTheRoom() {
                           <span key={item}>{item}</span>
                         ))}
                       </div>
-                      <p>{persona.internalThought}</p>
+                      <p>{persona.thought}</p>
                     </div>
                   </details>
                 </article>
@@ -269,13 +295,13 @@ export function AskTheRoom() {
 
           <div className="nextSteps">
             <span>Next</span>
-            <a className="nextLink primary" href="/recommendation">
+            <a className="nextLink primary" href={`/recommendation${marketId === "ksa" ? "?market=ksa" : ""}`}>
               See the recommendation →
             </a>
-            <a className="nextLink" href="/decision">
+            <a className="nextLink" href={`/decision${marketId === "ksa" ? "?market=ksa" : ""}`}>
               Follow the decision
             </a>
-            <a className="nextLink" href="/">
+            <a className="nextLink" href={`/?${marketQuery}`}>
               Try another version in the room
             </a>
           </div>
@@ -291,9 +317,11 @@ export function AskTheRoom() {
 const askRoles: Persona["influenceRole"][] = ["validate", "block", "amplify", "reframe"];
 
 function AskRoomGrid({
+  people,
   responses,
   onPick,
 }: {
+  people: RoomPerson[];
   responses: AudienceResponseFixture[];
   onPick: (personaId: string) => void;
 }) {
@@ -302,7 +330,7 @@ function AskRoomGrid({
     <div className="askGrid" role="group" aria-label="Who answered">
       {askRoles.flatMap((role) =>
         segments.map((segment) => {
-          const person = personas.find((p) => p.segment === segment && p.influenceRole === role)!;
+          const person = people.find((p) => p.segment === segment && p.influenceRole === role)!;
           const speaking = answering.get(person.id);
           return speaking ? (
             <button

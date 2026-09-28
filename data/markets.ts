@@ -4,6 +4,9 @@ import { personas, InfluenceRole } from "@/data/personas";
 import { roomMessages, RoomMessage } from "@/data/reactions";
 import { ksaPeople } from "@/data/ksaPeople";
 import { ksaDetail, ksaOriginalSpeakers, ksaRoomMessages } from "@/data/ksaRoom";
+import { audienceQuestions, AudienceQuestion, defaultResponderIds } from "@/data/questions";
+import { journeySteps, JourneyStep } from "@/data/journey";
+import { ksaDefaultResponderIds, ksaFixingStage, ksaJourneySteps, ksaLens, ksaQuestions } from "@/data/ksaAsk";
 
 export type MarketId = "china" | "ksa";
 
@@ -18,6 +21,9 @@ export type RoomPerson = {
   influenceRole: InfluenceRole;
   needs: string[];
   why: string;
+  // What shapes their view, and the thought behind it, for Ask the room.
+  lens: string[];
+  thought: string;
 };
 
 export type Market = {
@@ -26,6 +32,9 @@ export type Market = {
   people: RoomPerson[];
   messages: RoomMessage[];
   originalSpeakers: string[];
+  questions: AudienceQuestion[];
+  defaultResponderIds: string[];
+  journey: { place: string; steps: JourneyStep[]; fixingStage: Record<string, string> };
 };
 
 export const markets: Record<MarketId, Market> = {
@@ -42,9 +51,18 @@ export const markets: Record<MarketId, Market> = {
       influenceRole: person.influenceRole,
       needs: person.needs,
       why: person.actionDetail,
+      lens: person.lens,
+      thought: person.internalThought,
     })),
     messages: roomMessages,
     originalSpeakers: ["CN_EN_A", "CN_IC_A", "CN_CH_B", "CN_FL_V", "CN_EN_R", "CN_IC_B"],
+    questions: audienceQuestions,
+    defaultResponderIds,
+    journey: {
+      place: "the refinery",
+      steps: journeySteps,
+      fixingStage: { CN_EN_R: "understood", CN_EN_V: "considered", CN_CH_B: "considered", CN_FL_V: "chosen" },
+    },
   },
   ksa: {
     id: "ksa",
@@ -59,9 +77,14 @@ export const markets: Record<MarketId, Market> = {
       influenceRole: person.influenceRole,
       needs: ksaDetail[person.id].needs,
       why: ksaDetail[person.id].why,
+      lens: ksaLens[person.id],
+      thought: ksaDetail[person.id].why,
     })),
     messages: ksaRoomMessages,
     originalSpeakers: ksaOriginalSpeakers,
+    questions: ksaQuestions,
+    defaultResponderIds: ksaDefaultResponderIds,
+    journey: { place: "a Saudi refinery", steps: ksaJourneySteps, fixingStage: ksaFixingStage },
   },
 };
 

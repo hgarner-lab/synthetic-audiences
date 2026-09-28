@@ -3189,3 +3189,9 @@ a.prototypeTag {
   font-weight: 800;
 }
 .personStance.st-waiting { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); }
+
+/* China / Saudi Arabia switch on Ask the room and Follow the decision. */
+.askMarket,
+.dpMarket {
+  margin: 12px 0 4px;
+}

@@ -1,65 +1,78 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { personas } from "@/data/personas";
-import { journeySteps } from "@/data/journey";
-import { roomMessages, stanceLabels, Stance } from "@/data/reactions";
-import { stages } from "@/data/campaign";
+import { stanceLabels, Stance } from "@/data/reactions";
+import { MarketId, markets, readMarket, saveMarket } from "@/data/markets";
+import { plans } from "@/data/plans";
 import { Face } from "@/components/Face";
 import { SectionTag } from "@/components/Sections";
 import { useProfile } from "@/components/Profile";
-import { readVersion, saveVersion, versionLabel } from "@/components/version";
-
-// The campaign stage that gets each person in the walkthrough to let the message through.
-const fixingStage: Record<string, string> = {
-  CN_EN_R: "understood",
-  CN_EN_V: "considered",
-  CN_CH_B: "considered",
-  CN_FL_V: "chosen",
-};
-
-function stanceOf(versionId: string, personaId: string): Stance {
-  const message = roomMessages.find((item) => item.id === versionId) ?? roomMessages[0];
-  return message.reactions.find((item) => item.personaId === personaId)!.stance;
-}
-
-function lineOf(versionId: string, personaId: string) {
-  const message = roomMessages.find((item) => item.id === versionId) ?? roomMessages[0];
-  return message.reactions.find((item) => item.personaId === personaId)!.line;
-}
-
-// How many people in the walkthrough the message gets past before it stalls.
-function reach(versionId: string) {
-  const stall = journeySteps.findIndex((step) => stanceOf(versionId, step.personaId) !== "in");
-  return stall === -1 ? journeySteps.length : stall;
-}
+import { MarketSwitch } from "@/components/MarketSwitch";
+import { readVersion, saveVersion } from "@/components/version";
 
 export function DecisionPath() {
   const { openProfile } = useProfile();
   const [versionId, setVersionId] = useState("original");
+  const [marketId, setMarketId] = useState<MarketId>("china");
+  const market = markets[marketId];
+  const personas = market.people;
+  const roomMessages = market.messages;
+  const journeySteps = market.journey.steps;
+  const stages = plans[marketId].stages;
+  const marketQuery = marketId === "ksa" ? "market=ksa&" : "";
 
-  useEffect(() => setVersionId(readVersion()), []);
+  const stanceOf = (id: string, personaId: string): Stance => {
+    const message = roomMessages.find((item) => item.id === id) ?? roomMessages[0];
+    return message.reactions.find((item) => item.personaId === personaId)!.stance;
+  };
+  const lineOf = (id: string, personaId: string) => {
+    const message = roomMessages.find((item) => item.id === id) ?? roomMessages[0];
+    return message.reactions.find((item) => item.personaId === personaId)!.line;
+  };
+  // How many people in the walkthrough the message gets past before it stalls.
+  const reach = (id: string) => {
+    const stall = journeySteps.findIndex((step) => stanceOf(id, step.personaId) !== "in");
+    return stall === -1 ? journeySteps.length : stall;
+  };
+
+  useEffect(() => {
+    setVersionId(readVersion());
+    const linkedMarket = readMarket();
+    setMarketId(linkedMarket);
+    saveMarket(linkedMarket);
+  }, []);
+
+  function writeUrl(id: string, marketValue: MarketId) {
+    window.history.replaceState(null, "", `/decision?${marketValue === "ksa" ? "market=ksa&" : ""}version=${id}`);
+  }
 
   function choose(id: string) {
     setVersionId(id);
     saveVersion(id);
-    window.history.replaceState(null, "", `/decision?version=${id}`);
+    writeUrl(id, marketId);
+  }
+
+  function chooseMarket(id: MarketId) {
+    setMarketId(id);
+    saveMarket(id);
+    writeUrl(versionId, id);
   }
 
   const stall = reach(versionId);
   const stalled = stall < journeySteps.length ? journeySteps[stall] : null;
   const stalledPerson = stalled ? personas.find((p) => p.id === stalled.personaId)! : null;
   const stalledStance = stalled ? stanceOf(versionId, stalled.personaId) : null;
-  const fix = stalled ? stages.find((stage) => stage.id === fixingStage[stalled.personaId]) : null;
+  const fix = stalled ? stages.find((stage) => stage.id === market.journey.fixingStage[stalled.personaId]) : null;
   const furtherVersions = roomMessages.filter((message) => reach(message.id) > stall);
 
   return (
     <section className="dp">
       <SectionTag id="journey" />
-      <h1 className="dpTitle">Follow your message through the refinery</h1>
+      <h1 className="dpTitle">Follow your message through {market.journey.place}</h1>
+      <MarketSwitch value={marketId} onChange={chooseMarket} className="dpMarket" />
       <p className="dpIntro">
-        Inside a refinery, a message has to get past four people before anything is bought. Each one asks a different
-        question. See how far your version of the message gets, and where it stalls.
+        Inside {market.journey.place}, a message has to get past four people before anything is bought. Each one asks a
+        different question. See how far your version of the message gets, and where it stalls.
       </p>
 
       <div className="dpVersions" role="group" aria-label="Choose a version of the message">
@@ -135,7 +148,7 @@ export function DecisionPath() {
               <strong>{stalled.requirement.title}.</strong> {stalled.requirement.description}
             </p>
             <div className="nextSteps">
-              <a className="nextLink primary" href={`/recommendation?version=${versionId}#stage-${fix.id}`}>
+              <a className="nextLink primary" href={`/recommendation?${marketQuery}version=${versionId}#stage-${fix.id}`}>
                 See how the campaign fixes this →
               </a>
               {furtherVersions.length > 0 && (
@@ -153,9 +166,9 @@ export function DecisionPath() {
         ) : (
           <>
             <p className="dpVerdictKicker">Gets past all {journeySteps.length}</p>
-            <h2>Your message gets all the way through the refinery.</h2>
+            <h2>Your message gets all the way through {market.journey.place}.</h2>
             <div className="nextSteps">
-              <a className="nextLink primary" href={`/recommendation?version=${versionId}`}>
+              <a className="nextLink primary" href={`/recommendation?${marketQuery}version=${versionId}`}>
                 See the recommendation →
               </a>
             </div>

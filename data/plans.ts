@@ -101,7 +101,7 @@ export const plans: Record<MarketId, Plan> = {
     stillToWin: ksaStillToWin,
     recommendation: ksaRecommendation,
     channelsNote,
-    hasAsk: false,
-    hasDecision: false,
+    hasAsk: true,
+    hasDecision: true,
   },
 };

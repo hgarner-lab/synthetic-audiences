@@ -11,7 +11,6 @@ import { BrandLockup, McCannCredit } from "@/components/Brand";
 import { SectionIcon, SectionTag, sections } from "@/components/Sections";
 import { ShellNav } from "@/components/PageShell";
 import { useProfile } from "@/components/Profile";
-import { audienceQuestions } from "@/data/questions";
 import "./recommendation.css";
 
 const roleOrder: InfluenceRole[] = ["validate", "block", "amplify", "reframe"];
@@ -72,6 +71,7 @@ export default function Recommendation() {
     const version = new URLSearchParams(window.location.search).get("version");
     const linkedMarket = readMarket();
     setMarketId(linkedMarket);
+    saveMarket(linkedMarket);
     if (version && plans[linkedMarket].versionTallies.some((tally) => tally.id === version)) setPickedId(version);
     // The goal chosen on the explore page, if the visitor went through it.
     try {
@@ -422,8 +422,8 @@ export default function Recommendation() {
             <h3>Ask the room</h3>
             <p>Hear how the people behind this decision answer, side by side.</p>
             <div className="rcTestLinks">
-              {audienceQuestions.map((question) => (
-                <a key={question.id} href={`/ask?ask=${question.id}`}>
+              {markets[marketId].questions.map((question) => (
+                <a key={question.id} href={`/ask?${marketQuery}ask=${question.id}`}>
                   {question.prompt}
                 </a>
               ))}
@@ -467,7 +467,9 @@ export default function Recommendation() {
                 </button>
               ))}
               {plan.hasDecision && (
-                <a href={`/decision?version=${pickedId ?? recommendedId}`}>Follow your message through a refinery</a>
+                <a href={`/decision?${marketQuery}version=${pickedId ?? recommendedId}`}>
+                  Follow your message through {markets[marketId].journey.place}
+                </a>
               )}
             </div>
           </div>
