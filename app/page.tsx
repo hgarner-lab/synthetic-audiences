@@ -7,6 +7,8 @@ import { roomMessages, stanceLabels, stanceOrder, Reaction } from "@/data/reacti
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import { SectionIcon, SectionId, sections } from "@/components/Sections";
+import { useProfile } from "@/components/Profile";
+import { saveVersion } from "@/components/version";
 import "./room.css";
 import "./room-brand.css";
 
@@ -46,9 +48,9 @@ function tilt(id: string) {
 
 // Other parts of the experience, offered quietly once the room has reacted.
 const deeperLinks: { id: SectionId; href: string; cta: string }[] = [
-  { id: "ask", href: "/explore#ask", cta: "Ask the room a question" },
-  { id: "journey", href: "/explore#journey", cta: "Follow the decision" },
-  { id: "people", href: "/explore#community", cta: "Meet all 24 people" },
+  { id: "ask", href: "/ask", cta: "Ask the room a question" },
+  { id: "journey", href: "/decision", cta: "Follow your message through a refinery" },
+  { id: "people", href: "/people", cta: "Meet all 24 people" },
 ];
 
 // The main path through the experience, shown as a small progress line.
@@ -62,6 +64,7 @@ export default function Room() {
   const [playing, setPlaying] = useState(true);
   // Whether the visitor has tried at least one version other than the original.
   const [tried, setTried] = useState(false);
+  const { openProfile } = useProfile();
 
   // Links from other pages can open the room on a version (?version=) or a person (?person=).
   useEffect(() => {
@@ -70,6 +73,7 @@ export default function Room() {
     const person = params.get("person");
     if (version && roomMessages.some((item) => item.id === version)) {
       setMessageId(version);
+      saveVersion(version);
       setReacted(true);
       if (version !== "original") setTried(true);
     }
@@ -116,6 +120,7 @@ export default function Room() {
 
   function chooseMessage(id: string) {
     setMessageId(id);
+    saveVersion(id);
     if (id !== "original") setTried(true);
     setSpeakerIndex(0);
     setPinnedId(null);
@@ -318,9 +323,9 @@ export default function Room() {
                     />
                   ))}
                 </div>
-                <a className="frProfile" href={`/explore?person=${speaker.id}#community`}>
+                <button className="frProfile" onClick={() => openProfile(speaker.id)}>
                   Full profile
-                </a>
+                </button>
                 <button className="frPlay" onClick={togglePlay}>
                   {pinnedId ? "Back to the voices" : playing ? "Pause voices" : "Play voices"}
                 </button>
@@ -371,7 +376,7 @@ export default function Room() {
               <a
                 key={link.href}
                 className="frDeeperLink"
-                href={link.href}
+                href={link.id === "journey" ? `${link.href}?version=${messageId}` : link.href}
                 style={{ "--accent": sections[link.id].colour } as CSSProperties}
               >
                 <SectionIcon id={link.id} size={30} />

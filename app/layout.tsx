@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, Inter } from "next/font/google";
+import { ProfileProvider } from "@/components/Profile";
 import "./globals.css";
 
 // Archivo runs from very heavy and condensed to very thin, so headlines can mix weights
@@ -27,7 +28,7 @@ export default function RootLayout({
       <body>
         {/* Brand texture: a thin gradient bar along the top edge, and printed grain over everything. */}
         <div className="edgeBar" aria-hidden="true" />
-        {children}
+        <ProfileProvider>{children}</ProfileProvider>
         <div className="edgeBar edgeBarBottom" aria-hidden="true" />
         <div className="grain" aria-hidden="true" />
       </body>

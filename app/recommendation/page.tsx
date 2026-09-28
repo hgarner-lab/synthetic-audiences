@@ -17,6 +17,8 @@ import {
 import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import { SectionIcon, SectionTag, sections } from "@/components/Sections";
+import { ShellNav } from "@/components/PageShell";
+import { useProfile } from "@/components/Profile";
 import { audienceQuestions } from "@/data/questions";
 import "./recommendation.css";
 
@@ -59,6 +61,16 @@ function StanceBar({ stances }: { stances: Record<string, Stance> }) {
 export default function Recommendation() {
   const [pickedId, setPickedId] = useState<string | null>(null);
   const [goal, setGoal] = useState<string | null>(null);
+  const { openProfile } = useProfile();
+
+  function chooseGoal(value: string) {
+    setGoal(value);
+    try {
+      window.sessionStorage.setItem("sa-goal", value);
+    } catch {
+      // Storage can be unavailable; the choice still applies on this page.
+    }
+  }
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -93,10 +105,7 @@ export default function Recommendation() {
     <main className="rc">
       <header className="rcTop">
         <BrandLockup />
-        <nav className="rcNav">
-          <a href={`/?version=${pickedId ?? recommendedId}`}>← Back to the room</a>
-          <a href="/explore">Explore the full audience</a>
-        </nav>
+        <ShellNav current="recommendation" />
       </header>
 
       <section className="rcHero">
@@ -109,6 +118,22 @@ export default function Recommendation() {
         <p className="rcJump">
           <a href="#test">Test this plan with the room ↓</a>
         </p>
+
+        <div className="rcGoal" role="group" aria-label="Your goal">
+          <span>What&rsquo;s your goal?</span>
+          <div className="rcGoalChips">
+            {Object.keys(goalStage).map((value) => (
+              <button
+                key={value}
+                className={value === goal ? "isActive" : ""}
+                aria-pressed={value === goal}
+                onClick={() => chooseGoal(value)}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {goal && goalStageInfo && (
           <p className="rcPicked">
@@ -280,7 +305,9 @@ export default function Recommendation() {
                         <Face id={person.personaId} mood={person.stance} size={48} />
                       </span>
                       <div>
-                        <strong>{personById[person.personaId].name}</strong>
+                        <button className="rcPersonLink" onClick={() => openProfile(person.personaId)}>
+                          {personById[person.personaId].name}
+                        </button>
                         <small>{personById[person.personaId].role}</small>
                         <span className="rcShift">
                           {from !== person.stance && (
@@ -378,7 +405,7 @@ export default function Recommendation() {
             <p>Hear how the people behind this decision answer, side by side.</p>
             <div className="rcTestLinks">
               {audienceQuestions.map((question) => (
-                <a key={question.id} href={`/explore?ask=${question.id}#ask`}>
+                <a key={question.id} href={`/ask?ask=${question.id}`}>
                   {question.prompt}
                 </a>
               ))}
@@ -409,15 +436,15 @@ export default function Recommendation() {
             <p>Two people are still holding out at the end. See what they care about and need.</p>
             <div className="rcTestLinks">
               {stillToWin.map((item) => (
-                <a key={item.personaId} className="rcTestPerson" href={`/explore?person=${item.personaId}#community`}>
+                <button key={item.personaId} className="rcTestPerson" onClick={() => openProfile(item.personaId)}>
                   <Face id={item.personaId} mood="waiting" size={32} />
                   <span>
                     {nameOf(item.personaId)}
                     <small>{personById[item.personaId].role}</small>
                   </span>
-                </a>
+                </button>
               ))}
-              <a href="/explore#journey">Follow the decision from start to finish</a>
+              <a href={`/decision?version=${pickedId ?? recommendedId}`}>Follow your message through a refinery</a>
             </div>
           </div>
         </div>
@@ -434,10 +461,10 @@ export default function Recommendation() {
               <div className="rcAsked">
                 <span>Asked for by</span>
                 {need.askedBy.map((id) => (
-                  <span key={id} className="rcAskedPerson">
+                  <button key={id} className="rcAskedPerson" onClick={() => openProfile(id)}>
                     <Face id={id} mood="waiting" size={24} />
                     {nameOf(id)}
-                  </span>
+                  </button>
                 ))}
               </div>
             </li>
@@ -454,10 +481,10 @@ export default function Recommendation() {
               <p>{item.detail}</p>
               <div className="rcAsked">
                 {item.personaIds.map((id) => (
-                  <span key={id} className="rcAskedPerson">
+                  <button key={id} className="rcAskedPerson" onClick={() => openProfile(id)}>
                     <Face id={id} mood="pushback" size={24} />
                     {nameOf(id)}
-                  </span>
+                  </button>
                 ))}
               </div>
             </li>

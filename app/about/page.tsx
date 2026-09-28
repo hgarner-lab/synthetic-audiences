@@ -89,8 +89,8 @@ export default function About() {
           <a className="nextLink" href="/recommendation">
             See the recommendation
           </a>
-          <a className="nextLink" href="/explore">
-            Explore the full audience
+          <a className="nextLink" href="/people">
+            Meet the people
           </a>
         </div>
       </section>
