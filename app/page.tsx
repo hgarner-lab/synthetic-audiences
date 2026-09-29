@@ -9,6 +9,7 @@ import { Face } from "@/components/Face";
 import { BrandLockup, McCannCredit } from "@/components/Brand";
 import { SectionIcon, SectionId, sections } from "@/components/Sections";
 import { useProfile } from "@/components/Profile";
+import { MarketSwitch } from "@/components/MarketSwitch";
 import { saveVersion } from "@/components/version";
 import "./room.css";
 import "./room-brand.css";
@@ -202,19 +203,7 @@ export default function Room() {
       )}
 
       <section className="frMessage">
-        <div className="marketSwitch frMarket" role="group" aria-label="Choose a market">
-          {(["china", "ksa"] as MarketId[]).map((id) => (
-            <button
-              key={id}
-              className={marketId === id ? "active" : ""}
-              aria-pressed={marketId === id}
-              onClick={() => chooseMarket(id)}
-            >
-              {markets[id].name}
-              {id === "ksa" && <span>New</span>}
-            </button>
-          ))}
-        </div>
+        <MarketSwitch value={marketId} onChange={chooseMarket} className="frMarket" />
         <p className="frEyebrow">{reacted ? message.label : "The message"}</p>
         <blockquote key={message.id} className="frProposition">
           “{message.proposition}”

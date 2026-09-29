@@ -616,14 +616,16 @@
 
 /* One-page plan */
 
+/* Two rows: three stages, then two wider ones, so the text has room to breathe. */
 .rcPlan {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .rcPlanCol {
-  padding: 18px;
+  grid-column: span 2;
+  padding: 22px;
   border-radius: 16px;
   background: var(--white);
   border: 1px solid var(--line);
@@ -634,15 +636,19 @@
   font-size: 18px;
 }
 
+.rcPlanCol:nth-child(n + 4) {
+  grid-column: span 3;
+}
+
 .rcPlanCol p {
   margin: 0;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .rcPlanCol .rcLabel {
-  margin-top: 14px;
-  font-size: 10px;
+  margin-top: 16px;
+  font-size: 12px;
 }
 
 .rcPlanMessage {
@@ -651,7 +657,19 @@
 }
 
 .rcPlanCol ul {
-  font-size: 13px;
+  font-size: 14px;
+}
+
+/* Mid-size screens: two stages to a row, with the last one full width. */
+@media (max-width: 1100px) {
+  .rcPlanCol,
+  .rcPlanCol:nth-child(n + 4) {
+    grid-column: span 3;
+  }
+
+  .rcPlanCol:last-child {
+    grid-column: span 6;
+  }
 }
 
 @media (max-width: 760px) {
@@ -664,6 +682,12 @@
   .rcStageCols,
   .rcPlan {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rcPlanCol,
+  .rcPlanCol:nth-child(n + 4),
+  .rcPlanCol:last-child {
+    grid-column: auto;
   }
 
   .rcMiniRoom {
