@@ -11,6 +11,7 @@ import { BrandLockup, McCannCredit } from "@/components/Brand";
 import { SectionIcon, SectionTag, sections } from "@/components/Sections";
 import { ShellNav } from "@/components/PageShell";
 import { useProfile } from "@/components/Profile";
+import { MarketSwitch } from "@/components/MarketSwitch";
 import "./recommendation.css";
 
 const roleOrder: InfluenceRole[] = ["validate", "block", "amplify", "reframe"];
@@ -119,14 +120,7 @@ export default function Recommendation() {
 
       <section className="rcHero">
         <SectionTag id="recommendation" />
-        <div className="marketSwitch rcMarket" role="group" aria-label="Choose a market">
-          {(["china", "ksa"] as MarketId[]).map((id) => (
-            <button key={id} className={marketId === id ? "active" : ""} aria-pressed={marketId === id} onClick={() => chooseMarket(id)}>
-              {markets[id].name}
-              {id === "ksa" && <span>New</span>}
-            </button>
-          ))}
-        </div>
+        <MarketSwitch value={marketId} onChange={chooseMarket} className="rcMarket" />
         <p className="rcEyebrow">Aramco Advantage Crude · {plan.marketName}</p>
         <h1>{bigIdea.name}</h1>
         <p className="rcLine">“{bigIdea.line}”</p>

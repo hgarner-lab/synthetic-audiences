@@ -3195,3 +3195,11 @@ a.prototypeTag {
 .dpMarket {
   margin: 12px 0 4px;
 }
+
+.marketSwitch .marketFlag {
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  flex: none;
+}

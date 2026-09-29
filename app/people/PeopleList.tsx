@@ -9,6 +9,7 @@ import { ksaRoomMessages } from "@/data/ksaRoom";
 import { readMarket, saveMarket } from "@/data/markets";
 import { SectionTag } from "@/components/Sections";
 import { useProfile } from "@/components/Profile";
+import { MarketSwitch } from "@/components/MarketSwitch";
 import { readVersion, versionLabel } from "@/components/version";
 
 export function PeopleList() {
@@ -55,22 +56,7 @@ export function PeopleList() {
         <div>
           <SectionTag id="people" />
           <h2>Everyone involved in the decision</h2>
-          <div className="marketSwitch" role="group" aria-label="Choose a market">
-            <button
-              className={market === "china" ? "active" : ""}
-              aria-pressed={market === "china"}
-              onClick={() => chooseMarket("china")}
-            >
-              China
-            </button>
-            <button
-              className={market === "ksa" ? "active" : ""}
-              aria-pressed={market === "ksa"}
-              onClick={() => chooseMarket("ksa")}
-            >
-              Saudi Arabia <span>New</span>
-            </button>
-          </div>
+          <MarketSwitch value={market} onChange={chooseMarket} />
           {market === "china" ? (
             <p className="communityIntroCopy">
               Meet all 24 people: what each one cares about, what they need, and how they affect everyone else. Their
