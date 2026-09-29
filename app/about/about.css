@@ -414,3 +414,57 @@
 .ab .rcEyebrow {
   font-size: 12px;
 }
+
+/* The two markets in "Inside this demo". */
+.abMarkets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.abMarket {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: #080808;
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.abMarket:hover,
+.abMarket:focus-visible {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: var(--white);
+}
+
+.abMarket img {
+  flex: none;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+.abMarket strong {
+  font-size: 19px;
+}
+
+.abMarket p {
+  margin: 8px 0 12px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.abMarket span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .abMarkets {
+    grid-template-columns: 1fr;
+  }
+}
