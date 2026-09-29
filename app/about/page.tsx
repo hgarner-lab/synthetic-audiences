@@ -57,6 +57,21 @@ const uses: { id: SectionId; label: string; href: string }[] = [
   { id: "recommendation", label: "Get the recommendation", href: "/recommendation" },
 ];
 
+const marketCards = [
+  {
+    name: "China",
+    flag: "/flags/cn.svg",
+    href: "/?market=china",
+    text: "Senior people across energy, chemicals, finance, government, technology and media. Proof matters most: leading with independent checks wins the room.",
+  },
+  {
+    name: "Saudi Arabia",
+    flag: "/flags/sa.svg",
+    href: "/?market=ksa",
+    text: "The same six groups. Local content matters most: building around a Saudi partner wins the room, including gatekeepers who push back on everything else.",
+  },
+];
+
 const roles = [
   ["Checkers", "test whether a claim is true before they'll back it."],
   ["Gatekeepers", "can say no, and make everyone else ask for more proof."],
@@ -131,7 +146,7 @@ export default function About() {
           <div className="abLayer abLayerModel">
             <div className="abLayerLabel">The people</div>
             <div className="abLayerBody">
-              <strong>24 people with different needs and different say in the decision</strong>
+              <strong>24 people in each market, with different needs and different say in the decision</strong>
               <p className="abLayerNote">
                 Each one has their own priorities, the proof they need, the people they listen to
                 and the part they play in how a decision gets made.
@@ -206,13 +221,27 @@ export default function About() {
         <div className="abSectionHead">
           <div>
             <p className="abKicker">Inside this demo</p>
-            <h2>24 people from six groups who shape energy decisions in China.</h2>
+            <h2>Two markets, 24 people in each, facing the same energy decision.</h2>
           </div>
           <p>
             Each person is built from their data: what shapes their view, what proof they need and
-            how they affect the people around them. Each one also plays a part in how the decision
-            spreads.
+            how they affect the people around them. Switch markets with the flags at the top of
+            any page, and see how differently the same message lands.
           </p>
+        </div>
+
+        <div className="abMarkets">
+          {marketCards.map((market) => (
+            <a className="abMarket" href={market.href} key={market.name}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={market.flag} alt="" width={36} height={27} />
+              <div>
+                <strong>{market.name}</strong>
+                <p>{market.text}</p>
+                <span>Go to the {market.name === "China" ? "China" : "Saudi"} room →</span>
+              </div>
+            </a>
+          ))}
         </div>
 
         <div className="abRoleGrid">
@@ -228,8 +257,10 @@ export default function About() {
           <strong>Where the reactions come from</strong>
           <p>
             Our team prepared each reaction from that person&rsquo;s data and the five versions of
-            the message. They show the likely direction of opinion. None of them are quotes or
-            survey answers from real people.
+            the message in each market. They show the likely direction of opinion. None of them are
+            quotes or survey answers from real people. The names, faces and dress in both markets
+            were researched and checked against public records, and still need review by people
+            from each market.
           </p>
         </div>
       </section>
@@ -242,6 +273,7 @@ export default function About() {
             <h3>Good for</h3>
             <ul>
               <li>Seeing who leans in, who has doubts and who tunes out.</li>
+              <li>Comparing how two markets react to the same message.</li>
               <li>Understanding the proof different groups need.</li>
               <li>Finding where a message gets stuck on its way through a decision.</li>
               <li>Comparing different versions of a message.</li>
